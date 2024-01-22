@@ -13,7 +13,7 @@ export default function Home() {
           <div className="col-end-7 col-span-2 lg:px-20 ">
             <span className="text-4xl text-gray-400 tracking-tight font-normal">
             <Link href="https://github.com/degstn/">
-                    <p className="hover:underline underline-offset-4">Interia</p>
+                    <p className="hover:underline underline-offset-4">Inertia</p>
                   </Link>
             </span>
           </div>
