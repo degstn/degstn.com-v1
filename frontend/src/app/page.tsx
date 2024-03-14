@@ -7,8 +7,9 @@ export default function Home() {
       {/* <div className="relative flex place-items-center before:absolute "> */}
       <div className='lg:pt-64 pt-96'>
           <div className="grid grid-cols-10 lg:ml-10 md:pl-40 lg:px-32 sm:px-0 gap-5 sm:mt-20 mb-32 ">
-          <div className="col-start-1 col-end-3 lg:px-20 md:p1-20 pl-10 ">
-          <span className="text-3xl bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-orange-300 tracking-tight font-normal">2024</span>
+          
+          <div className=" col-end-3 lg:px-20  ">
+          <span className="text-3xl bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-orange-300 tracking-tight font-normal">2023</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
             <span className="text-3xl text-gray-400 tracking-tight font-normal">
@@ -31,7 +32,7 @@ export default function Home() {
                   </Link>
             </span>
           </div>
-          <div className="col-start-1 col-end-3 lg:px-20 pb-10 ">
+          <div className=" col-end-3 lg:px-20 pb-10 ">
           <span className="text-3xl text-gray-400 tracking-tight font-normal">2023</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
@@ -48,7 +49,7 @@ export default function Home() {
                   </Link>
             </span>
           </div>
-          <div className="col-start-1 col-end-3 lg:px-20 ">
+          <div className=" col-end-3 lg:px-20 ">
           <span className="text-3xl text-gray-400 tracking-tight font-normal">2022</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
