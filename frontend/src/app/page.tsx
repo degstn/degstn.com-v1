@@ -9,7 +9,7 @@ export default function Home() {
           <div className="grid grid-cols-10 lg:ml-10 md:pl-40 lg:px-32 sm:px-0 gap-5 sm:mt-20 mb-32 ">
           
           <div className=" col-end-3 lg:px-20  ">
-          <span className="text-3xl bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-orange-300 tracking-tight font-normal">2023</span>
+          <span className="text-3xl bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-orange-300 tracking-tight font-normal">2024</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
             <span className="text-3xl text-gray-400 tracking-tight font-normal">
