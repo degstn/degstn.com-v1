@@ -13,8 +13,8 @@ export default function Home() {
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
             <span className="text-3xl text-gray-400 tracking-tight font-normal">
-            <Link href="https://github.com/degstn/">
-                    <p className="hover:underline underline-offset-4">Inertia</p>
+            <Link href="https://aremac.tech/">
+                    <p className="hover:underline underline-offset-4">Aremac</p>
                   </Link>
             </span>
           </div>
