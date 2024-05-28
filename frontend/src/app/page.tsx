@@ -63,19 +63,32 @@ export default function Home() {
         <div className="grid grid-cols-10 lg:ml-10 lg:px-32 sm:px-0 gap-5 sm:mt-20 mb-32 ">
           
           <div className="col-end-7 col-span-2  lg:pl-20">
-            <span className="text-xl text-gray-600 tracking-tight font-normal">
+            <div className='flex flex-row'>
+              <div className="px-5">
             <Link href="https://github.com/degstn/">
 
                     <picture>
                 <Image
                     src="/github600.svg"
-                    alt="GitHub Icon"
+                    alt="GitHub"
                     width={30}
                     height={30}
                 />
               </picture>
                   </Link>
-            </span>
+                  </div>
+            <Link href="https://linkedin.com/in/degstn/">
+
+                    <picture>
+                <Image
+                    src="/in600.svg"
+                    alt="LinkedIn"
+                    width={30}
+                    height={30}
+                />
+              </picture>
+                  </Link>
+            </div>
           </div>
         </div>
       </div>
