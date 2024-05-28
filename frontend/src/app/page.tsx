@@ -27,7 +27,7 @@ export default function Home() {
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 pb-10 ">
             <span className="text-3xl text-gray-600 tracking-tight font-normal">
-              <Link href="https://www.stelio.ai/">
+              <Link href="https://stelio.ai/">
                     <p className="hover:underline underline-offset-4">stelio</p>
                   </Link>
             </span>
