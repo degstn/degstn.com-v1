@@ -4,8 +4,8 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 245, 245, 240;
-  --background-end-rgb: 245, 245, 240;
+  --background-start-rgb: 254, 253, 240;
+  --background-end-rgb: 250, 247, 233;
 }
 
 ::-moz-selection {
