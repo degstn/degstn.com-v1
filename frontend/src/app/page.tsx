@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <main className=" flex min-h-screen flex-col items-center justify-center">
       {/* <div className="relative flex place-items-center before:absolute "> */}
-      <meta name="theme-color" content="#f9fafb dark:#718096"></meta>
+      <meta name="theme-color" content="#fefdf0 dark:##1a1a1a"></meta>
 
       <div className='lg:pt-64 pt-96 font-serif'>
           <div className="grid grid-cols-10 lg:ml-10 md:pl-40 lg:px-32 sm:px-0 gap-5 sm:mt-20 mb-32 ">
