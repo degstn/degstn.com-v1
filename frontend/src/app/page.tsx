@@ -13,7 +13,11 @@ export default function Home() {
       <div className='lg:pt-24 pt-56 '>
           <div className="grid grid-cols-10 lg:ml-10 md:pl-40 lg:px-32 sm:px-0 gap-2 sm:mt-20 mb-16 ">
           <div className=" col-end-3 lg:px-20  ">
-          <span className="text-xl text-gray-600 tracking-tight font-light dark:text-gray-50">drew</span>
+          <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50 ">
+            <Link href={"mailto:d@degstn.com"}>
+                    <p className="hover:underline underline-offset-4">drew</p>
+                  </Link>
+            </span>
           </div>
           <div className=" col-end-3 lg:px-20 pb-36 ">
           <span className="text-xl text-gray-400 tracking-tight font-normal dark:text-gray-50 ">
