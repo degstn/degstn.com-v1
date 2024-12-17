@@ -1,68 +1,78 @@
+"use client";
+
 import Link from 'next/link'
-import Image from 'next/image'
+import { berkeleymono } from './fonts'
+
 
 export default function Home() {
   return (
     <main className=" flex min-h-screen flex-col items-center justify-center">
       {/* <div className="relative flex place-items-center before:absolute "> */}
       <meta name="theme-color" content="#fefdf0 dark:##1a1a1a"></meta>
-
-      <div className='lg:pt-64 pt-96 font-serif'>
-          <div className="grid grid-cols-10 lg:ml-10 md:pl-40 lg:px-32 sm:px-0 gap-5 sm:mt-20 mb-32 ">
+      <div className={berkeleymono.className}>
+      <div className='lg:pt-64 pt-96 '>
+          <div className="grid grid-cols-10 lg:ml-10 md:pl-40 lg:px-32 sm:px-0 gap-2 sm:mt-20 mb-16 ">
           
           <div className=" col-end-3 lg:px-20  ">
-          <span className="text-3xl bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-300 tracking-tight font-light">2024</span>
+          <span className="text-xl bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-300 tracking-tight font-light">2024</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
-          <span className="text-3xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
+          <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
+            <Link href="https://s7em.com/">
+                    <p className="hover:underline underline-offset-4">s7em</p>
+                  </Link>
+            </span>
+          </div>
+          <div className="col-end-7 col-span-2 lg:px-20 ">
+          <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
             <Link href="https://aremac.tech/">
                     <p className="hover:underline underline-offset-4">aremac</p>
                   </Link>
             </span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
-            <span className="text-3xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
+            <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
             <Link href="https://spatialwaypoints.com/">
                     <p className="hover:underline underline-offset-4">limen</p>
                   </Link>
             </span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 pb-10 ">
-            <span className="text-3xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
+            <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
               <Link href="https://stelio.ai/">
                     <p className="hover:underline underline-offset-4">stelio</p>
                   </Link>
             </span>
           </div>
           <div className=" col-end-3 lg:px-20 pb-10 ">
-          <span className="text-3xl text-gray-600 tracking-tight font-light dark:text-gray-50">2023</span>
+          <span className="text-xl text-gray-600 tracking-tight font-light dark:text-gray-50">2023</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
-            <span className="text-3xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
+            <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
             <Link href="https://docs.google.com/presentation/d/1HR3efx1HpUI6DvxthVhOzCj9JLPVE0YNZ744-EnUHAc/edit?usp=sharing">
                     <p className="hover:underline underline-offset-4">service seeker</p>
                   </Link>
             </span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 pb-10 ">
-            <span className="text-3xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
+            <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
             <Link href="https://aimazing.shop/">
                     <p className="hover:underline underline-offset-4">aimazing</p>
                   </Link>
             </span>
           </div>
           <div className=" col-end-3 lg:px-20 ">
-          <span className="text-3xl text-gray-600 tracking-tight font-light dark:text-gray-50">2022</span>
+          <span className="text-xl text-gray-600 tracking-tight font-light dark:text-gray-50">2022</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
-            <span className="text-3xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
+            <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
             <Link href="https://web.archive.org/web/goldy.design">
                     <p className="hover:underline underline-offset-4">portfolio archive</p>
               </Link>
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-10 lg:ml-10 lg:px-32 sm:px-0 gap-5 sm:mt-20 mb-32 ">
+        <div className="grid grid-cols-10 lg:ml-10 lg:px-32 sm:px-0 gap-5 sm:mt-20 mb-16 ">
           
         <div className="col-end-7 col-span-2 lg:pl-20">
   <div className='flex flex-row text-gray-600 dark:text-gray-50'>
@@ -107,6 +117,7 @@ export default function Home() {
   </div>
 </div>
         </div>
+      </div>
       </div>
     </main>
   )
