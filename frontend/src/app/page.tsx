@@ -92,8 +92,8 @@ export default function Home() {
     <div className="px-5">
       <Link href="https://github.com/degstn/">
         <svg
-          width={30}
-          height={30}
+          width={25}
+          height={25}
           viewBox="0 0 45.8 44.67"
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
@@ -108,8 +108,8 @@ export default function Home() {
     </div>
     <Link href="https://linkedin.com/in/degstn/">
       <svg
-        width={30}
-        height={30}
+        width={25}
+        height={25}
         viewBox="0 0 44.92 44.92"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
