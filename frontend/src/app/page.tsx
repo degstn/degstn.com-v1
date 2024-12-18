@@ -27,15 +27,19 @@ export default function Home() {
             </span>
           </div>
           <div className=" col-end-3 lg:px-20  ">
-          <span className="text-xl bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-300 tracking-tight font-light">2024</span>
+          <span className="text-xl bg-clip-text text-transparent text-international-orange tracking-tight font-light">2025</span>
           </div>
-          <div className="col-end-7 col-span-2 lg:px-20 ">
+          <div className="col-end-7 col-span-2 lg:px-20 pb-7 ">
           <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
             <Link href="https://s7em.com/">
                     <p className="hover:underline underline-offset-4">s7em</p>
                   </Link>
             </span>
           </div>
+          <div className=" col-end-3 lg:px-20  ">
+          <span className="text-xl text-gray-600 tracking-tight font-light dark:text-gray-50">2024</span>
+          </div>
+          
           <div className="col-end-7 col-span-2 lg:px-20 ">
           <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
             <Link href="https://aremac.tech/">
