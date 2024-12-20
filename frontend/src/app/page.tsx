@@ -6,9 +6,8 @@ import { berkeleymono } from './fonts'
 
 export default function Home() {
   return (
-    <main className=" flex min-h-screen flex-col items-center justify-center">
+    <main className=" flex min-h-screen bg-bgLight dark:bg-bgDark flex-col items-center justify-center">
       {/* <div className="relative flex place-items-center before:absolute "> */}
-      <meta name="theme-color" content="#fefdf0 dark:##1a1a1a"></meta>
       <div className={berkeleymono.className}>
       <div className='lg:pt-24 pt-56 '>
           <div className="grid grid-cols-10 lg:ml-10 md:pl-40 lg:px-32 sm:px-0 gap-2 sm:mt-20 mb-16 ">
@@ -27,7 +26,7 @@ export default function Home() {
             </span>
           </div>
           <div className=" col-end-3 lg:px-20  ">
-          <span className="text-xl bg-clip-text text-transparent text-international-orange tracking-tight font-light">2025</span>
+          <span className="text-xl bg-clip-text text-transparent text-international-orange-engineering dark:text-international-orange tracking-tight font-light">2025</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 pb-7 ">
           <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
@@ -94,7 +93,7 @@ export default function Home() {
         <div className="col-end-7 col-span-2 lg:pl-20">
   <div className='flex flex-row text-gray-600 dark:text-gray-50'>
     <div className="px-5">
-      <Link href="https://github.com/degstn/">
+      <Link href="https://github.com/degstn/" aria-label="GitHub profile">
         <svg
           width={25}
           height={25}
@@ -110,7 +109,7 @@ export default function Home() {
         </svg>
       </Link>
     </div>
-    <Link href="https://linkedin.com/in/degstn/">
+    <Link href="https://linkedin.com/in/degstn/" aria-label="LinkedIn profile">
       <svg
         width={25}
         height={25}
