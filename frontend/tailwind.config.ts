@@ -13,7 +13,9 @@ const config: Config = {
         'disabled': '#d1d5db',
         'disabled-dark': '#4b5563',
         'gray-600': '#4b5563',
-        'gray-50': '#f9fafb'
+        'gray-50': '#f9fafb',
+        'bgLight': '#e2deda',
+        'bgDark': '#292929',
       },
     extend: {
       backgroundImage: {
