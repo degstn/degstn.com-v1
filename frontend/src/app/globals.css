@@ -22,17 +22,17 @@
 @media (prefers-color-scheme: dark) {
    
   ::-moz-selection {
-    background: #bcbcbc;
+    background: #f9fafb;
     color: #000000; /* Change this to your desired text color */
   }
   
   ::-webkit-selection {
-    background: #bcbcbc;
+    background: #f9fafb;
     color: #000000; /* Change this to your desired text color */
   }
   
   ::selection {
-    background: #bcbcbc;
+    background: #f9fafb;
     color: #000000; /* Change this to your desired text color */
   }
 }
