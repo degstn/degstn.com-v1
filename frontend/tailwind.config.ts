@@ -10,7 +10,7 @@ const config: Config = {
       colors: {
         'international-orange': '#FF4F00',
         'international-orange-engineering': '#BA160C',
-        'disabled': '#d1d5db',
+        'disabled': '#9ca3af',
         'disabled-dark': '#4b5563',
         'gray-600': '#4b5563',
         'gray-50': '#f9fafb',
