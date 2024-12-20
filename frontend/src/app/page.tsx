@@ -99,7 +99,7 @@ export default function Home() {
         <div className="col-end-7 col-span-2 lg:pl-20">
   <div className='flex flex-row text-gray-600 dark:text-gray-50'>
     <div className="px-5">
-      <Link href="https://github.com/degstn/">
+      <Link href="https://github.com/degstn/" aria-label="GitHub profile">
         <svg
           width={25}
           height={25}
@@ -115,7 +115,7 @@ export default function Home() {
         </svg>
       </Link>
     </div>
-    <Link href="https://linkedin.com/in/degstn/">
+    <Link href="https://linkedin.com/in/degstn/" aria-label="LinkedIn profile">
       <svg
         width={25}
         height={25}
