@@ -9,8 +9,8 @@ export default function Home() {
   return (
     <>
     <Head>
-        <meta name="theme-color" content="#e2deda" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#292929" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#e2deda"/>
+        <meta name="theme-color" content="#292929" media="(prefers-color-scheme: dark)"/>
       </Head>
     <main className=" flex min-h-screen bg-bgLight dark:bg-bgDark flex-col items-center justify-center">
       {/* <div className="relative flex place-items-center before:absolute "> */}
