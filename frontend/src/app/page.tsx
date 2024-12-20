@@ -2,14 +2,18 @@
 
 import Link from 'next/link'
 import { berkeleymono } from './fonts'
+import Head from 'next/head';
 
 
 export default function Home() {
   return (
+    <>
+    <Head>
+        <meta name="theme-color" content="#e2deda" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#292929" media="(prefers-color-scheme: dark)" />
+      </Head>
     <main className=" flex min-h-screen bg-bgLight dark:bg-bgDark flex-col items-center justify-center">
       {/* <div className="relative flex place-items-center before:absolute "> */}
-      <meta name="theme-color" content="#e2deda" media="(prefers-color-scheme: light)"></meta>
-      <meta name="theme-color" content="#292929" media="(prefers-color-scheme: dark)"></meta>
       <div className={berkeleymono.className}>
       <div className='lg:pt-24 pt-56 '>
           <div className="grid grid-cols-10 lg:ml-10 md:pl-40 lg:px-32 sm:px-0 gap-2 sm:mt-20 mb-16 ">
@@ -138,5 +142,6 @@ export default function Home() {
       </div>
       </div>
     </main>
+    </>
   )
 }
