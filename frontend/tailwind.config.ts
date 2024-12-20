@@ -15,7 +15,7 @@ const config: Config = {
         'gray-600': '#4b5563',
         'gray-50': '#f9fafb',
         'bgLight': '#e2deda',
-        'bgDark': '#292929',
+        'bgDark': '#1a1a1a',
       },
     extend: {
       backgroundImage: {
