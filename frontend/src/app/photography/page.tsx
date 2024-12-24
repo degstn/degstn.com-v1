@@ -5,6 +5,14 @@ import Globe from "globe.gl";
 // We'll import only the turf methods we need:
 import { polygon, bbox, booleanPointInPolygon } from "@turf/turf";
 
+
+interface MyPoint {
+    lat: number;
+    lng: number;
+    pin?: boolean;
+    city?: string;
+  }
+
 export default function DotMatrixGlobe() {
   const globeRef = useRef<HTMLDivElement>(null);
 
@@ -46,22 +54,22 @@ export default function DotMatrixGlobe() {
       ];
 
       // Combine into a single array
-      const allPoints = [...interiorDots, ...travelPins];
+      const allPoints: MyPoint[] = [...interiorDots, ...travelPins];
 
       globeInstance
       .pointOfView({ lat: 0, lng: 0, altitude: 1.5 })
-      .pointRadius((d) => d.pin ? 0.75 : 0.4)
+      .pointRadius((d: object) => (d as MyPoint).pin ? 0.75 : 0.4)
         .pointsData(allPoints)
         .pointLat("lat")
         .pointLng("lng")
-        .pointColor(d => d.pin ? "#FF4F00" : "#4b5563")
+        .pointColor(d => (d as MyPoint).pin ? "#FF4F00" : "#4b5563")
         .pointAltitude(() => 0.005)
         // Add the click handler here:
         .onPointClick((point, event) => {
           console.log("Clicked point:", point);
           // For example, show city name if it's a pin
           if (point.pin) {
-            alert(`You clicked on ${point.city}`);
+            alert(`You clicked on ${(point as MyPoint).city}`);
           } else {
             console.log("not a pin this does fuck all");
           }
