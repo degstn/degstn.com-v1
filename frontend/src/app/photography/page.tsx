@@ -68,7 +68,7 @@ export default function DotMatrixGlobe() {
         .onPointClick((point, event) => {
           console.log("Clicked point:", point);
           // For example, show city name if it's a pin
-          if (point.pin) {
+          if ((point as MyPoint).pin) {
             alert(`You clicked on ${(point as MyPoint).city}`);
           } else {
             console.log("not a pin this does fuck all");
