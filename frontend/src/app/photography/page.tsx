@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Globe from "globe.gl";
 // We'll import only the turf methods we need:
 import { polygon, bbox, booleanPointInPolygon } from "@turf/turf";
@@ -15,6 +15,7 @@ interface MyPoint {
 
 export default function DotMatrixGlobe() {
   const globeRef = useRef<HTMLDivElement>(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (!globeRef.current) return;
@@ -26,6 +27,7 @@ export default function DotMatrixGlobe() {
       .showGlobe(false)
       .showAtmosphere(false)
       .backgroundColor("#e2deda");
+      setLoaded(true);
 
     (async () => {
       const res = await fetch("/ne_110m_admin_0_countries.json");
@@ -83,9 +85,11 @@ export default function DotMatrixGlobe() {
   };
   
   return (
-    <div style={styles}>
-      <div ref={globeRef} style={{ width: '100%', height: '100%' }} />
-    </div>
+    <main style={{ width: "100%", height: "80vh" }}>
+      {/* The globe container */}
+      <div ref={globeRef} style={{ width: "100%", height: "100%" }} />
+      {!loaded && <p>Loading the globe...</p>}
+    </main>
   );
 }
 
