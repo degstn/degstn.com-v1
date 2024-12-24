@@ -1,90 +1,120 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import Globe from "globe.gl";
+import React, { useRef, useState, useEffect } from "react";
 import { polygon, bbox, booleanPointInPolygon } from "@turf/turf";
 
-interface MyPoint {
-  lat: number;
-  lng: number;
-  pin?: boolean;
-  city?: string;
-}
+/**
+ * A single-file page that:
+ * 1) Lazy-loads globe.gl only in the browser (no SSR).
+ * 2) Creates a minimal dot-matrix globe from your GeoJSON.
+ */
+export default function PhotographyPage() {
+  const globeRef = useRef<HTMLDivElement | null>(null);
 
-export default function DotMatrixGlobe() {
-  const globeRef = useRef<HTMLDivElement>(null);
+  // We'll store the lazy-loaded globe.gl module here
+  const [globeModule, setGlobeModule] = useState<any>(null);
 
+  // 1) Lazy import globe.gl in a client-side effect
   useEffect(() => {
-    if (!globeRef.current) return;
+    (async () => {
+      try {
+        const mod = await import("globe.gl");
+        // We'll store the default export (the Globe constructor).
+        setGlobeModule(() => mod.default);
+      } catch (error) {
+        console.error("Failed to load Globe module:", error);
+      }
+    })();
+  }, []);
 
-    // Initialize the Globe only on the client
-    const globe = new Globe(globeRef.current)
+  // 2) Once we have globe.gl AND our ref is ready, create and configure the globe
+  useEffect(() => {
+    if (!globeModule || !globeRef.current) return;
+
+    const GlobeConstructor = globeModule; // The actual function you can 'new'
+    const globeInstance = new GlobeConstructor(globeRef.current);
+
+    // Basic styling
+    globeInstance
       .showGlobe(false)
       .showAtmosphere(false)
       .backgroundColor("#e2deda");
 
-    // Fetch your JSON in client-side code
+    // Fetch your JSON data, build the dot matrix, then load into globe
     (async () => {
-      const res = await fetch("/ne_110m_admin_0_countries.json");
-      const geojson = await res.json();
+      try {
+        const res = await fetch("/ne_110m_admin_0_countries.json");
+        const geojson = await res.json();
 
-      // Generate your interior dots
-      const interiorDots: MyPoint[] = createDotMatrix(geojson);
+        // Build your "dot matrix" array
+        const interiorDots = createDotMatrix(geojson);
 
-      // Example travel pins
-      const travelPins: MyPoint[] = [
-        { lat: 40.7128, lng: -74.006, pin: true, city: "NYC" },
-        { lat: 34.0522, lng: -118.2437, pin: true, city: "LA" },
-      ];
+        // Example travel pins
+        const travelPins = [
+          { lat: 40.7128, lng: -74.0060, pin: true, city: "NYC" },
+          { lat: 34.0522, lng: -118.2437, pin: true, city: "LA" },
+        ];
 
-      const allPoints = [...interiorDots, ...travelPins];
+        const allPoints = [...interiorDots, ...travelPins];
 
-      globe
-        .pointOfView({ lat: 0, lng: 0, altitude: 1.5 })
-        .pointRadius((d: any) => (d.pin ? 0.75 : 0.4))
-        .pointsData(allPoints)
-        .pointLat("lat")
-        .pointLng("lng")
-        .pointColor((d: any) => (d.pin ? "#FF4F00" : "#4b5563"))
-        .pointAltitude(() => 0.005)
-        .onPointClick((point: any) => {
-          if (point.pin) {
-            alert(`Clicked on ${point.city}`);
-          } else {
-            console.log("Clicked a standard dot:", point.lat, point.lng);
-          }
-        });
+        // Configure the globe with your data
+        globeInstance
+          .pointOfView({ lat: 0, lng: 0, altitude: 1.5 })
+          .pointRadius((d: any) => (d.pin ? 0.75 : 0.4))
+          .pointsData(allPoints)
+          .pointLat("lat")
+          .pointLng("lng")
+          .pointColor((d: any) => (d.pin ? "#FF4F00" : "#4b5563"))
+          .pointAltitude(() => 0.005)
+          .onPointClick((point: any) => {
+            if (point.pin) {
+              alert(`Clicked on ${point.city}`);
+            } else {
+              console.log("Clicked a standard dot", point.lat, point.lng);
+            }
+          });
+      } catch (err) {
+        console.error("Failed to fetch or parse JSON:", err);
+      }
     })();
-  }, []);
+  }, [globeModule]);
 
-  return <div ref={globeRef} style={{ width: "100%", height: "80vh" }} />;
+  return (
+    <main style={{ width: "100%", height: "80vh" }}>
+      <div ref={globeRef} style={{ width: "100%", height: "100%" }} />
+      {!globeModule && <p>Loading the globe library...</p>}
+    </main>
+  );
 }
 
-/** Creates an array of { lat, lng } from your GeoJSON. */
+/**
+ * Builds the in-polygon dot data by sampling each feature in the GeoJSON.
+ */
 function createDotMatrix(geojson: any) {
-  const STEP = 1.5; // Adjust step for performance vs. detail
-  const results: MyPoint[] = [];
+  const STEP = 1.5; // Larger = fewer dots => faster
+  const results: any[] = [];
 
   geojson.features.forEach((feature: any) => {
     const { type, coordinates } = feature.geometry;
-
     if (type === "Polygon") {
       results.push(...samplePolygonGrid(coordinates[0], STEP));
     } else if (type === "MultiPolygon") {
-      coordinates.forEach((polygonCoords: number[][][]) => {
-        results.push(...samplePolygonGrid(polygonCoords[0], STEP));
+      coordinates.forEach((poly: number[][][]) => {
+        results.push(...samplePolygonGrid(poly[0], STEP));
       });
     }
   });
   return results;
 }
 
+/**
+ * Loops lat/lng in a bounding box, only pushing points inside the polygon.
+ */
 function samplePolygonGrid(outerRing: number[][], STEP: number) {
   const turfPoly = polygon([outerRing]);
   const [minLng, minLat, maxLng, maxLat] = bbox(turfPoly);
 
-  const dots: MyPoint[] = [];
-
+  const dots: any[] = [];
   for (let lat = minLat; lat <= maxLat; lat += STEP) {
     for (let lng = minLng; lng <= maxLng; lng += STEP) {
       if (booleanPointInPolygon([lng, lat], turfPoly)) {
