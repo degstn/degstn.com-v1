@@ -74,7 +74,7 @@ export default function Page() {
         </div>
         <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
         Tools & Technologies: Xcode, ARKit, RealityKit, SwiftUI, UIKit, Raspberry Pi, Microcontrollers (Arduino), 
-        Autodesk Fusion 360, AutoCAD
+        Autodesk Fusion 360, AutoCAD, Unreal Engine, Unity, Adobe Creative Suite, Figma, Sketch
         </div>
         <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
         Architectures & Methodologies: MVC, MVVM, OOP
