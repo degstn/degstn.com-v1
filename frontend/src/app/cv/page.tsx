@@ -67,9 +67,22 @@ export default function Page() {
           <div className="font-bold text-gray-600 dark:text-gray-50">
             <h1>Skills</h1>
           </div>
-          <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
-            Software: Swift, Typescript, Javascript, Java, React, Python
-          </div>
+          <div className="font-bold text-gray-600 dark:text-gray-50">
+        </div>
+        <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
+        Software: Swift, Java, Python, JavaScript, TypeScript, C++, Objective-C, VB.NET, Node.js, React
+        </div>
+        <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
+        Tools & Technologies: Xcode, ARKit, RealityKit, SwiftUI, UIKit, Raspberry Pi, Microcontrollers (Arduino), 
+        Autodesk Fusion 360, AutoCAD
+        </div>
+        <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
+        Architectures & Methodologies: MVC, MVVM, OOP
+        </div>
+        <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
+        Additional: iOS Development, Back-End Web Development, Machine Learning, Mobile App Development, 
+        Project Management, Team Leadership
+        </div>
           <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
             Languages: English (fluent), Spanish (working proficient)
           </div>
