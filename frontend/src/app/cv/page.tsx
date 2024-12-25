@@ -6,7 +6,7 @@ export default function Page() {
   
 
   return (
-    <main className="min-h-screen flex-grid items-center justify-center bg-bgLight dark:bg-bgDark p-6 px-56 pt-24 ">
+    <main className="min-h-screen flex-grid items-center justify-center bg-bgLight dark:bg-bgDark p-6 md:px-56 px-6 pt-24 ">
       <div className={berkeleymono.className}>
       <div className="text-sm text-gray-600 opacity-50 dark:text-gray-50">
           <Link href="/" className="hover:underline ">
