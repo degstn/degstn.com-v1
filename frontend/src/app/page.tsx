@@ -19,8 +19,8 @@ export default function Home() {
             </span>
           </div>
           <div className=" col-end-3 lg:px-20 pb-36 ">
-          <span className="text-xl text-disabled tracking-tight font-normal dark:text-disabled-dark ">
-            <Link href={"/cv.pdf"} scroll={false} onClick={(e) => { e.preventDefault()  }}>
+          <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-disabled-dark ">
+            <Link href="/cv">
                     <p className="hover:underline underline-offset-4">cv</p>
                   </Link>
             </span>

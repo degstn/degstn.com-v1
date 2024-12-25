@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { polygon, bbox, booleanPointInPolygon } from "@turf/turf";
+import * as THREE from "three";
 
 /**
  * A single-file page that:
@@ -53,9 +54,10 @@ export default function PhotographyPage() {
         const travelPins = [
           { lat: 40.7128, lng: -74.0060, pin: true, city: "NYC" },
           { lat: 34.0522, lng: -118.2437, pin: true, city: "LA" },
+          { lat: 0, lng: 0, pin: true, city: "CenterOfGlobe" },
         ];
 
-        const allPoints = [...interiorDots, ...travelPins];
+        const allPoints = [...interiorDots];
 
         // Configure the globe with your data
         globeInstance
@@ -66,13 +68,38 @@ export default function PhotographyPage() {
           .pointLng("lng")
           .pointColor((d: any) => (d.pin ? "#FF4F00" : "#4b5563"))
           .pointAltitude(() => 0.005)
-          .onPointClick((point: any) => {
-            if (point.pin) {
-              alert(`Clicked on ${point.city}`);
-            } else {
-              console.log("Clicked a standard dot", point.lat, point.lng);
-            }
+
+          .objectsData(travelPins)
+          .objectLat("lat")
+          .objectLng("lng")
+          .objectAltitude(() => 0.05)
+          .objectThreeObject((pinData: Record<string, any>) => {
+            const group = new THREE.Group();
+        
+            // Cone geometry
+            const coneGeom = new THREE.ConeGeometry(0.1, 0.3, 16);
+            const coneMat = new THREE.MeshBasicMaterial({ color: 0xff4f00 });
+            const coneMesh = new THREE.Mesh(coneGeom, coneMat);
+            coneMesh.rotation.x = Math.PI; // point up
+        
+            // Sphere on top
+            const sphereGeom = new THREE.SphereGeometry(0.05, 8, 8);
+            const sphereMat = new THREE.MeshBasicMaterial({ color: 0xff4f00 });
+            const sphereMesh = new THREE.Mesh(sphereGeom, sphereMat);
+            sphereMesh.position.y = 0.06;
+        
+            // Add to group
+            group.add(coneMesh);
+            group.add(sphereMesh);
+        
+            // Optionally attach metadata
+            group.userData = { ...pinData }; 
+            return group;
+          })
+          .onObjectClick((point: any) => {
+            alert(`Clicked on ${point.city}`);
           });
+          
       } catch (err) {
         console.error("Failed to fetch or parse JSON:", err);
       }
