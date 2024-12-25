@@ -68,10 +68,10 @@ export default function Page() {
             <h1>Skills</h1>
           </div>
           <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
-            software: Swift, Typescript, Javascript, Java, React, Python
+            Software: Swift, Typescript, Javascript, Java, React, Python
           </div>
           <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
-            languages: English (fluent), Spanish (working proficient)
+            Languages: English (fluent), Spanish (working proficient)
           </div>
           <div className="font-bold text-gray-600 dark:text-gray-50">
             <h1>Contact</h1>
