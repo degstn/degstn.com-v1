@@ -19,8 +19,8 @@ export default function Home() {
             </span>
           </div>
           <div className=" col-end-3 lg:px-20 pb-36 ">
-          <span className="text-xl text-disabled tracking-tight font-normal dark:text-disabled-dark ">
-            <Link href={"/cv.pdf"} scroll={false} onClick={(e) => { e.preventDefault()  }}>
+          <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-disabled-dark ">
+            <Link href="/cv">
                     <p className="hover:underline underline-offset-4">cv</p>
                   </Link>
             </span>
@@ -38,7 +38,13 @@ export default function Home() {
           <div className=" col-end-3 lg:px-20  ">
           <span className="text-xl text-gray-600 tracking-tight font-light dark:text-gray-50">2024</span>
           </div>
-          
+          <div className="col-end-7 col-span-2 lg:px-20 ">
+          <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
+            <Link href="/photography">
+                    <p className="hover:underline underline-offset-4">photography</p>
+                  </Link>
+            </span>
+          </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
           <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
             <Link href="https://aremac.tech/">
