@@ -84,7 +84,7 @@ export default function Page() {
         Project Management, Team Leadership
         </div>
           <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
-            Languages: English (fluent), Spanish (working proficient)
+            Languages: English (fluent), Spanish (working proficiency)
           </div>
           <div className="font-bold text-gray-600 dark:text-gray-50">
             <h1>Contact</h1>
