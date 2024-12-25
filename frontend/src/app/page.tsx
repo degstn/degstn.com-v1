@@ -39,8 +39,8 @@ export default function Home() {
           <span className="text-xl text-gray-600 tracking-tight font-light dark:text-gray-50">2024</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
-          <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
-            <Link href="/photography">
+          <span className="text-xl text-disabled tracking-tight font-normal dark:text-gray-50">
+            <Link href="/photography" scroll={false} onClick={(e) => { e.preventDefault()  }}>
                     <p className="hover:underline underline-offset-4">photography</p>
                   </Link>
             </span>
