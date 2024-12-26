@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link'
-import { berkeleymono } from '../fonts' // Update this import path as needed
+import { berkeleymono, tx02 } from '../fonts' // Update this import path as needed
 
 export default function Page() {
   

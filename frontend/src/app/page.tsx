@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link'
-import { berkeleymono } from './fonts'
+import { berkeleymono, tx02 } from './fonts'
 
 
 export default function Home() {
