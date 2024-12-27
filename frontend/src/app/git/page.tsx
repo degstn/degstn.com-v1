@@ -40,6 +40,7 @@ function pickLangTextColor(lang: string) {
 
 export default function GitPage() {
   const [commits, setCommits] = useState<any[]>([]);
+  const [commitChecks, setCommitChecks] = useState<Record<string, string>>({});
   const [error, setError] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -63,6 +64,23 @@ export default function GitPage() {
       }
     } catch (err: any) {
       setError(err.message);
+    }
+  }
+
+  async function loadStatusForCommit(sha: string) {
+    // We'll use the "statuses" API endpoint.
+    const url = `https://api.github.com/repos/degstn/degstn.com-v1/commits/${sha}/status`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        // Possibly no checks for this commit
+        return "none";
+      }
+      const data = await res.json();
+      // data.state could be "success", "failure", "pending", etc.
+      return data.state as string;
+    } catch {
+      return "none";
     }
   }
 
@@ -110,6 +128,16 @@ export default function GitPage() {
     if (page === 1) return; // already fetched on mount
     loadCommits(page);
   }, [page]);
+
+  useEffect(() => {
+    commits.forEach((c) => {
+      if (!commitChecks[c.sha]) {
+        loadStatusForCommit(c.sha).then((status) => {
+          setCommitChecks((prev) => ({ ...prev, [c.sha]: status }));
+        });
+      }
+    });
+  }, [commits]);
 
   function handleLoadMore() {
     setPage((prev) => prev + 1);
@@ -247,11 +275,39 @@ const langArray = sorted.map(([name, bytes], idx) => {
               key={commit.sha}
               className="px-2 border-b border-r border-disabled-dark hover:bg-disabled-dark hover:bg-opacity-5 transition-colors"
             >
-              <p className="mb-2">
-                <span className="text-international-orange-engineering dark:text-international-orange text-xs">
-                  {shortSha}
-                </span>
-              </p>
+              <p className="mb-2 flex items-center space-x-1">
+  {(() => {
+    const status = commitChecks[commit.sha] || "none";
+    if (status === "success") {
+      // green check
+      return (
+        <svg 
+          viewBox="0 0 16 16" 
+          fill="currentColor" 
+          className="text-green-500 w-4 h-4"
+        >
+          <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+        </svg>
+      );
+    } else if (status === "failure" || status === "error") {
+      // red x
+      return (
+        <svg
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          className="text-red-500 w-4 h-4"
+        >
+          <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"></path>
+        </svg>
+      );
+    }
+    // else no icon for "pending"/"none"
+    return null;
+  })()}
+  <span className="text-international-orange-engineering dark:text-international-orange text-xs">
+    {shortSha}
+  </span>
+</p>
 
               <p className="text-sm text-gray-600 dark:text-gray-50 mb-2">
                 {commit.commit.message}
