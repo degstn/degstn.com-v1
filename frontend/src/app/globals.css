@@ -109,8 +109,9 @@ body {
   pointer-events: none;     
 }
 
-.my-globe-pin:hover::before {
-  border-color: #f9fafb;    
+
+.my-globe-html-container:hover .my-globe-pin::before {
+  border-color: #f9fafb;
 }
 
 @layer utilities {

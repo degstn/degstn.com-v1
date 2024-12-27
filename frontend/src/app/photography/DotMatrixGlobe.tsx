@@ -86,6 +86,7 @@ export default function PhotographyPage() {
           .pointColor((d: any) => (d.pin ? "#FF4F00" : "#FF4F00"))
           .pointAltitude(() => 0.005)
           
+          
 
           
           
@@ -139,6 +140,7 @@ export default function PhotographyPage() {
   return (
     <main style={{ width: "100%", height: "80vh" }}>
       <div className="bg-bgDark" ref={globeRef} style={{ width: "100%", height: "100%" }} />
+
       {!globeModule && <p className="bg-bgDark text-gray-50">Loading the globe library...</p>}
     </main>
   );
