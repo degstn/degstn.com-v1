@@ -118,7 +118,7 @@ export default function PhotographyPage() {
  * Builds the in-polygon dot data by sampling each feature in the GeoJSON.
  */
 function createDotMatrix(geojson: any) {
-  const STEP = 1.5; // Larger = fewer dots => faster
+  const STEP = 1.5; // larger the number the less fucking gigabytes of memory you leech from someones system
   const results: any[] = [];
 
   geojson.features.forEach((feature: any) => {

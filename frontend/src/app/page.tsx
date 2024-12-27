@@ -95,9 +95,9 @@ export default function Home() {
         <div className="grid grid-cols-10 lg:ml-10 lg:px-32 sm:px-0 gap-5 sm:mt-20 mb-16 ">
         <div className="col-end-3 lg:px-20 pt-1.5">
   <Link
-    href="github.com/"
+    href="https://github.com/degstn/degstn.com-v1"
     aria-label="Changelog"
-    className="inline-flex items-center space-x-1 whitespace-nowrap text-international-orange-engineering dark:text-international-orange hover:underline"
+    className="inline-flex items-center space-x-1 whitespace-nowrap text-international-orange-engineering dark:text-international-orange"
   >
     <svg
       width={12}
