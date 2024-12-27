@@ -24,7 +24,7 @@ export default function Home() {
             </span>
           </div>
           <div className=" col-end-3 lg:px-20  ">
-          <span className="text-xl bg-clip-text text-transparent text-international-orange-engineering dark:text-international-orange tracking-tight font-light">2025</span>
+          <span className="text-xl bg-clip-text text-transparent text-international-orange-engineering dark:text-international-orange tracking-tight font-[400px]">2025</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 pb-7 ">
           <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
@@ -34,7 +34,7 @@ export default function Home() {
             </span>
           </div>
           <div className=" col-end-3 lg:px-20  ">
-          <span className="text-xl text-gray-600 tracking-tight font-light dark:text-gray-50">2024</span>
+          <span className="text-xl text-gray-600 tracking-tight font-[400px] dark:text-gray-50">2024</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
           <span className="text-xl text-disabled tracking-tight font-normal dark:text-disabled-dark">
@@ -65,7 +65,7 @@ export default function Home() {
             </span>
           </div>
           <div className=" col-end-3 lg:px-20 pb-10 ">
-          <span className="text-xl text-gray-600 tracking-tight font-light dark:text-gray-50">2023</span>
+          <span className="text-xl text-gray-600 tracking-tight font-[400px] dark:text-gray-50">2023</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
             <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
@@ -82,7 +82,7 @@ export default function Home() {
             </span>
           </div>
           <div className=" col-end-3 lg:px-20 ">
-          <span className="text-xl text-gray-600 tracking-tight font-light dark:text-gray-50">2022</span>
+          <span className="text-xl text-gray-600 tracking-tight font-[400px] dark:text-gray-50">2022</span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
             <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">

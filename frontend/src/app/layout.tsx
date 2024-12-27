@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Analytics } from "@vercel/analytics/react"
-import { tx02 } from './fonts'
+import { tx02, berkeleymono } from './fonts'
 import './globals.css'
 
 export const metadata: Metadata = {
