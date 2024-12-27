@@ -136,6 +136,11 @@ const langArray = sorted.map(([name, bytes], idx) => {
 
   return (
     <main className="min-h-screen flex-grid items-center justify-center bg-bgLight dark:bg-bgDark p-6 md:px-56 px-6 pt-24">
+      <div className="text-sm text-gray-600 opacity-50 dark:text-gray-50">
+          <Link href="/" className="hover:underline ">
+                back
+              </Link>
+          </div>
       <h1 className="text-normal text-gray-600 dark:text-gray-50">git</h1>
       <Link
         href="https://github.com/degstn/degstn.com-v1"
