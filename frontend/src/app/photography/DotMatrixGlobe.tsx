@@ -59,7 +59,7 @@ export default function PhotographyPage() {
         const interiorDots = createDotMatrix(geojson);
 
         const travelPins = [
-          { id: "ny", lat: 40.7128, lng: -74.0060, pin: true, area: "NY" },
+          { id: "ny", lat: 40.7128, lng: -74.0060, pin: true, area: "New York" },
           { id: "socal", lat: 34.0522, lng: -118.2437, pin: true, area: "SoCal" },
           { id: "southflorida", lat: 26.350519, lng: -80.089828, pin: true, area: "South Florida" },
           { id: "iceland", lat: 65.009835, lng: -19.198598, pin: true, area: "Iceland" },
@@ -139,7 +139,7 @@ export default function PhotographyPage() {
   return (
     <main style={{ width: "100%", height: "80vh" }}>
       <div className="bg-bgDark" ref={globeRef} style={{ width: "100%", height: "100%" }} />
-      {!globeModule && <p className="bg-bgDark te">Loading the globe library...</p>}
+      {!globeModule && <p className="bg-bgDark text-gray-50">Loading the globe library...</p>}
     </main>
   );
 }
@@ -191,12 +191,20 @@ function showRetroModal(area: string) {
   const modal = document.createElement("div");
   modal.classList.add("retro-modal-content");
   modal.innerHTML = `
-    <h2 >${area}</h2>
-    <p>[] [] </p>
-    <button id="retro-close-btn">Close</button>
+    <h2 margin-bottom: 0.5rem;">${area}</h2>
+    <p style="margin-bottom: 1rem;">[][]</p>
+    <button id="retro-close-btn"
+      style="
+        color: #f9fafb;
+        cursor: pointer;
+        font-family: 'Berkeley Mono', monospace;
+      "
+    >
+      Close
+    </button>
   `;
 
-  // Combine and add to the document
+  // Put modal in backdrop, attach to body
   backdrop.appendChild(modal);
   document.body.appendChild(backdrop);
 
