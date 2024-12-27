@@ -1,14 +1,12 @@
 "use client";
 
 import Link from 'next/link'
-import { berkeleymono, tx02 } from './fonts'
 
 
 export default function Home() {
   return (
     <main className=" flex min-h-screen bg-bgLight dark:bg-bgDark flex-col items-center justify-center">
       {/* <div className="relative flex place-items-center before:absolute "> */}
-      <div className={berkeleymono.className}>
       <div className='lg:pt-24 pt-56 '>
           <div className="grid grid-cols-10 lg:ml-10 md:pl-40 lg:px-32 sm:px-0 gap-2 sm:mt-20 mb-16 ">
           <div className=" col-end-3 lg:px-20  ">
@@ -139,7 +137,6 @@ export default function Home() {
   </div>
 </div>
         </div>
-      </div>
       </div>
     </main>
   )
