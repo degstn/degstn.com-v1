@@ -4,8 +4,8 @@ import { berkeleymono } from './fonts'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Drew Goldstein',
-  description: '',
+  title: 'Drew',
+  description: 'my portfolio',
 }
 
 export default function RootLayout({
