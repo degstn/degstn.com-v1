@@ -38,12 +38,13 @@ export default function GitPage() {
   function handleLoadMore() {
     setPage((prev) => prev + 1);
   }
+  
 
   return (
     <main className="min-h-screen flex-grid items-center justify-center bg-bgLight dark:bg-bgDark p-6 md:px-56 px-6 pt-24">
       <h1 className="text-normal text-gray-600 dark:text-gray-50">git</h1>
       <Link
-        href="/"
+        href="https://github.com/degstn/degstn.com-v1"
         className="text-xs hover:underline text-international-orange-engineering dark:text-international-orange"
       >
         full repo
@@ -52,6 +53,9 @@ export default function GitPage() {
       {error && (
         <p className="text-red-400 mb-4">Error loading commits: {error}</p>
       )}
+    
+
+      
 
       <ul className="space-y-6 mt-5">
         {commits.map((commit) => {
