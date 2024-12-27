@@ -24,18 +24,29 @@ function pickLangColor(langName: string) {
     }
   }
 
+  /** Text color for each language label in the legend. */
+function pickLangTextColor(lang: string) {
+    switch (lang.toLowerCase()) {
+      case "typescript":
+        return "text-international-orange";
+      case "css":
+        return "text-international-orange-engineering";
+      case "javascript":
+        return "text-green-500";
+      default:
+        return "text-gray-500";
+    }
+  }
+
 export default function GitPage() {
-  // Existing commits + pagination states
   const [commits, setCommits] = useState<any[]>([]);
   const [error, setError] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
 
-  // NEW: states for deployments + languages
   const [deployments, setDeployments] = useState<any[]>([]);
   const [languages, setLanguages] = useState<Record<string, number>>({});
 
-  // 1) Fetch commits in pages
   async function loadCommits(newPage: number) {
     try {
       const url = `https://api.github.com/repos/degstn/degstn.com-v1/commits?per_page=${PER_PAGE}&page=${newPage}`;
@@ -55,12 +66,10 @@ export default function GitPage() {
     }
   }
 
-  // 2) Fetch deployments
   async function loadDeployments() {
     try {
       const res = await fetch("https://api.github.com/repos/degstn/degstn.com-v1/deployments");
       if (!res.ok) {
-        // Not all repos have deployments, so handle gracefully
         return [];
       }
       return await res.json();
@@ -69,7 +78,6 @@ export default function GitPage() {
     }
   }
 
-  // 3) Fetch languages
   async function loadLanguages() {
     try {
       const res = await fetch("https://api.github.com/repos/degstn/degstn.com-v1/languages");
@@ -82,10 +90,6 @@ export default function GitPage() {
     }
   }
 
-  // On mount, fetch:
-  // - Deployments
-  // - Languages
-  // - Commits (page=1)
   useEffect(() => {
     // load first page of commits
     loadCommits(page);
@@ -162,7 +166,7 @@ const langArray = sorted.map(([name, bytes], idx) => {
       <section className="w-full max-w-xs mt-4 mb-8">
         <h2 className="text-sm font-semibold uppercase mb-2 text-gray-600 dark:text-gray-50">Deployments</h2>
         {deployments.length === 0 ? (
-          <p className="text-xs italic">No recent deployments found.</p>
+          <p className="text-xs italic text-gray-600 dark:text-gray-50">No recent deployments found.</p>
         ) : (
           <ul className="space-y-1">
             {/* Show only first 3 for brevity */}
@@ -195,7 +199,7 @@ const langArray = sorted.map(([name, bytes], idx) => {
       <section className="w-full max-w-xs mb-5">
         <h2 className="text-sm font-semibold uppercase mb-2 text-gray-600 dark:text-gray-50">Languages</h2>
         {langArray.length === 0 ? (
-          <p className="text-xs italic">No language data.</p>
+          <p className="text-xs italic text-gray-600 dark:text-gray-50">No language data.</p>
         ) : (
           <>
             {/* Bar container */}
@@ -221,7 +225,10 @@ const langArray = sorted.map(([name, bytes], idx) => {
               {langArray.map((lang) => (
                 <span key={lang.name} className="mr-3">
                   <span className={` font-medium px-1`}>
-                    {lang.name} {lang.percent.toFixed(1)}%
+                    {lang.name} 
+                  </span>
+                  <span className={`${pickLangTextColor(lang.name)} font-medium px-1`}>
+                     {lang.percent.toFixed(1)}%
                   </span>
                 </span>
               ))}
