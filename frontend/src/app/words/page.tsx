@@ -80,7 +80,7 @@ export default function Words() {
             so once i had learned that every single way i tested wouldn&apos;t work and found out that since this thing lives in a canvas in html, you can&apos;t inspect element it to reverse engineer it, i found that all i had to do is use the html objects globe.gl provides for me and boom it worked within 2 hours of figuring out normal css since tailwind couldn&apos;t do something this complex and dynamic.
             </div>
 
-            <div className="text-sm text-gray-600 dark:text-gray-50 pb-2">
+            <div className="text-sm text-gray-600 dark:text-gray-50 pb-10">
             so happy how this turned out and i can&apos;t wait to continue improving and iterating upon this portfolio!
             </div>
           </div>
