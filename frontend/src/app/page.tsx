@@ -26,10 +26,17 @@ export default function Home() {
           <div className=" col-end-3 lg:px-20  ">
           <span className="text-xl bg-clip-text text-transparent text-international-orange-engineering dark:text-international-orange tracking-tight font-[400px]">2025</span>
           </div>
-          <div className="col-end-7 col-span-2 lg:px-20 pb-7 ">
+          <div className="col-end-7 col-span-2 lg:px-20 ">
           <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
             <Link href="https://s7em.com/">
                     <p className="hover:underline underline-offset-4">s7em</p>
+                  </Link>
+            </span>
+          </div>
+          <div className="col-end-7 col-span-2 lg:px-20 pb-7 ">
+          <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
+            <Link href="/words">
+                    <p className="hover:underline underline-offset-4">words</p>
                   </Link>
             </span>
           </div>
