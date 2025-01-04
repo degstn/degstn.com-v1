@@ -192,21 +192,88 @@ function showRetroModal(area: string) {
   // Create the modal content
   const modal = document.createElement("div");
   modal.classList.add("retro-modal-content");
+
+  // Make the modal a bit wider and limit overall height
+  modal.setAttribute(
+    "style",
+    "width: 80%; max-width: 1000px; max-height: 80vh; overflow-y: auto;"
+  );
+
   modal.innerHTML = `
-    <h2 margin-bottom: 0.5rem;">${area}</h2>
-    <p style="margin-bottom: 1rem;">[][]</p>
-    <button id="retro-close-btn"
+    <!-- Sticky, blurred header -->
+    <div 
       style="
-        color: #f9fafb;
-        cursor: pointer;
-        font-family: 'Berkeley Mono', monospace;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(6px);
+        background: rgba(25, 25, 25, 0.3);
+        padding: 0.5rem;
+        z-index: 10;
+        margin-bottom: 1.5rem;
       "
     >
-      Close
-    </button>
+      <h2 style="margin: 0;">${area}</h2>
+      <button 
+        id="retro-close-btn"
+        style="
+          color: #f9fafb;
+          cursor: pointer;
+          font-family: 'Berkeley Mono', monospace;
+        "
+      >
+        Close
+      </button>
+    </div>
+
+    <!-- region 1 -->
+    <section style="margin-bottom: 1.5rem;">
+      <h3 style="margin-bottom: 0.5rem;">region 1</h3>
+      <div style="
+        display: grid;
+        gap: 0.5rem;
+        /* 
+          repeat(auto-fit, minmax(160px, 1fr)) means:
+          - each cell is at least 160px wide,
+          - auto-fit will create as many columns as can fit in the container
+        */
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      ">
+        <!-- placeholders with 220px height -->
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+      </div>
+    </section>
+
+    <!-- region 2 -->
+    <section style="margin-bottom: 1.5rem;">
+      <h3 style="margin-bottom: 0.5rem;">region 2</h3>
+      <div style="
+        display: grid;
+        gap: 0.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      ">
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+        <div style="background: #4b5563; width: 100%; height: 220px;"></div>
+      </div>
+    </section>
   `;
 
-  // Put modal in backdrop, attach to body
+  // Attach modal to backdrop
   backdrop.appendChild(modal);
   document.body.appendChild(backdrop);
 
