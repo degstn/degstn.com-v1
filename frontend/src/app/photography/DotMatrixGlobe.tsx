@@ -190,6 +190,8 @@ const photos: Photo[] = [
   { area: "Alaska", region: "juneau", src: "/images/alaska/juneau/IMG_5222 Medium.jpeg", alt: "IMG_5222" },
   { area: "Alaska", region: "juneau", src: "/images/alaska/juneau/IMG_5235 Medium.jpeg", alt: "IMG_5235" },
   { area: "Alaska", region: "juneau", src: "/images/alaska/juneau/IMG_1335 Medium.jpeg", alt: "IMG_1335" },
+  { area: "Alaska", region: "juneau", src: "/images/vancouver/city/IMG_1324.jpeg", alt: "IMG_1324" },
+
 
   // other
   { area: "Alaska", region: "other", src: "/images/alaska/other/IMG_1387 Medium.jpeg", alt: "IMG_1387" },
@@ -388,8 +390,6 @@ const photos: Photo[] = [
   { area: "Vancouver", region: "city", src: "/images/vancouver/city/IMG_1290.jpeg", alt: "IMG_1290" },
   { area: "Vancouver", region: "city", src: "/images/vancouver/city/IMG_1299.jpeg", alt: "IMG_1299" },
   { area: "Vancouver", region: "city", src: "/images/vancouver/city/IMG_1300.jpeg", alt: "IMG_1300" },
-  // Noticed "IMG_1310 2.jpeg" in the listing; if you need it, add here.
-  { area: "Vancouver", region: "city", src: "/images/vancouver/city/IMG_1324.jpeg", alt: "IMG_1324" },
 
   // YELLOWSTONE
   // north
@@ -418,7 +418,9 @@ function showRetroModal(areaTitle: string) {
   );
 
   // Filter photos by area
-  const filteredPhotos = photos.filter((p) => p.area.toLowerCase() === areaTitle.toLowerCase());
+  const filteredPhotos = photos.filter(
+    (p) => p.area.toLowerCase() === areaTitle.toLowerCase()
+  );
 
   // Group by region
   const regionMap: Record<string, Photo[]> = {};
@@ -430,7 +432,7 @@ function showRetroModal(areaTitle: string) {
   });
 
   let html = `
-    <div 
+    <div
       style="
         display: flex;
         align-items: center;
@@ -445,7 +447,7 @@ function showRetroModal(areaTitle: string) {
       "
     >
       <h2 style="margin: 0;">${areaTitle}</h2>
-      <button 
+      <button
         id="retro-close-btn"
         style="
           color: #f9fafb;
@@ -464,13 +466,18 @@ function showRetroModal(areaTitle: string) {
     html += `
       <section style="margin-bottom: 1.5rem;">
         <h3 style="margin-bottom: 0.5rem;">${regionName}</h3>
-        <div style="
-          display: grid;
-          gap: 0.5rem;
-          grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        ">
+        <div
+          style="
+            display: flex;
+            flex-wrap: wrap; /* let images wrap to next line */
+            gap: 0.5rem;     /* spacing between images */
+            align-items: flex-start;
+          "
+        >
     `;
 
+    // Each image has a fixed height of 220px, width is auto,
+    // and object-fit: contain so they’re not cropped.
     regionPhotos.forEach((photo) => {
       html += `
         <img
@@ -478,9 +485,9 @@ function showRetroModal(areaTitle: string) {
           alt="${photo.alt}"
           loading="lazy"
           style="
-            width: 146.66;
             height: 220px;
-            object-fit: cover;
+            width: auto;
+            object-fit: contain;
             background: #4b5563;
           "
         />
