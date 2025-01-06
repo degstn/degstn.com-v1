@@ -190,7 +190,7 @@ const photos: Photo[] = [
   { area: "Alaska", region: "juneau", src: "/images/alaska/juneau/IMG_5222 Medium.jpeg", alt: "IMG_5222" },
   { area: "Alaska", region: "juneau", src: "/images/alaska/juneau/IMG_5235 Medium.jpeg", alt: "IMG_5235" },
   { area: "Alaska", region: "juneau", src: "/images/alaska/juneau/IMG_1335 Medium.jpeg", alt: "IMG_1335" },
-  { area: "Alaska", region: "juneau", src: "/images/vancouver/city/IMG_1324.jpeg", alt: "IMG_1324" },
+  { area: "Alaska", region: "juneau", src: "/images/alaska/juneau/IMG_1324.jpeg", alt: "IMG_1324" },
 
 
   // other
@@ -487,8 +487,7 @@ function showRetroModal(areaTitle: string) {
           style="
             height: 220px;
             width: auto;
-            object-fit: contain;
-            background: #4b5563;
+            // background: #4b5563;
           "
         />
       `;
