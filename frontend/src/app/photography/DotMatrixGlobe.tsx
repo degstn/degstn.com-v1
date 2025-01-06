@@ -240,7 +240,7 @@ const photos: Photo[] = [
   { area: "Iceland", region: "all", src: "/images/iceland/all (sorting when more photos added)/IMG_2633 Medium.jpeg", alt: "IMG_2633" },
 
   // reykjavík
-  { area: "Iceland", region: "reykjavík", src: "/images/iceland/reykjavík/IMG_2359 Medium.jpeg", alt: "IMG_2359" },
+  { area: "Iceland", region: "reykjavík", src: "/images/iceland/reykjavik/IMG_2359 Medium.jpeg", alt: "IMG_2359" },
 
   // ITALY
   // florence (folder is spelled “florance” on disk)
