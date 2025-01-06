@@ -6,6 +6,22 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Drew',
   description: 'my portfolio',
+  openGraph: {
+    title: "Drew",
+    description: "my portfolio",
+    url: "https://degstn.com",
+    siteName: "degstn.com",
+    images: [
+      {
+        url: "/main-og.jpg", 
+        alt: "portfolio banner image",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 }
 
 export default function RootLayout({
