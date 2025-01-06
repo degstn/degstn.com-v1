@@ -204,17 +204,17 @@ const photos: Photo[] = [
   { area: "France", region: "paris", src: "/images/france/paris/IMG_2369_jpg Medium.jpeg", alt: "IMG_2369_jpg" },
 
   // hyéres (hyéres folder)
-  { area: "France", region: "hyéres", src: "/images/france/hyéres/IMG_2911 Medium.jpeg", alt: "IMG_2911" },
-  { area: "France", region: "hyéres", src: "/images/france/hyéres/IMG_2922 Medium.jpeg", alt: "IMG_2922" },
-  { area: "France", region: "hyéres", src: "/images/france/hyéres/IMG_2939 Medium.jpeg", alt: "IMG_2939" },
-  { area: "France", region: "hyéres", src: "/images/france/hyéres/IMG_3053 Medium.jpeg", alt: "IMG_3053" },
-  { area: "France", region: "hyéres", src: "/images/france/hyéres/IMG_3166 Medium.jpeg", alt: "IMG_3166" },
-  { area: "France", region: "hyéres", src: "/images/france/hyéres/IMG_3185 Medium.jpeg", alt: "IMG_3185" },
-  { area: "France", region: "hyéres", src: "/images/france/hyéres/IMG_3197 Medium.jpeg", alt: "IMG_3197" },
-  { area: "France", region: "hyéres", src: "/images/france/hyéres/IMG_3210 Medium.jpeg", alt: "IMG_3210" },
-  { area: "France", region: "hyéres", src: "/images/france/hyéres/IMG_3211 Medium.jpeg", alt: "IMG_3211" },
-  { area: "France", region: "hyéres", src: "/images/france/hyéres/IMG_3237 Medium.jpeg", alt: "IMG_3237" },
-  { area: "France", region: "hyéres", src: "/images/france/hyéres/IMG_3287 Medium.jpeg", alt: "IMG_3287" },
+  { area: "France", region: "hyéres", src: "/images/france/hyeres/IMG_2911 Medium.jpeg", alt: "IMG_2911" },
+  { area: "France", region: "hyéres", src: "/images/france/hyeres/IMG_2922 Medium.jpeg", alt: "IMG_2922" },
+  { area: "France", region: "hyéres", src: "/images/france/hyeres/IMG_2939 Medium.jpeg", alt: "IMG_2939" },
+  { area: "France", region: "hyéres", src: "/images/france/hyeres/IMG_3053 Medium.jpeg", alt: "IMG_3053" },
+  { area: "France", region: "hyéres", src: "/images/france/hyeres/IMG_3166 Medium.jpeg", alt: "IMG_3166" },
+  { area: "France", region: "hyéres", src: "/images/france/hyeres/IMG_3185 Medium.jpeg", alt: "IMG_3185" },
+  { area: "France", region: "hyéres", src: "/images/france/hyeres/IMG_3197 Medium.jpeg", alt: "IMG_3197" },
+  { area: "France", region: "hyéres", src: "/images/france/hyeres/IMG_3210 Medium.jpeg", alt: "IMG_3210" },
+  { area: "France", region: "hyéres", src: "/images/france/hyeres/IMG_3211 Medium.jpeg", alt: "IMG_3211" },
+  { area: "France", region: "hyéres", src: "/images/france/hyeres/IMG_3237 Medium.jpeg", alt: "IMG_3237" },
+  { area: "France", region: "hyéres", src: "/images/france/hyeres/IMG_3287 Medium.jpeg", alt: "IMG_3287" },
 
   // GBNP
   // gb
