@@ -295,22 +295,22 @@ const photos: Photo[] = [
   { area: "Peru", region: "lima", src: "/images/peru/lima/IMG_0940 Medium.jpeg", alt: "IMG_0940" },
 
   // machupicchu
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5059-HDR Medium.jpeg", alt: "IMG_5059-HDR" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5072 Medium.jpeg", alt: "IMG_5072" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5083 Medium.jpeg", alt: "IMG_5083" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5095 Medium.jpeg", alt: "IMG_5095" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5098 Medium.jpeg", alt: "IMG_5098" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5109 Medium.jpeg", alt: "IMG_5109" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5119 Medium.jpeg", alt: "IMG_5119" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5123 Medium.jpeg", alt: "IMG_5123" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5132 Medium.jpeg", alt: "IMG_5132" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5134 Medium.jpeg", alt: "IMG_5134" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5136 Medium.jpeg", alt: "IMG_5136" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5143 Medium.jpeg", alt: "IMG_5143" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5147 Medium.jpeg", alt: "IMG_5147" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5151 Medium.jpeg", alt: "IMG_5151" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5162 Medium.jpeg", alt: "IMG_5162" },
-  { area: "Peru", region: "machupicchu", src: "/images/peru/machupicchu/IMG_5189 Medium.jpeg", alt: "IMG_5189" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5059-HDR Medium.jpeg", alt: "IMG_5059-HDR" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5072 Medium.jpeg", alt: "IMG_5072" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5083 Medium.jpeg", alt: "IMG_5083" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5095 Medium.jpeg", alt: "IMG_5095" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5098 Medium.jpeg", alt: "IMG_5098" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5109 Medium.jpeg", alt: "IMG_5109" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5119 Medium.jpeg", alt: "IMG_5119" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5123 Medium.jpeg", alt: "IMG_5123" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5132 Medium.jpeg", alt: "IMG_5132" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5134 Medium.jpeg", alt: "IMG_5134" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5136 Medium.jpeg", alt: "IMG_5136" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5143 Medium.jpeg", alt: "IMG_5143" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5147 Medium.jpeg", alt: "IMG_5147" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5151 Medium.jpeg", alt: "IMG_5151" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5162 Medium.jpeg", alt: "IMG_5162" },
+  { area: "Peru", region: "machuPicchu", src: "/images/peru/machupicchu/IMG_5189 Medium.jpeg", alt: "IMG_5189" },
 
   // SOCAL
   // sf
@@ -342,22 +342,22 @@ const photos: Photo[] = [
   { area: "South Florida", region: "airshow", src: "/images/southflorida/airshow/IMG_8465 Medium.jpeg", alt: "IMG_8465" },
 
   // boca
-  { area: "South Florida", region: "boca", src: "/images/southflorida/boca/IMG_1524 Medium.jpeg", alt: "IMG_1524" },
-  { area: "South Florida", region: "boca", src: "/images/southflorida/boca/IMG_1528 Medium.jpeg", alt: "IMG_1528" },
-  { area: "South Florida", region: "boca", src: "/images/southflorida/boca/IMG_1644 Medium.jpeg", alt: "IMG_1644" },
-  { area: "South Florida", region: "boca", src: "/images/southflorida/boca/IMG_1789 Medium.jpeg", alt: "IMG_1789" },
-  { area: "South Florida", region: "boca", src: "/images/southflorida/boca/IMG_1790 Medium.jpeg", alt: "IMG_1790" },
-  { area: "South Florida", region: "boca", src: "/images/southflorida/boca/IMG_1791 Medium.jpeg", alt: "IMG_1791" },
-  { area: "South Florida", region: "boca", src: "/images/southflorida/boca/IMG_1792 Medium.jpeg", alt: "IMG_1792" },
-  { area: "South Florida", region: "boca", src: "/images/southflorida/boca/IMG_1795 Medium.jpeg", alt: "IMG_1795" },
-  { area: "South Florida", region: "boca", src: "/images/southflorida/boca/IMG_1952 Medium.jpeg", alt: "IMG_1952" },
+  { area: "South Florida", region: "bocaRaton", src: "/images/southflorida/boca/IMG_1524 Medium.jpeg", alt: "IMG_1524" },
+  { area: "South Florida", region: "bocaRaton", src: "/images/southflorida/boca/IMG_1528 Medium.jpeg", alt: "IMG_1528" },
+  { area: "South Florida", region: "bocaRaton", src: "/images/southflorida/boca/IMG_1644 Medium.jpeg", alt: "IMG_1644" },
+  { area: "South Florida", region: "bocaRaton", src: "/images/southflorida/boca/IMG_1789 Medium.jpeg", alt: "IMG_1789" },
+  { area: "South Florida", region: "bocaRaton", src: "/images/southflorida/boca/IMG_1790 Medium.jpeg", alt: "IMG_1790" },
+  { area: "South Florida", region: "bocaRaton", src: "/images/southflorida/boca/IMG_1791 Medium.jpeg", alt: "IMG_1791" },
+  { area: "South Florida", region: "bocaRaton", src: "/images/southflorida/boca/IMG_1792 Medium.jpeg", alt: "IMG_1792" },
+  { area: "South Florida", region: "bocaRaton", src: "/images/southflorida/boca/IMG_1795 Medium.jpeg", alt: "IMG_1795" },
+  { area: "South Florida", region: "bocaRaton", src: "/images/southflorida/boca/IMG_1952 Medium.jpeg", alt: "IMG_1952" },
 
   // deerfield
   { area: "South Florida", region: "deerfield", src: "/images/southflorida/deerfield/IMG_1703-Enhanced-SR Medium.jpeg", alt: "IMG_1703-Enhanced-SR" },
   { area: "South Florida", region: "deerfield", src: "/images/southflorida/deerfield/IMG_5787 Medium.jpeg", alt: "IMG_5787" },
 
   // ftl
-  { area: "South Florida", region: "ftl", src: "/images/southflorida/ftl/copahardrockdenoise-clear.jpeg", alt: "copahardrockdenoise-clear" },
+  { area: "South Florida", region: "fTL", src: "/images/southflorida/ftl/copahardrockdenoise-clear.jpeg", alt: "copahardrockdenoise-clear" },
 
   // miami
   { area: "South Florida", region: "miami", src: "/images/southflorida/miami/IMG_0859 Medium.jpeg", alt: "IMG_0859" },
@@ -367,24 +367,24 @@ const photos: Photo[] = [
   { area: "South Florida", region: "miami", src: "/images/southflorida/miami/IMG_0912 Medium.jpeg", alt: "IMG_0912" },
 
   // northernlights
-  { area: "South Florida", region: "northernlights", src: "/images/southflorida/northernlights/IMG_2286 Medium.jpeg", alt: "IMG_2286" },
+  { area: "South Florida", region: "northernLights", src: "/images/southflorida/northernlights/IMG_2286 Medium.jpeg", alt: "IMG_2286" },
 
   // pinecrest
-  { area: "South Florida", region: "pinecrest", src: "/images/southflorida/pinecrest/IMG_1011 Medium.jpeg", alt: "IMG_1011" },
-  { area: "South Florida", region: "pinecrest", src: "/images/southflorida/pinecrest/IMG_2107 Medium.jpeg", alt: "IMG_2107" },
-  { area: "South Florida", region: "pinecrest", src: "/images/southflorida/pinecrest/IMG_0969 Medium.jpeg", alt: "IMG_0969" },
+  { area: "South Florida", region: "pineCrest", src: "/images/southflorida/pinecrest/IMG_1011 Medium.jpeg", alt: "IMG_1011" },
+  { area: "South Florida", region: "pineCrest", src: "/images/southflorida/pinecrest/IMG_2107 Medium.jpeg", alt: "IMG_2107" },
+  { area: "South Florida", region: "pineCrest", src: "/images/southflorida/pinecrest/IMG_0969 Medium.jpeg", alt: "IMG_0969" },
 
   // VANCOUVER
   // northernlights
-  { area: "Vancouver", region: "northernlights", src: "/images/vancouver/northernlights/IMG_1416 Medium.jpeg", alt: "IMG_1416" },
-  { area: "Vancouver", region: "northernlights", src: "/images/vancouver/northernlights/IMG_1417 Medium.jpeg", alt: "IMG_1417" },
-  { area: "Vancouver", region: "northernlights", src: "/images/vancouver/northernlights/IMG_1420 Medium.jpeg", alt: "IMG_1420" },
-  { area: "Vancouver", region: "northernlights", src: "/images/vancouver/northernlights/IMG_1426 Medium.jpeg", alt: "IMG_1426" },
-  { area: "Vancouver", region: "northernlights", src: "/images/vancouver/northernlights/IMG_1428 Medium.jpeg", alt: "IMG_1428" },
-  { area: "Vancouver", region: "northernlights", src: "/images/vancouver/northernlights/IMG_1429 Medium.jpeg", alt: "IMG_1429" },
-  { area: "Vancouver", region: "northernlights", src: "/images/vancouver/northernlights/IMG_1431 Medium.jpeg", alt: "IMG_1431" },
-  { area: "Vancouver", region: "northernlights", src: "/images/vancouver/northernlights/IMG_1432 Medium.jpeg", alt: "IMG_1432" },
-  { area: "Vancouver", region: "northernlights", src: "/images/vancouver/northernlights/IMG_1433 Medium.jpeg", alt: "IMG_1433" },
+  { area: "Vancouver", region: "northernLights", src: "/images/vancouver/northernlights/IMG_1416 Medium.jpeg", alt: "IMG_1416" },
+  { area: "Vancouver", region: "northernLights", src: "/images/vancouver/northernlights/IMG_1417 Medium.jpeg", alt: "IMG_1417" },
+  { area: "Vancouver", region: "northernLights", src: "/images/vancouver/northernlights/IMG_1420 Medium.jpeg", alt: "IMG_1420" },
+  { area: "Vancouver", region: "northernLights", src: "/images/vancouver/northernlights/IMG_1426 Medium.jpeg", alt: "IMG_1426" },
+  { area: "Vancouver", region: "northernLights", src: "/images/vancouver/northernlights/IMG_1428 Medium.jpeg", alt: "IMG_1428" },
+  { area: "Vancouver", region: "northernLights", src: "/images/vancouver/northernlights/IMG_1429 Medium.jpeg", alt: "IMG_1429" },
+  { area: "Vancouver", region: "northernLights", src: "/images/vancouver/northernlights/IMG_1431 Medium.jpeg", alt: "IMG_1431" },
+  { area: "Vancouver", region: "northernLights", src: "/images/vancouver/northernlights/IMG_1432 Medium.jpeg", alt: "IMG_1432" },
+  { area: "Vancouver", region: "northernLights", src: "/images/vancouver/northernlights/IMG_1433 Medium.jpeg", alt: "IMG_1433" },
 
   // city
   { area: "Vancouver", region: "city", src: "/images/vancouver/city/IMG_1290.jpeg", alt: "IMG_1290" },
@@ -465,15 +465,15 @@ function showRetroModal(areaTitle: string) {
     const regionPhotos = regionMap[regionName];
     html += `
       <section style="margin-bottom: 1.5rem;">
-        <h3 style="margin-bottom: 0.5rem;">${regionName}</h3>
-        <div
-          style="
-            display: flex;
-            flex-wrap: wrap; /* let images wrap to next line */
-            gap: 0.5rem;     /* spacing between images */
-            align-items: flex-start;
-          "
-        >
+      <h3 style="margin-bottom: 0.5rem;">${regionName.replace(/([A-Z])/g, ' $1').charAt(0).toUpperCase() + regionName.replace(/([A-Z])/g, ' $1').slice(1)}</h3>
+      <div
+      style="
+      display: flex;
+      flex-wrap: wrap; /* let images wrap to next line */
+      gap: 0.5rem;     /* spacing between images */
+      align-items: flex-start;
+      "
+      >
     `;
 
     // Each image has a fixed height of 220px, width is auto,
