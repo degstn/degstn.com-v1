@@ -174,8 +174,8 @@ interface Photo {
 const photos: Photo[] = [
   // ALASKA
   // ketchikan?  (folder name includes “?”)
-  { area: "Alaska", region: "ketchikan", src: "/images/alaska/ketchikan?/IMG_1408.jpeg", alt: "IMG_1408" },
-  { area: "Alaska", region: "ketchikan", src: "/images/alaska/ketchikan?/IMG_1409.jpeg", alt: "IMG_1409" },
+  { area: "Alaska", region: "ketchikan", src: "/images/alaska/ketchikan/IMG_1408.jpeg", alt: "IMG_1408" },
+  { area: "Alaska", region: "ketchikan", src: "/images/alaska/ketchikan/IMG_1409.jpeg", alt: "IMG_1409" },
 
   // juneau
   { area: "Alaska", region: "juneau", src: "/images/alaska/juneau/IMG_1328 Medium.jpeg", alt: "IMG_1328" },
