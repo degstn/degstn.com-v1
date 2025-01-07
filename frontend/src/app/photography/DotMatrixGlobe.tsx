@@ -58,18 +58,19 @@ export default function PhotographyPage() {
 
         // 2b) Pins for each area (you can unify with your existing lat/lng if you like)
         const travelPins = [
-          { id: "ny", lat: 40.7128, lng: -74.0060, pin: true, area: "New York" },
-          { id: "socal", lat: 34.0522, lng: -118.2437, pin: true, area: "SoCal" },
-          { id: "southflorida", lat: 26.350519, lng: -80.089828, pin: true, area: "South Florida" },
-          { id: "iceland", lat: 65.009835, lng: -19.198598, pin: true, area: "Iceland" },
-          { id: "peru", lat: -10.962764, lng: -74.618642, pin: true, area: "Peru" },
-          { id: "italy", lat: 43.580391, lng: 12.062670, pin: true, area: "Italy" },
-          { id: "france", lat: 47.040182, lng: 2.740044, pin: true, area: "France" },
+          { id: "ny", lat: 42.7128, lng: -74.0060, pin: true, area: "New York" },
+          { id: "socal", lat: 37.0522, lng: -120.2437, pin: true, area: "SoCal" },
+          { id: "southflorida", lat: 29.350519, lng: -81.089828, pin: true, area: "South Florida" },
+          { id: "iceland", lat: 66.009835, lng: -19.198598, pin: true, area: "Iceland" },
+          { id: "peru", lat: -7.962764, lng: -74.618642, pin: true, area: "Peru" },
+          { id: "italy", lat: 46.580391, lng: 12.062670, pin: true, area: "Italy" },
+          { id: "france", lat: 50.040182, lng: 2.740044, pin: true, area: "France" },
           { id: "yellowstone", lat: 44.433780, lng: -110.696687, pin: true, area: "Yellowstone" },
-          { id: "vancouver", lat: 49.253465, lng: -123.043325, pin: true, area: "Vancouver" },
+          { id: "vancouver", lat: 52.253465, lng: -123.043325, pin: true, area: "Vancouver" },
           { id: "gbnp", lat: 54.800685, lng: -127.647608, pin: true, area: "GBNP" },
           { id: "alaska", lat: 59.355596, lng: -135.474302, pin: true, area: "Alaska" },
-          { id: "debug", lat: 0, lng: 0, pin: true, area: "debug" },
+          { id: "kiawah", lat: 35.608571, lng: -80.084449, pin: true, area: "Kiawah" },
+          // { id: "debug", lat: 1, lng: 0, pin: true, area: "debug" },
         ];
 
         setAllAreas(travelPins);
@@ -238,7 +239,7 @@ const photos: Photo[] = [
   { area: "Alaska", region: "other", src: "/images/alaska/other/IMG_1387 Medium.jpeg", alt: "IMG_1387" },
 
   // DEBUG
-  { area: "debug", region: "debugRegion1", src: "/images/debug/debugRegion1/IMG_1155 Medium.jpeg", alt: "IMG_1155" },
+  { area: "Kiawah", region: "Ocean Course", src: "/images/debug/debugRegion1/IMG_1155 Medium.jpeg", alt: "IMG_1155" },
 
   // FRANCE
   // paris
