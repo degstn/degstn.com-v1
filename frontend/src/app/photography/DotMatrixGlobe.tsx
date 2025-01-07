@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { polygon, bbox, booleanPointInPolygon } from "@turf/turf";
+import Link from "next/link";
 import * as THREE from "three";
 
 /**
@@ -16,6 +17,9 @@ export default function PhotographyPage() {
 
   // We'll store the lazy-loaded globe.gl module here
   const [globeModule, setGlobeModule] = useState<any>(null);
+
+  const [travelPins, setAllAreas] = useState<any[]>([]);
+
 
   // 1) Lazy import globe.gl in a client-side effect
   useEffect(() => {
@@ -68,6 +72,10 @@ export default function PhotographyPage() {
           { id: "debug", lat: 0, lng: 0, pin: true, area: "debug" },
         ];
 
+        setAllAreas(travelPins);
+
+        
+
         const allPoints = [...interiorDots]; // or just interiorDots
 
         globeInstance
@@ -111,6 +119,14 @@ export default function PhotographyPage() {
     })();
   }, [globeModule]);
 
+  // Constants for stats
+  const totalLocations = travelPins.length;
+  const totalPhotos = 184; 
+  const lastUpdatedString = "1/5/2025, 22:45:26 EST";
+
+  const [hoveredArea, setHoveredArea] = useState<string | null>(null);
+
+
   return (
     <main style={{ width: "100%", height: "80vh" }}>
       <div
@@ -118,6 +134,31 @@ export default function PhotographyPage() {
         ref={globeRef}
         style={{ width: "100%", height: "100%" }}
       />
+      {/* ---- NEW STATS UI BLOCK ---- */}
+      <div
+        className="absolute top-0 left-0 text-gray-50 backdrop-blur-[1px] p-4"
+        style={{ zIndex: 9999, fontFamily: "Berkeley Mono, monospace" }}
+      >
+        <div className="text-xs mb-1">
+        <Link href="/" className="hover:underline ">
+                back
+              </Link>
+        </div>
+        <div className="text-xs mb-0">/photography</div>
+        <div className="text-xs mb-3">
+          Last updated {lastUpdatedString} <br />
+          {totalLocations} locations · {totalPhotos} photos
+        </div>
+
+        {/* Shown only when hovering a pin */}
+        {hoveredArea && (
+          <div className="text-xs p-2 border border-gray-500 bg-black/50">
+            <strong>{hoveredArea}</strong>
+            {/* Could show more info about hovered area here */}
+          </div>
+        )}
+      </div>
+      {/* -------------------------------- */}
       {!globeModule && (
         <p className="bg-bgDark text-gray-50">
           Loading the globe library...
