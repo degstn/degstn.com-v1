@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 export default function HardwarePage() {
     return (
         <main className="relative overflow-auto w-full">
-      {/* Large container for the entire 'scene' */}
+      {/* TODO: FIX THIS, HARDCODING IS TEMPORARY AND THIS IS A PROBLEM... */}
       <div
         className="
           relative
