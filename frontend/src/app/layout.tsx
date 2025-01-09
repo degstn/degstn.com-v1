@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { tx02, berkeleymono } from './fonts'
 import './globals.css'
 
@@ -35,7 +36,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#e2deda" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
       </head>
-      <body className={tx02.className}>{children}<Analytics/></body>
+      <body className={tx02.className}>{children}<Analytics/><SpeedInsights/></body>
     </html>
   )
 }
