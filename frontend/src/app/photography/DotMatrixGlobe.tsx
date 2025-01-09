@@ -124,12 +124,13 @@ export default function PhotographyPage() {
   const totalLocations = travelPins.length;
   const totalPhotos = 184; 
   const lastUpdatedString = "1/5/2025, 22:45:26 EST";
+  const hardwareDeatils = "Hardware Details";
 
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
 
 
   return (
-    <main style={{ width: "100%", height: "80vh" }}>
+    <main style={{ width: "100%", height: "100vh" }}>
       <div
         className="bg-bgDark"
         ref={globeRef}
@@ -146,9 +147,14 @@ export default function PhotographyPage() {
               </Link>
         </div>
         <div className="text-xs mb-0">/photography</div>
-        <div className="text-xs mb-3">
+        <div className="text-xs mb-0">
           Last updated {lastUpdatedString} <br />
           {totalLocations} locations · {totalPhotos} photos
+        </div>
+        <div className="text-xs mb-3">
+          <Link href="/photography/hardware" className="hover:underline ">
+                Hardware Details
+              </Link>
         </div>
 
         {/* Shown only when hovering a pin */}
