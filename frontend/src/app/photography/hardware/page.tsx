@@ -97,12 +97,11 @@ export default function HardwarePage() {
         </Link>
         <p className="absolute bottom-full left-1/2 transform -translate-x-1/2 whitespace-nowrap hidden group-hover:block bg-gray-800 text-gray-50 opacity-50 text-sm rounded">$2200</p>
         </div>
-        <div className="absolute top-[615px] left-[100px] text-2xl text-gray-50 group">
-            <p>▄</p>
-        <Link href="https://www.hasselblad.com/x-system/x2d-100c-earth-explorer-limited-edition/" className="absolute bottom-full left-1/2 transform -translate-x-1/2 whitespace-nowrap hidden group-hover:block hover:underline bg-gray-800 text-gray-50 text-sm rounded pb-5">
-            Hasselblad X2D 100c <span className="">↗</span>
+        <div className="absolute top-[595px] left-[100px] text-5xl text-gray-50 group">
+            <p>↓</p>
+        <Link href="/photography/hardware/camerabag" className="absolute bottom-full left-1/2 transform -translate-x-1/2 whitespace-nowrap hidden group-hover:block hover:underline bg-gray-800 text-gray-50 text-base rounded">
+            Enter Camera Bag 
         </Link>
-        <p className="absolute bottom-full left-1/2 transform -translate-x-1/2 whitespace-nowrap hidden group-hover:block bg-gray-800 text-gray-50 opacity-50 text-sm rounded">$14000</p>
         </div>
         <div className="absolute top-[440px] left-[890px] text-2xl text-gray-50 group">
             <p>▄</p>
