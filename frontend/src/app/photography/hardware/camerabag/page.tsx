@@ -79,7 +79,7 @@ export default function HardwarePage() {
         <p className="absolute bottom-full left-1/2 transform -translate-x-1/2 whitespace-nowrap hidden group-hover:block bg-gray-800 text-gray-50 opacity-50 text-sm rounded">$1200</p>
         </div>
 
-        <div className="absolute top-[540px] left-[900px] text-2xl text-gray-50 group">
+        <div className="absolute top-[522px] left-[920px] text-2xl text-gray-50 group">
             <p>▄</p>
         <Link href="https://www.sigmaphoto.com/24-70mm-f2-8-dg-os-hsm-a" className="absolute bottom-full left-1/2 transform -translate-x-1/2 whitespace-nowrap hidden group-hover:block hover:underline bg-gray-800 text-gray-50 text-sm rounded pb-5">
             24-70mm ƒ2.8 DG OS HSM <span className="">↗</span>
@@ -87,7 +87,7 @@ export default function HardwarePage() {
         <p className="absolute bottom-full left-1/2 transform -translate-x-1/2 whitespace-nowrap hidden group-hover:block bg-gray-800 text-gray-50 opacity-50 text-sm rounded">$1300</p>
         </div>
 
-        <div className="absolute top-[590px] left-[880px] text-2xl text-gray-50 group">
+        <div className="absolute top-[600px] left-[880px] text-2xl text-gray-50 group">
             <p>▄</p>
         <Link href="https://www.polarpro.com/products/helix-mckinnon?view=sl-E44E742A" className="absolute bottom-full left-1/2 transform -translate-x-1/2 whitespace-nowrap hidden group-hover:block hover:underline bg-gray-800 text-gray-50 text-sm rounded pb-5">
             PMVND Helix Maglock ND Filter <span className="">↗</span>
