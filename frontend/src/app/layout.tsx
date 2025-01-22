@@ -5,10 +5,11 @@ import { tx02, berkeleymono } from './fonts'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Drew',
+  title: 'Drew Goldstein',
   description: 'my portfolio',
+  keywords: ["portfolio", "personal website", "minimal", "tech", "software"],
   openGraph: {
-    title: "Drew",
+    title: "Drew Goldstein",
     description: "my portfolio",
     url: "https://degstn.com",
     siteName: "degstn.com",
