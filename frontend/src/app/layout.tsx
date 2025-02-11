@@ -37,7 +37,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#e2deda" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
       </head>
-      <body className={tx02.className}>{children}<Analytics/><SpeedInsights/></body>
+      <body className={`${tx02.className} antialiased`}>{children}<Analytics/><SpeedInsights/></body>
     </html>
   )
 }
