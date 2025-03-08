@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 function Page() {
     // You'll need to define these variables or get them from props/API
-    const lastUpdatedString = "3/4/2025, 21:04:07 EST";  // Replace with actual date
+    const lastUpdatedString = "3/8/2025, 15:41:22 EST";  // Replace with actual date
     const totalLocations = 0;  // Replace with actual count
     const totalPhotos = 0;     // Replace with actual count
 
@@ -21,7 +21,7 @@ function Page() {
                 <div className="text-xs mb-0">/pc1to1</div>
                 <div className="text-xs mb-0">
                     Last updated {lastUpdatedString} <br />
-                    pcv1 v155.obj
+                    pcv1 v161.obj
                 </div>
                 <div className="text-xs mb-3">
                 </div>
