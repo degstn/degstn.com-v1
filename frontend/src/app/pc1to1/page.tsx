@@ -8,7 +8,7 @@ function Page() {
     const totalPhotos = 0;     // Replace with actual count
 
     return (
-        <main className="min-h-screen w-full bg-bgDark relative">
+        <main className="min-h-screen w-full bg-bgLight dark:bg-bgDark relative">
             <div
                 className="absolute top-0 left-0 text-gray-50 backdrop-blur-[1px] p-4"
                 style={{ zIndex: 9999, fontFamily: "Berkeley Mono, monospace" }}
