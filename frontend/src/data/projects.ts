@@ -1,0 +1,51 @@
+export const projects = [
+  {
+    slug: "polyline",
+    name: "Polyline",
+    url: "https://polyline.ai/",
+    image: "/screenshots/polyline.png",
+    description: "Polyline was an idea that I had when I couldn't get o1-pro to generate geodesic domes for me exactly how I wanted it to. The idea was a GPT-wrapper (typical) but just as Cursor or GitHub Copilot works, it would be a fine tuned GPT-powered tool that could generate Fusion scripts programmatically without getting caught on errors with Fusion's ever changing API.",
+    tags: ["AI", "SaaS", "2024"],
+  },
+  {
+    slug: "s7em",
+    name: "s7em",
+    url: "https://s7em.com/",
+    image: "/screenshots/s7em.png",
+    description: "S7em is the website I built for the 2025 TSA State Conference. It is a simplistic tech-focused restaurant website needed to be focused on STEM as well as how the food was prepared. I worked with a team of 2 to develop the idea which is when I went on to build the website to showcase the idea in the coolest way I could——with ASCII. The whole website is infused with ASCII——with the homepage being a 3D model of the Aston Martin Residences in Miami with a cool twist when you visit the site.",
+    tags: ["Web", "2024"],
+  },
+  {
+    slug: "limen",
+    name: "Limen",
+    url: "https://spatialwaypoints.com/",
+    image: "/screenshots/limen.png",
+    description: "We built an app which allows users to forget about the Doorway effect, or the idea of when we move from one room to another, the doorway in the name represents the boundary between one context (such as a living room) and another (a kitchen) where a user might forget what they were thinking in passing between doorways. The app allows the use of new technologies such as Apple's ARKit, RealityKit, TableTopKit, and more and revolutionary devices such as the Apple Vision Pro.",
+    tags: ["AR", "iOS", "2023"],
+  },
+  {
+    slug: "aremac",
+    name: "Aremac",
+    url: "https://aremac.tech/",
+    image: "/screenshots/aremac.png",
+    description: "Aremac Technologies is a company that specializes in the development of software and hardware for the future of the world. We are currently working on a project that will revolutionize the way we interact with the world around us.",
+    tags: ["Hardware", "Software", "2024"],
+  },
+  {
+    slug: "service-seeker",
+    name: "Service Seeker",
+    url: "https://docs.google.com/presentation/d/1HR3efx1HpUI6DvxthVhOzCj9JLPVE0YNZ744-EnUHAc/edit?usp=sharing",
+    image: "/screenshots/limengd.png",
+    description: "Service Seeker is a platform that connects individuals with personalized local volunteer opportunities and community service initiatives. It offers a secure, private, and intuitive experience for both users and organizations, leveraging Apple Passkeys for privacy and on-device memory for efficiency. The app makes it easy to find, track, and manage service opportunities, fostering meaningful community engagement.",
+    tags: ["Presentation", "2023"],
+  },
+  {
+    slug: "stelio",
+    name: "Stelio",
+    url: "https://stelio.ai/",
+    image: "/screenshots/stelio.png",
+    description: "For the 2024 TSA State and National Conferences, I coded our Webmaster project entirely myself in Next.js, TypeScript, and JavaScript, and deployed it on Vercel. The team helped with design and ideas, and we made all graphics and content under Creative Commons. Fully responsive, minimal, and original. Judges said it was the most diverse and inclusive presentation they've seen. The project was one of the first websites I built and led me to build many others.",
+    tags: ["Web", "Team", "2023"],
+  },
+  // Add more projects as needed
+]; 

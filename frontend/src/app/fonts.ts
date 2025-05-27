@@ -36,3 +36,13 @@ export const berkeleymono = localFont({
         
       
   })
+
+export const otbulbmonoline = localFont({
+  src: [
+    {
+      path: './OTBulbMonoline-200.ttf',
+      weight: 'normal',
+      style: 'normal',
+    },
+  ],
+});
