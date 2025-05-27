@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 2727",
-    "build": "next build",
+    "build": "npm run gen-version && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen-version": "node scripts/gen-version.js"
   },
   "dependencies": {
     "@splinetool/react-spline": "^4.0.0",

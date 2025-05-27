@@ -137,7 +137,7 @@ export default function Home() {
       prod
     </span>
     <span className="text-xs text-gray-600 tracking-tight font-medium dark:text-gray-50 pl-1">
-      v1.1.2
+      v{process.env.NEXT_PUBLIC_VERSION}
     </span>
   </Link>
 </div>
