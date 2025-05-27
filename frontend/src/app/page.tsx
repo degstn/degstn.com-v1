@@ -32,7 +32,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         <button
           onClick={onClose}
           className="fixed md:absolute top-6 right-6 z-20 px-4 py-2 rounded-full text-base font-semibold transition-colors duration-200
-            bg-transparent text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100 shadow-none"
+            bg-transparent text-gray-600 dark:text-gray-50 hover:text-gray-700 dark:hover:text-gray-100 shadow-none"
           style={{ pointerEvents: 'auto' }}
         >
           Close
