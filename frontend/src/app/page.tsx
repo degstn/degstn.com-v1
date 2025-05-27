@@ -11,9 +11,9 @@ export default function Home() {
           <div className="grid grid-cols-10 lg:ml-10 md:pl-40 lg:px-32 sm:px-0 gap-2 sm:mt-20 mb-16 ">
           <div className=" col-end-3 lg:px-20  ">
           <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50 ">
-            <Link href={"mailto:d@degstn.com"}>
-                    <p className="hover:underline underline-offset-4">drew</p>
-                  </Link>
+            <a href="mailto:d@degstn.com" target="_blank" rel="noopener noreferrer">
+                <p className="hover:underline underline-offset-4">drew</p>
+            </a>
             </span>
           </div>
           <div className=" col-end-3 lg:px-20 pb-36 ">
@@ -28,23 +28,23 @@ export default function Home() {
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
           <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
-            <Link href="https://starwars.degstn.com/">
+            <a href="https://starwars.degstn.com/" target="_blank" rel="noopener noreferrer">
                     <p className="hover:underline underline-offset-4">CAD</p>
-                  </Link>
+            </a>
             </span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
           <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
-            <Link href="https://polyline.ai/">
+            <a href="https://polyline.ai/" target="_blank" rel="noopener noreferrer">
                     <p className="hover:underline underline-offset-4">polyline</p>
-                  </Link>
+            </a>
             </span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
           <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
-            <Link href="https://s7em.com/">
+            <a href="https://s7em.com/" target="_blank" rel="noopener noreferrer">
                     <p className="hover:underline underline-offset-4">s7em</p>
-                  </Link>
+            </a>
             </span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 pb-7 ">
@@ -66,23 +66,23 @@ export default function Home() {
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
           <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
-            <Link href="https://aremac.tech/">
+            <a href="https://aremac.tech/" target="_blank" rel="noopener noreferrer">
                     <p className="hover:underline underline-offset-4">aremac</p>
-                  </Link>
+            </a>
             </span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
             <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
-            <Link href="https://spatialwaypoints.com/">
+            <a href="https://spatialwaypoints.com/" target="_blank" rel="noopener noreferrer">
                     <p className="hover:underline underline-offset-4">limen</p>
-                  </Link>
+            </a>
             </span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 pb-7 ">
             <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
-              <Link href="https://stelio.ai/">
+              <a href="https://stelio.ai/" target="_blank" rel="noopener noreferrer">
                     <p className="hover:underline underline-offset-4">stelio</p>
-                  </Link>
+            </a>
             </span>
           </div>
           <div className=" col-end-3 lg:px-20 pb-10 ">
@@ -90,16 +90,16 @@ export default function Home() {
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
             <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
-            <Link href="https://docs.google.com/presentation/d/1HR3efx1HpUI6DvxthVhOzCj9JLPVE0YNZ744-EnUHAc/edit?usp=sharing">
+            <a href="https://docs.google.com/presentation/d/1HR3efx1HpUI6DvxthVhOzCj9JLPVE0YNZ744-EnUHAc/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
                     <p className="hover:underline underline-offset-4">service seeker</p>
-                  </Link>
+            </a>
             </span>
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 pb-7 ">
             <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
-            <Link href="https://aimazing.shop/">
+            <a href="https://aimazing.shop/" target="_blank" rel="noopener noreferrer">
                     <p className="hover:underline underline-offset-4">aimazing</p>
-                  </Link>
+            </a>
             </span>
           </div>
           <div className=" col-end-3 lg:px-20 ">
@@ -107,9 +107,9 @@ export default function Home() {
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
             <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
-            <Link href="https://web.archive.org/web/goldy.design">
+            <a href="https://web.archive.org/web/goldy.design" target="_blank" rel="noopener noreferrer">
                     <p className="hover:underline underline-offset-4">portfolio archive</p>
-              </Link>
+            </a>
             </span>
           </div>
         </div>
@@ -163,30 +163,30 @@ export default function Home() {
       </Link>
     </div>
     <Link href="https://linkedin.com/in/degstn/" aria-label="LinkedIn profile">
-      <svg
-        width={25}
-        height={25}
-        viewBox="0 0 44.92 44.92"
-        fill="currentColor"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
+        <svg
+          width={25}
+          height={25}
+          viewBox="0 0 44.92 44.92"
           fill="currentColor"
-          fillRule="evenodd"
-          d="M44.92,25.96v18.96h-9.23v-15.72c0-4.31-1.64-6.72-5.05-6.72-3.71,0-5.65,2.51-5.65,6.72v15.72h-8.9V14.97h8.9v4.03s2.68-4.95,9.03-4.95,10.9,3.88,10.9,11.9Z"
-        />
-        <rect x=".89" y="14.97" width="9.28" height="29.95" fill="currentColor" />
-        <path
-          fill="currentColor"
-          fillRule="evenodd"
-          d="M10.97,5.53c0,3.05-2.45,5.52-5.49,5.52S0,8.58,0,5.53,2.45,0,5.49,0s5.49,2.47,5.49,5.53Z"
-        />
-      </svg>
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill="currentColor"
+            fillRule="evenodd"
+            d="M44.92,25.96v18.96h-9.23v-15.72c0-4.31-1.64-6.72-5.05-6.72-3.71,0-5.65,2.51-5.65,6.72v15.72h-8.9V14.97h8.9v4.03s2.68-4.95,9.03-4.95,10.9,3.88,10.9,11.9Z"
+          />
+          <rect x=".89" y="14.97" width="9.28" height="29.95" fill="currentColor" />
+          <path
+            fill="currentColor"
+            fillRule="evenodd"
+            d="M10.97,5.53c0,3.05-2.45,5.52-5.49,5.52S0,8.58,0,5.53,2.45,0,5.49,0s5.49,2.47,5.49,5.53Z"
+          />
+        </svg>
     </Link>
   </div>
-</div>
         </div>
       </div>
-    </main>
+    </div>
+  </main>
   )
 }
