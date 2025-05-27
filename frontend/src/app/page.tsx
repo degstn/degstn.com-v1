@@ -226,7 +226,7 @@ export default function Home() {
               <Link
                 href="/git"
                 aria-label="Changelog"
-                className="inline-flex items-center space-x-1 whitespace-nowrap text-international-orange-engineering dark:text-international-orange"
+                className="inline-flex flex-col md:flex-row items-start md:items-center space-x-0 md:space-x-1 whitespace-nowrap text-international-orange-engineering dark:text-international-orange"
               >
                 <svg
                   width={12}
@@ -244,7 +244,7 @@ export default function Home() {
                 <span className="text-xs text-international-orange-engineering tracking-tight font-medium dark:text-international-orange">
                   prod
                 </span>
-                <span className="text-xs text-gray-600 tracking-tight font-medium dark:text-gray-50 pl-1">
+                <span className="text-xs text-gray-600 tracking-tight font-medium dark:text-gray-50 md:pl-1 md:inline block md:pt-0 pt-1">
                   v{process.env.NEXT_PUBLIC_VERSION}
                 </span>
               </Link>
