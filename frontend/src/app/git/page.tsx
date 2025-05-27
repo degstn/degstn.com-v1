@@ -232,7 +232,7 @@ const langArray = sorted.map(([name, bytes], idx) => {
           <>
             {/* Bar container */}
             <div className="relative w-full h-4 bg-disabled dark:bg-disabled-dark rounded overflow-hidden mb-2">
-              {langArray.reduce((acc: JSX.Element[], lang) => {
+              {langArray.reduce((acc, lang) => {
                 const leftOffset = acc.reduce((sum, el) => sum + (el.props.widthPercent ?? 0), 0);
                 const width = lang.percent;
                 return [
@@ -246,7 +246,7 @@ const langArray = sorted.map(([name, bytes], idx) => {
                     }}
                   />,
                 ];
-              }, [])}
+              }, [] as any[])}
             </div>
             {/* Language legend */}
             <p className="text-xs text-gray-600 dark:text-gray-50">
