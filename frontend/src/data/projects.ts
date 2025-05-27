@@ -47,5 +47,13 @@ export const projects = [
     description: "For the 2024 TSA State and National Conferences, I coded our Webmaster project entirely myself in Next.js, TypeScript, and JavaScript, and deployed it on Vercel. The team helped with design and ideas, and we made all graphics and content under Creative Commons. Fully responsive, minimal, and original. Judges said it was the most diverse and inclusive presentation they've seen. The project was one of the first websites I built and led me to build many others.",
     tags: ["Web", "Team", "2023"],
   },
+  {
+    slug: "starwars-cad",
+    name: "Star Wars CAD",
+    url: "https://starwars.degstn.com/",
+    image: "/screenshots/starwars.png",
+    description: "A detailed CAD project inspired by Star Wars, featuring intricate 3D models and engineering design. Built using Fusion 360 and rendered for web viewing. This project showcases advanced modeling techniques and a passion for both engineering and the Star Wars universe.",
+    tags: ["CAD", "Fusion 360", "3D Modeling", "2024"],
+  },
   // Add more projects as needed
 ]; 

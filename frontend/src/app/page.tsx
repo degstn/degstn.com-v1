@@ -29,7 +29,14 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-bgLight dark:bg-bgDark/95">
       <div className="bg-bgLight dark:bg-bgDark border-2 border-disabled dark:border-disabled-dark w-full max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl mx-4 relative mt-10 overflow-y-auto max-h-none">
-        <button onClick={onClose} className="absolute top-4 right-4 text-2xl z-10">&times;</button>
+        <button
+          onClick={onClose}
+          className="fixed md:absolute top-6 right-6 z-20 px-4 py-2 rounded-full text-base font-semibold transition-colors duration-200
+            bg-transparent text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100 shadow-none"
+          style={{ pointerEvents: 'auto' }}
+        >
+          Close
+        </button>
         <div className="mt-32 mb-32 flex flex-col md:flex-row gap-8 items-stretch">
           <a href={project.url} target="_blank" rel="noopener noreferrer" className="block md:w-1/2 w-full flex-shrink-0">
             <div className="aspect-[3/2] w-full bg-gray-200 overflow-hidden max-h-[60rem] flex items-center justify-center">
@@ -60,9 +67,9 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             </div>
             <p className="mb-4 text-xs md:text-sm text-gray-600 dark:text-gray-50">{project.description}</p>
             <div className="flex flex-wrap gap-2 mt-2">
-              {project.tags.map((tag: string) => (
+              {project.tags.map((tag: string, idx: number) => (
                 <span key={tag} className="inline-block text-international-orange-engineering dark:text-international-orange text-xs font-semibold">
-                  {tag}
+                  {tag}{idx < project.tags.length - 1 && <span className="mx-1">&bull;</span>}
                 </span>
               ))}
             </div>
@@ -102,9 +109,12 @@ export default function Home() {
             </div>
             <div className="col-end-7 col-span-2 lg:px-20 ">
               <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
-                <a href="https://starwars.degstn.com/" target="_blank" rel="noopener noreferrer">
+                <button onClick={() => {
+                  const starwarsProject = projects.find(p => p.slug === 'starwars-cad');
+                  starwarsProject && setOpenProject(starwarsProject);
+                }}>
                   <p className="hover:underline underline-offset-4">CAD</p>
-                </a>
+                </button>
               </span>
             </div>
             <div className="col-end-7 col-span-2 lg:px-20 ">
