@@ -28,6 +28,13 @@ export default function Home() {
           </div>
           <div className="col-end-7 col-span-2 lg:px-20 ">
           <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
+            <Link href="https://starwars.degstn.com/">
+                    <p className="hover:underline underline-offset-4">CAD</p>
+                  </Link>
+            </span>
+          </div>
+          <div className="col-end-7 col-span-2 lg:px-20 ">
+          <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
             <Link href="https://polyline.ai/">
                     <p className="hover:underline underline-offset-4">polyline</p>
                   </Link>
