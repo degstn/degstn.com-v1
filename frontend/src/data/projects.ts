@@ -55,5 +55,20 @@ export const projects = [
     description: "A detailed CAD project inspired by Star Wars, featuring intricate 3D models and engineering design. Built using Fusion 360 and rendered for web viewing. This project showcases advanced modeling techniques and a passion for both engineering and the Star Wars universe.",
     tags: ["CAD", "Fusion 360", "3D Modeling", "2024"],
   },
-  // Add more projects as needed
+  {
+    slug: "aimazing",
+    name: "AImazing",
+    url: "/404",
+    image: "/screenshots/gpts.png",
+    description: "Archived project",
+    tags: ["AI", "2023"],
+  },
+  {
+    slug: "portfolio-archive",
+    name: "Portfolio Archive",
+    url: "http://web.archive.org/web/20211201034547/https://www.goldy.design/",
+    image: "/screenshots/archive.png",
+    description: "This is the archived version of my portfolio from 2020 to 2021. It served to showcase my photography of airplanes, and my passion for aviation during COVID-19, representing a time where I could not travel, but I could photograph and capture the beauty of aviation in the meantime.",
+    tags: ["Photography"],
+  },
 ]; 
