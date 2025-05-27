@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { projects } from '@/data/projects';
 import { otbulbmonoline } from './fonts';
 
@@ -82,6 +82,17 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
 export default function Home() {
   const [openProject, setOpenProject] = useState<Project | null>(null);
+
+  useEffect(() => {
+    if (openProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [openProject]);
 
   return (
     <>
