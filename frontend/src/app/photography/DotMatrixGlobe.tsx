@@ -351,7 +351,7 @@ export default function PhotographyPage() {
         className="absolute top-0 left-0 text-gray-50 backdrop-blur-[1px] p-4"
         style={{ 
           zIndex: 9999, 
-          fontFamily: "Berkeley Mono, monospace",
+          fontFamily: "var(--tx-02), system-ui, -apple-system, sans-serif",
           opacity: 1
         }}
       >
@@ -416,7 +416,7 @@ export default function PhotographyPage() {
               border: '2px solid #FF4F00',
               color: '#FF4F00',
               fontSize: '18px',
-              fontFamily: 'Berkeley Mono, monospace',
+              fontFamily: 'var(--tx-02), system-ui, -apple-system, sans-serif',
               padding: '8px 12px',
               cursor: 'pointer',
               display: 'flex',
@@ -452,7 +452,7 @@ export default function PhotographyPage() {
               border: '2px solid #FF4F00',
               color: '#FF4F00',
               fontSize: '16px',
-              fontFamily: 'Berkeley Mono, monospace',
+              fontFamily: 'var(--tx-02), system-ui, -apple-system, sans-serif',
               padding: '8px 12px',
               cursor: 'pointer',
               display: 'flex',
@@ -488,7 +488,7 @@ export default function PhotographyPage() {
               border: '2px solid #FF4F00',
               color: '#FF4F00',
               fontSize: '16px',
-              fontFamily: 'Berkeley Mono, monospace',
+              fontFamily: 'var(--tx-02), system-ui, -apple-system, sans-serif',
               padding: '8px 12px',
               cursor: 'pointer',
               display: 'flex',
@@ -548,7 +548,7 @@ export default function PhotographyPage() {
               padding: '15px 20px',
               border: '1px solid #FF4F00',
               fontSize: '12px',
-              fontFamily: 'Berkeley Mono, monospace',
+              fontFamily: 'var(--tx-02), system-ui, -apple-system, sans-serif',
               maxWidth: '300px',
               lineHeight: '1.4',
               // Ensure it's above Safari's bottom bar

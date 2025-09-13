@@ -31,7 +31,7 @@ export const berkeleymono = localFont({
 
   export const tx02 = localFont({
     src: './TX-02-Variable.otf',
-    variable: '--berkeley-mono',
+    variable: '--tx-02',
     weight: '100 900',
         
       

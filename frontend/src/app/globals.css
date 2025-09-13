@@ -40,6 +40,7 @@
 body {
   color: rgb(var(--foreground-rgb));
   background:  rgb(var(--background-start-rgb));
+  font-family: var(--tx-02), system-ui, -apple-system, sans-serif;
 }
 
 .retro-modal-backdrop {
@@ -61,7 +62,7 @@ body {
   padding: 20px;
   max-width: 500px;
   text-align: start;
-  font-family: 'Berkeley Mono', monospace; 
+  font-family: var(--tx-02), system-ui, -apple-system, sans-serif; 
 }
 
 
