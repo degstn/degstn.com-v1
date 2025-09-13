@@ -174,13 +174,19 @@ export default function PhotographyPage() {
   useEffect(() => {
     if (selectedImage) {
       setExifData(null); // Reset EXIF data
-      console.log('🖼️ Selected image:', selectedImage.src);
-      console.log('🔄 Starting EXIF extraction...');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🖼️ Selected image:', selectedImage.src);
+        console.log('🔄 Starting EXIF extraction...');
+      }
       extractEXIFData(selectedImage.src).then(data => {
-        console.log('📊 EXIF data result:', data);
+        if (process.env.NODE_ENV === 'development') {
+          console.log('📊 EXIF data result:', data);
+        }
         setExifData(data);
       }).catch(error => {
-        console.error('❌ EXIF extraction error:', error);
+        if (process.env.NODE_ENV === 'development') {
+          console.error('❌ EXIF extraction error:', error);
+        }
         setExifData({});
       });
     }
@@ -364,14 +370,6 @@ export default function PhotographyPage() {
             Hardware Details
           </Link>
         </div>
-        <div className="text-xs mb-3">
-          <button 
-            onClick={() => testAPIGateway()}
-            className="hover:underline hover:text-orange-400 cursor-pointer"
-          >
-            Test API Gateway
-          </button>
-        </div>
         
 
         {/* Shown only when hovering a pin */}
@@ -542,8 +540,9 @@ export default function PhotographyPage() {
           <div
             style={{
               position: 'absolute',
-              bottom: '20px',
-              left: '20px',
+              bottom: 'max(20px, env(safe-area-inset-bottom, 20px) + 20px)',
+              left: 'max(20px, env(safe-area-inset-left, 20px))',
+              right: 'max(20px, env(safe-area-inset-right, 20px))',
               background: 'rgba(0, 0, 0, 0.8)',
               color: '#FF4F00',
               padding: '15px 20px',
@@ -552,6 +551,8 @@ export default function PhotographyPage() {
               fontFamily: 'Berkeley Mono, monospace',
               maxWidth: '300px',
               lineHeight: '1.4',
+              // Ensure it's above Safari's bottom bar
+              zIndex: 10002,
             }}
           >
             <div style={{ marginBottom: '8px', fontSize: '14px', fontWeight: 'bold' }}>
@@ -670,48 +671,20 @@ function getS3ImageUrl(localPath: string): string {
   return `https://die1tcdcthovv.cloudfront.net/${jpgFilename}`;
 }
 
-// Test function to check Lambda Function URL
-async function testAPIGateway() {
-  const lambdaUrl = 'https://3iv5ldbur7w7lune5vcil2p7be0fvttp.lambda-url.us-east-2.on.aws/';
-  
-  try {
-    console.log(`🧪 Testing Lambda Function URL: ${lambdaUrl}`);
-    
-    // Test with a simple POST request
-    const response = await fetch(lambdaUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ imageKey: 'test-image.jpg' })
-    });
-    
-    console.log(`📡 Response status:`, response.status, response.statusText);
-    console.log(`📡 Response headers:`, Object.fromEntries(response.headers.entries()));
-    
-    if (response.ok) {
-      const data = await response.json();
-      console.log(`✅ Success! Response data:`, data);
-    } else {
-      const errorText = await response.text();
-      console.log(`❌ Error response:`, errorText);
-    }
-  } catch (error) {
-    console.log(`❌ Network error:`, error instanceof Error ? error.message : String(error));
-  }
-}
 
 // Function to map CloudFront filename back to S3 path
 function getS3PathFromCloudFrontUrl(cloudFrontUrl: string): string | null {
   const filename = cloudFrontUrl.split('/').pop();
   if (!filename) return null;
   
-  console.log('🔍 Mapping CloudFront URL:', cloudFrontUrl);
-  console.log('📁 Filename:', filename);
+  if (process.env.NODE_ENV === 'development') {
+    console.log('🔍 Mapping CloudFront URL:', cloudFrontUrl);
+    console.log('📁 Filename:', filename);
+    console.log('🗺️ S3 path (just filename):', filename);
+  }
   
   // The S3 bucket has files with just the filename like IMG_2911.jpg
   // So we just need to return the filename as-is
-  console.log('🗺️ S3 path (just filename):', filename);
   return filename;
 }
 
@@ -719,29 +692,41 @@ function getS3PathFromCloudFrontUrl(cloudFrontUrl: string): string | null {
 function extractEXIFData(imageSrc: string): Promise<Photo['exifData']> {
   return new Promise(async (resolve) => {
     try {
-      console.log('🔍 Extracting EXIF for image:', imageSrc);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🔍 Extracting EXIF for image:', imageSrc);
+      }
       
       // Get the S3 path from CloudFront URL
       const imageKey = getS3PathFromCloudFrontUrl(imageSrc);
       if (!imageKey) {
-        console.log('❌ Could not map CloudFront URL to S3 path');
+        if (process.env.NODE_ENV === 'development') {
+          console.log('❌ Could not map CloudFront URL to S3 path');
+        }
         resolve({});
         return;
       }
       
-      console.log('🔑 S3 image key for Lambda:', imageKey);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🔑 S3 image key for Lambda:', imageKey);
+      }
       
       // Use Lambda Function URL with CORS proxy as fallback
       const lambdaUrl = 'https://3iv5ldbur7w7lune5vcil2p7be0fvttp.lambda-url.us-east-2.on.aws/';
       const apiUrl = lambdaUrl; // Try direct first, then proxy if needed
-      console.log('🌐 Testing Lambda Function URL:', apiUrl);
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🌐 Testing Lambda Function URL:', apiUrl);
+      }
       
       // Prepare the request body
       const requestBody = { imageKey };
-      console.log('📤 Request body:', JSON.stringify(requestBody));
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.log('📤 Request body:', JSON.stringify(requestBody));
+        console.log('🚀 Making fetch request...');
+      }
       
       // Call Lambda function via API Gateway
-      console.log('🚀 Making fetch request...');
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -750,24 +735,32 @@ function extractEXIFData(imageSrc: string): Promise<Photo['exifData']> {
         body: JSON.stringify(requestBody)
       });
       
-      console.log('📡 API Response status:', response.status);
-      console.log('📡 API Response statusText:', response.statusText);
-      console.log('📡 API Response headers:', Object.fromEntries(response.headers.entries()));
+      if (process.env.NODE_ENV === 'development') {
+        console.log('📡 API Response status:', response.status);
+        console.log('📡 API Response statusText:', response.statusText);
+        console.log('📡 API Response headers:', Object.fromEntries(response.headers.entries()));
+      }
       
       if (response.ok) {
         const exifData = await response.json();
-        console.log('✅ EXIF data received:', exifData);
+        if (process.env.NODE_ENV === 'development') {
+          console.log('✅ EXIF data received:', exifData);
+        }
         resolve(exifData);
       } else {
         const errorText = await response.text();
-        console.log('❌ Lambda EXIF extraction failed:', response.status, response.statusText);
-        console.log('❌ Error response body:', errorText);
+        if (process.env.NODE_ENV === 'development') {
+          console.log('❌ Lambda EXIF extraction failed:', response.status, response.statusText);
+          console.log('❌ Error response body:', errorText);
+        }
         resolve({});
       }
     } catch (error) {
-      console.log('❌ EXIF extraction failed:', error);
-      console.log('❌ Error details:', error instanceof Error ? error.message : String(error));
-      console.log('❌ Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('❌ EXIF extraction failed:', error);
+        console.log('❌ Error details:', error instanceof Error ? error.message : String(error));
+        console.log('❌ Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+      }
       resolve({});
     }
   });
