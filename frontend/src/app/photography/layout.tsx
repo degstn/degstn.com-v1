@@ -1,4 +1,8 @@
 import { Metadata, Viewport } from 'next'
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { tx02, berkeleymono } from '../fonts'
+import '../globals.css'
 
 export const metadata: Metadata = {
   title: 'Photography - degstn.com',
@@ -28,8 +32,10 @@ export default function PhotographyLayout({
         <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
         <meta name="color-scheme" content="light dark" />
       </head>
-      <body className="bg-bgDark">
+      <body className={`${tx02.className} antialiased bg-bgDark`}>
         {children}
+        <Analytics/>
+        <SpeedInsights/>
       </body>
     </html>
   )
