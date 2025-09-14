@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
+  manifest: '/site.webmanifest',
 }
 
 export const viewport: Viewport = {

@@ -1,0 +1,11 @@
+{
+  "name": "degstn.com",
+  "short_name": "degstn",
+  "start_url": "/photography",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#1a1a1a",
+  "icons": [
+    { "src": "/icon.png", "type": "image/png", "sizes": "512x512" }
+  ]
+}

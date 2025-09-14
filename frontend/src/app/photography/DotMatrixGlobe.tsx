@@ -169,6 +169,28 @@ export default function PhotographyPage() {
   });
 
   const [showMatrixRain, setShowMatrixRain] = useState(false);
+  const [uiHidden, setUiHidden] = useState(false);
+
+  // Removed Safari toolbar viewport calculations per request
+
+  // Auto-hide UI on idle to simulate immersive mode
+  useEffect(() => {
+    let hideTimer: number | undefined;
+    const resetTimer = () => {
+      setUiHidden(false);
+      if (hideTimer) window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(() => setUiHidden(true), 2500);
+    };
+    resetTimer();
+    const events = ['touchstart', 'touchmove', 'scroll', 'mousemove', 'keydown'];
+    events.forEach(ev => window.addEventListener(ev, resetTimer, { passive: true } as any));
+    return () => {
+      if (hideTimer) window.clearTimeout(hideTimer);
+      events.forEach(ev => window.removeEventListener(ev, resetTimer as any));
+    };
+  }, []);
+
+  // (Removed fullscreen button/logic by request)
 
   // Extract EXIF data when an image is selected
   useEffect(() => {
@@ -329,7 +351,7 @@ export default function PhotographyPage() {
           51%, 100% { opacity: 0; }
         }
       `}</style>
-      <main style={{ width: "100%", height: "100vh" }}>
+      <main style={{ width: "100%", minHeight: "100svh", height: "auto", backgroundColor: '#1a1a1a', margin: 0, padding: 0 }}>
       <div
         className="bg-bgDark"
         ref={globeRef}
@@ -346,13 +368,14 @@ export default function PhotographyPage() {
           }}
         />
       )}
-      {/* ---- CRYPTIC STATS UI BLOCK ---- */}
+      {/* ---- TOP UI (auto-hide) ---- */}
       <div
         className="absolute top-0 left-0 text-gray-50 backdrop-blur-[1px] p-4"
         style={{ 
           zIndex: 9999, 
           fontFamily: "var(--tx-02), system-ui, -apple-system, sans-serif",
-          opacity: 1
+          opacity: uiHidden ? 0 : 1,
+          transition: 'opacity 300ms ease'
         }}
       >
         <div className="text-xs mb-1">
@@ -370,6 +393,7 @@ export default function PhotographyPage() {
             Hardware Details
           </Link>
         </div>
+        {/* Fullscreen button removed */}
         
 
         {/* Shown only when hovering a pin */}
@@ -387,7 +411,7 @@ export default function PhotographyPage() {
         </p>
       )}
 
-      {/* Full-screen Image Viewer Modal */}
+      {/* Full-screen Image Viewer Modal (bottom info auto-hides) */}
       {selectedImage && (
         <div
           style={{
@@ -395,7 +419,7 @@ export default function PhotographyPage() {
             top: 0,
             left: 0,
             width: '100vw',
-            height: '100vh',
+            height: '100dvh',
             backgroundColor: 'rgba(0, 0, 0, 0.95)',
             zIndex: 10000,
             display: 'flex',
@@ -513,11 +537,11 @@ export default function PhotographyPage() {
           <div
             style={{
               width: '100vw',
-              height: '100vh',
+              height: '100svh',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '60px 20px 100px 20px', // Add padding for buttons and info
+              padding: '60px 20px 100px 20px',
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -537,22 +561,23 @@ export default function PhotographyPage() {
           </div>
 
           {/* Image Info - Bottom Left */}
-          <div
+          <div className="exif-panel"
             style={{
               position: 'absolute',
-              bottom: 'max(20px, env(safe-area-inset-bottom, 20px) + 20px)',
-              left: 'max(20px, env(safe-area-inset-left, 20px))',
-              right: 'max(20px, env(safe-area-inset-right, 20px))',
+              bottom: '12px',
+              left: '14px',
+              right: '14px',
               background: 'rgba(0, 0, 0, 0.8)',
               color: '#FF4F00',
-              padding: '15px 20px',
+              padding: '12px 14px',
               border: '1px solid #FF4F00',
-              fontSize: '12px',
+              fontSize: '11px',
               fontFamily: 'var(--tx-02), system-ui, -apple-system, sans-serif',
               maxWidth: '300px',
               lineHeight: '1.4',
-              // Ensure it's above Safari's bottom bar
               zIndex: 10002,
+              opacity: uiHidden ? 0 : 1,
+              transition: 'opacity 300ms ease',
             }}
           >
             <div style={{ marginBottom: '8px', fontSize: '14px', fontWeight: 'bold' }}>
@@ -598,6 +623,7 @@ export default function PhotographyPage() {
         </div>
       )}
       </main>
+      {/* Removed scroll shim */}
     </>
   );
 }
@@ -1036,7 +1062,7 @@ function showRetroModal(areaTitle: string) {
         position: sticky;
         top: 0;
         backdrop-filter: blur(6px);
-        background: rgba(25, 25, 25, 0.3);
+        background: rgba(26, 26, 26, 1);
         padding: 0.5rem;
         z-index: 10;
         margin-bottom: 1.5rem;
@@ -1113,9 +1139,8 @@ function showRetroModal(areaTitle: string) {
     backdrop.remove();
   });
 
-  // Add global function for image viewer
+  // Add global function for image viewer (do not close modal; keep it behind)
   (window as any).openImageViewer = (index: number) => {
-    // This will be handled by the React component
     const event = new CustomEvent('openImageViewer', { detail: { index } });
     window.dispatchEvent(event);
   };

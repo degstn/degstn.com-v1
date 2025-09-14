@@ -1,5 +1,6 @@
 import { Metadata, Viewport } from 'next'
 import '../globals.css'
+import DarkBg from './DarkBg'
 
 export const metadata: Metadata = {
   title: 'Photography - degstn.com',
@@ -19,7 +20,8 @@ export default function PhotographyLayout({
   children: React.ReactNode
 }) {
   return (
-    <section className="bg-bgDark antialiased">
+    <section className="antialiased" style={{ backgroundColor: '#1a1a1a', colorScheme: 'dark', minHeight: '100svh' }}>
+      <DarkBg />
       {children}
     </section>
   )
