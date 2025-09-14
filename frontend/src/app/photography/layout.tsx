@@ -3,9 +3,26 @@ import '../globals.css'
 import DarkBg from './DarkBg'
 
 export const metadata: Metadata = {
-  title: 'Photography - degstn.com',
-  description: 'Shots from around the globe on degstn.com',
-}
+  title: "Photography - degstn.com",
+  description: "Shots from around the globe on degstn.com",
+  openGraph: {
+    title: "Photography - degstn.com",
+    description: "Shots from around the globe on degstn.com",
+    url: "https://degstn.com/photography",
+    siteName: "degstn.com",
+    images: [
+      {
+        url: "/photography-og.jpg", 
+        alt: "A globe representing worldwide photography",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+};
+
 
 export const viewport: Viewport = {
   width: 'device-width',
