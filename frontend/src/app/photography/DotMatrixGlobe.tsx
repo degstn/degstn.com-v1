@@ -728,7 +728,7 @@ function getS3ImageUrl(localPath: string): string {
   const jpgFilename = filename.replace('.jpeg', '.jpg');
   
   // Return CloudFront URL with just the filename (no folder structure)
-  return `https://cdn.degstn.com/${jpgFilename}`;
+  return `https://cdn.degstn.com/images/${jpgFilename}`;
 }
 
 
@@ -740,12 +740,11 @@ function getS3PathFromCloudFrontUrl(cloudFrontUrl: string): string | null {
   if (process.env.NODE_ENV === 'development') {
     console.log('🔍 Mapping CloudFront URL:', cloudFrontUrl);
     console.log('📁 Filename:', filename);
-    console.log('🗺️ S3 path (just filename):', filename);
+    console.log('🗺️ S3 path (with images/ prefix):', `images/${filename}`);
   }
   
-  // The S3 bucket has files with just the filename like IMG_2911.jpg
-  // So we just need to return the filename as-is
-  return filename;
+  // Lambda expects keys like "images/IMG_2911.jpg"
+  return `images/${filename}`;
 }
 
 // Function to extract EXIF data from S3 image using Lambda
