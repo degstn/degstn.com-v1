@@ -18,15 +18,18 @@ if (fs.existsSync(versionFile)) {
 // Save the new count for today
 fs.writeFileSync(versionFile, `${dateStr},${count}`);
 
-// Write to .env (overwrites previous NEXT_PUBLIC_VERSION)
-let env = '';
+// Write to .env (overwrites previous NEXT_PUBLIC_VERSION) without accumulating blank lines
+let existing = '';
 if (fs.existsSync(envFile)) {
-  env = fs.readFileSync(envFile, 'utf8')
-    .split('\n')
-    .filter(line => !line.startsWith('NEXT_PUBLIC_VERSION='))
-    .join('\n');
+  existing = fs.readFileSync(envFile, 'utf8');
 }
-env += `\nNEXT_PUBLIC_VERSION=${dateStr}-${count}\n`;
-fs.writeFileSync(envFile, env);
+
+const cleanedLines = existing
+  .split('\n')
+  .map(line => line.trimEnd())
+  .filter(line => line.trim() !== '' && !line.startsWith('NEXT_PUBLIC_VERSION='));
+
+const newEnv = [...cleanedLines, `NEXT_PUBLIC_VERSION=${dateStr}-${count}`].join('\n') + '\n';
+fs.writeFileSync(envFile, newEnv);
 
 console.log(`Set NEXT_PUBLIC_VERSION=${dateStr}-${count}`); 
