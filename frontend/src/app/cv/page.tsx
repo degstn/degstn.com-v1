@@ -33,16 +33,30 @@ export default function CV() {
           </div>
           <div>
             <div className="text-md text-gray-600 dark:text-gray-50">
-                Aremac <span className="text-gray-600 opacity-25 dark:text-gray-50 dark:opacity-25">(2024-present)</span>
+                Aremac Technologies LLC <span className="text-gray-600 opacity-25 dark:text-gray-50 dark:opacity-25">(2024-present)</span>
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-50 pb-2">
                 Founder 
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-50 pb-2">
-            Founded Aremac Technologies Inc. in 2024, a company that specializes in the development of software and hardware for the future of the world. We are currently working on a project that will revolutionize the way we interact with the world around us.
+            Founded Aremac Technologies (research‑driven design and rapid‑prototyping studio). Built 3D models, websites, apps, and AI systems for founders; shipped an AI doctoral assistant and an allergic‑reaction detector; consulted from ideation to MVP; supported seed‑stage teams (e.g., UD Diamond Challenge).
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
                 Links: <Link className="text-international-orange-engineering dark:text-international-orange" href="https://aremac.tech">aremac</Link> 
+            </div>
+          </div>
+          <div>
+            <div className="text-md text-gray-600 dark:text-gray-50">
+                Genius Home Advisors <span className="text-gray-600 opacity-25 dark:text-gray-50 dark:opacity-25">(2024–present)</span>
+            </div>
+            <div className="text-xs text-gray-600 dark:text-gray-50 pb-2">
+                Co‑Founder • Boca Raton, FL / Chicago, IL (Hybrid)
+            </div>
+            <div className="text-sm text-gray-600 dark:text-gray-50 pb-2">
+              Co‑founded a smart‑home advising practice. Educate homeowners on integrating modern home technologies; scope and plan upgrades; coordinate installs; and evolve client roadmaps as needs change. Built partnerships with vendors to ensure access to current platforms and standards.
+            </div>
+            <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
+            Links: <Link className="text-international-orange-engineering dark:text-international-orange" href="https://geniushomeadvisors.com">geniushomeadvisors</Link> 
             </div>
           </div>
           <div className="font-bold text-gray-600 dark:text-gray-50">

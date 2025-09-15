@@ -27,8 +27,8 @@ export const projects = [
     slug: "aremac",
     name: "Aremac",
     url: "https://aremac.tech/",
-    image: "/screenshots/aremac.png",
-    description: "Aremac Technologies is a company that specializes in the development of software and hardware for the future of the world. We are currently working on a project that will revolutionize the way we interact with the world around us.",
+    image: "https://cdn.degstn.com/Screen%20Recording%202025-09-15%20at%2000.40.04.mov",
+    description: "Aremac is my research‑driven design and rapid‑prototyping studio. I build 3D models, websites, apps, and AI systems for founders—ranging from an AI doctoral assistant to an allergic‑reaction detector—and consult as an engineer from ideation to MVP. I’ve supported multiple seed‑stage teams (incl. UD’s Diamond Challenge finalists) and rebuilt a fashion brand’s web framework to test a streamlined, modern experience.",
     tags: ["Hardware", "Software", "2024"],
   },
   {

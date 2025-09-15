@@ -39,8 +39,36 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         </button>
         <div className="mt-32 mb-32 flex flex-col md:flex-row gap-8 items-stretch">
           <a href={project.url} target="_blank" rel="noopener noreferrer" className="block md:w-1/2 w-full flex-shrink-0">
-            <div className="aspect-[3/2] w-full bg-gray-200 overflow-hidden max-h-[60rem] flex items-center justify-center">
-              <img src={project.image} alt={project.name} className="object-contain w-full h-full cursor-pointer" />
+            <div
+              className="aspect-[3/2] w-full bg-bgLight dark:bg-bgDark overflow-hidden max-h-[60rem] flex items-center justify-center rounded-2xl md:rounded-3xl"
+              style={project.image.toLowerCase().endsWith('.mov') ? { overflow: 'visible' } : undefined}
+            >
+              {project.image.toLowerCase().endsWith('.mov') ? (
+                <div className="relative w-full h-full" style={{ overflow: 'visible' }}>
+                  <img
+                    src="/screenshots/aremac.png"
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+                  />
+                  <video
+                    src={project.image}
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                    preload="auto"
+                    controls={false}
+                    controlsList="nodownload noplaybackrate nofullscreen noremoteplayback"
+                    disablePictureInPicture
+                    onContextMenu={(e) => e.preventDefault()}
+                    className="object-cover w-full h-full"
+                    style={{ pointerEvents: 'none', backgroundColor: 'transparent', clipPath: 'inset(3.6% 4% 7.4% 4% round 13px)' }}
+                  />
+                </div>
+              ) : (
+                <img src={project.image} alt={project.name} className="object-contain w-full h-full cursor-pointer" />
+              )}
             </div>
           </a>
           <div className="flex flex-col justify-center md:w-1/2 w-full p-6 md:p-8">
