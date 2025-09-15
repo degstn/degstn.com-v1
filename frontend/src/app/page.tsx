@@ -46,7 +46,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               {project.image.toLowerCase().endsWith('.mov') ? (
                 <div className="relative w-full h-full" style={{ overflow: 'visible' }}>
                   <img
-                    src="/screenshots/aremac.png"
+                    src="https://cdn.degstn.com/aremac.png"
                     alt=""
                     aria-hidden="true"
                     className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
