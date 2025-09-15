@@ -629,6 +629,39 @@ export default function PhotographyPage() {
   );
 }
 
+// Format region names for display (handles camelCase, underscores, hyphens, and special cases)
+function formatRegionName(name: string): string {
+  const special: Record<string, string> = {
+    nyc: "NYC",
+    gb: "GB",
+    machuPicchu: "Machu Picchu",
+    pineCrest: "Pine Crest",
+    fTL: "Ft. Lauderdale",
+    bocaRaton: "Boca Raton",
+    northernLights: "Northern Lights",
+    "all (sorting when more photos added)": "All",
+    "hyéres": "Hyères",
+    "reykjavík": "Reykjavík",
+  };
+  if (special[name]) return special[name];
+  const normalized = name
+    .replace(/[_-]+/g, " ")
+    .replace(/([a-z])([A-Z])/g, "$1 $2");
+  return normalized
+    .split(" ")
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
+function slugifyRegion(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
 /** 
  * Builds the in-polygon dot data by sampling each feature in the GeoJSON.
  */
@@ -695,7 +728,7 @@ function getS3ImageUrl(localPath: string): string {
   const jpgFilename = filename.replace('.jpeg', '.jpg');
   
   // Return CloudFront URL with just the filename (no folder structure)
-  return `https://die1tcdcthovv.cloudfront.net/${jpgFilename}`;
+  return `https://cdn.degstn.com/${jpgFilename}`;
 }
 
 
@@ -974,6 +1007,7 @@ const PHOTOS: Photo[] = [
   { area: "South Florida", region: "bocaRaton", src: getS3ImageUrl("/images/southflorida/boca/IMG_1792.jpeg"), alt: "IMG_1792" },
   { area: "South Florida", region: "bocaRaton", src: getS3ImageUrl("/images/southflorida/boca/IMG_1795.jpeg"), alt: "IMG_1795" },
   { area: "South Florida", region: "bocaRaton", src: getS3ImageUrl("/images/southflorida/boca/IMG_1952.jpeg"), alt: "IMG_1952" },
+  { area: "South Florida", region: "bocaRaton", src: getS3ImageUrl("/images/southflorida/boca/IMG_3168.jpeg"), alt: "IMG_3168" },
 
   // deerfield
   { area: "South Florida", region: "deerfield", src: getS3ImageUrl("/images/southflorida/deerfield/IMG_1703-Enhanced-SR.jpeg"), alt: "IMG_1703-Enhanced-SR" },
@@ -981,6 +1015,7 @@ const PHOTOS: Photo[] = [
 
   // ftl
   { area: "South Florida", region: "fTL", src: getS3ImageUrl("/images/southflorida/ftl/copahardrockdenoise-clear.jpeg"), alt: "copahardrockdenoise-clear" },
+  { area: "South Florida", region: "fTL", src: getS3ImageUrl("/images/southflorida/ftl/IMG_3074.jpeg"), alt: "IMG_3074" },
 
   // miami
   { area: "South Florida", region: "miami", src: getS3ImageUrl("/images/southflorida/miami/IMG_0859.jpeg"), alt: "IMG_0859" },
@@ -993,7 +1028,6 @@ const PHOTOS: Photo[] = [
   { area: "South Florida", region: "northernLights", src: getS3ImageUrl("/images/southflorida/northernlights/IMG_2286.jpeg"), alt: "IMG_2286" },
 
   // pinecrest
-  { area: "South Florida", region: "pineCrest", src: getS3ImageUrl("/images/southflorida/pinecrest/IMG_1011.jpeg"), alt: "IMG_1011" },
   { area: "South Florida", region: "pineCrest", src: getS3ImageUrl("/images/southflorida/pinecrest/IMG_2107.jpeg"), alt: "IMG_2107" },
   { area: "South Florida", region: "pineCrest", src: getS3ImageUrl("/images/southflorida/pinecrest/IMG_0969.jpeg"), alt: "IMG_0969" },
 
@@ -1035,6 +1069,8 @@ const PHOTOS: Photo[] = [
   { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001743FR1752660778.jpg"), alt: "B00001743FR1752660778" },
   { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001803FR1752665772.jpg"), alt: "B00001803FR1752665772" },
   { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001843FR1752665832.jpg"), alt: "B00001843FR1752665832" },
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/IMG_8379.jpg"), alt: "IMG_8379" },
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/IMG_8386.jpg"), alt: "IMG_8386" },
   
   // Marrakesh
   { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00001883FR1752830438.jpg"), alt: "B00001883FR1752830438" },
@@ -1055,6 +1091,33 @@ const PHOTOS: Photo[] = [
   { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002313FR1752953762.jpg"), alt: "B00002313FR1752953762" },
   { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002333FR1752954228.jpg"), alt: "B00002333FR1752954228" },
   { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002343FR1752954258.jpg"), alt: "B00002343FR1752954258" },
+
+  // Casablanca
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/IMG_8335.jpg"), alt: "IMG_8335" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/IMG_8356.jpg"), alt: "IMG_8356" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/IMG_8366.jpg"), alt: "IMG_8366" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/B00000913FR1752421136.jpg"), alt: "B00000913FR1752421136" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/B00000653FR1752418428.jpg"), alt: "B00000653FR1752418428" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/B00000593FR1752330720.jpg"), alt: "B00000593FR1752330720" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/B00000713FR1752419354.jpg"), alt: "B00000713FR1752419354" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/B00000823FR1752420346.jpg"), alt: "B00000823FR1752420346" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/B00000743FR1752419572.jpg"), alt: "B00000743FR1752419572" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/IMG_3857.jpg"), alt: "IMG_3857" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/B00000943FR1752421278.jpg"), alt: "B00000943FR1752421278" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/B00001083FR1752436216.jpg"), alt: "B00001083FR1752436216" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/IMG_3884.jpg"), alt: "IMG_3884" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/IMG_3854.jpg"), alt: "IMG_3854" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/B00000953FR1752421300.jpg"), alt: "B00000953FR1752421300" },
+
+  // Rabat
+  { area: "Morocco", region: "Rabat", src: getS3ImageUrl("/images/morocco/rabat/B00001143FR1752492576.jpg"), alt: "B00001143FR1752492576" },
+  { area: "Morocco", region: "Rabat", src: getS3ImageUrl("/images/morocco/rabat/B00001213FR1752493186.jpg"), alt: "B00001213FR1752493186" },
+  { area: "Morocco", region: "Rabat", src: getS3ImageUrl("/images/morocco/rabat/B00001173FR1752492598.jpg"), alt: "B00001173FR1752492598" },
+  { area: "Morocco", region: "Rabat", src: getS3ImageUrl("/images/morocco/rabat/B00001183FR1752492754.jpg"), alt: "B00001183FR1752492754" },
+  { area: "Morocco", region: "Rabat", src: getS3ImageUrl("/images/morocco/rabat/B00001243FR1752493648.jpg"), alt: "B00001243FR1752493648" },
+  { area: "Morocco", region: "Rabat", src: getS3ImageUrl("/images/morocco/rabat/B00001253FR1752493666.jpg"), alt: "B00001253FR1752493666" },
+  { area: "Morocco", region: "Rabat", src: getS3ImageUrl("/images/morocco/rabat/IMG_3890.jpg"), alt: "IMG_3890" },
+  // moved to Fes per user update
 ];
 
 /** 
@@ -1071,8 +1134,19 @@ function showRetroModal(areaTitle: string) {
   modal.classList.add("retro-modal-content");
   modal.setAttribute(
     "style",
-    "width: 80%; max-width: 1000px; max-height: 80vh; overflow-y: auto;"
+    "width: min(94vw, 1300px); max-height: min(90vh, 1100px); overflow-y: auto;"
   );
+
+  // Feature flag for contact sheet layout
+  const useContactSheet = (() => {
+    try {
+      const fromHash = (window.location.hash || "").includes("layout=contact");
+      const fromStorage = window.localStorage?.getItem("galleryLayout") === "contact";
+      return fromHash || fromStorage;
+    } catch {
+      return false;
+    }
+  })();
 
   // Filter photos by area
   const filteredPhotos = PHOTOS.filter(
@@ -1117,32 +1191,56 @@ function showRetroModal(areaTitle: string) {
     </div>
   `;
 
+  // Region chips (contact-sheet layout only)
+  if (useContactSheet) {
+    const filteredPhotos = PHOTOS.filter(
+      (p) => p.area.toLowerCase() === areaTitle.toLowerCase()
+    );
+    const regionMap: Record<string, Photo[]> = {};
+    filteredPhotos.forEach((photo) => {
+      if (!regionMap[photo.region]) regionMap[photo.region] = [];
+      regionMap[photo.region].push(photo);
+    });
+    const regionNames = Object.keys(regionMap);
+    const chips = regionNames
+      .map((r) => {
+        const label = formatRegionName(r);
+        const id = `region-${slugifyRegion(r)}`;
+        return `<button class="region-chip" data-target="${id}" style="border:1px solid rgba(255,255,255,0.15); color:#f9fafb; background:transparent; padding:4px 8px; margin:0 6px 6px 0; border-radius:6px; font-family: 'Berkeley Mono', monospace; font-size:12px; cursor:pointer;">${label}</button>`;
+      })
+      .join("");
+    html += `
+      <div style="position: sticky; top: 40px; z-index: 9; background: rgba(26,26,26,0.9); backdrop-filter: blur(6px); padding: 8px 0; margin-bottom: 8px;">
+        <div style="display:flex; flex-wrap: wrap; align-items:center;">${chips}</div>
+      </div>
+    `;
+  }
+
   // Build a section for each region
   Object.keys(regionMap).forEach((regionName) => {
     const regionPhotos = regionMap[regionName];
+    const sectionId = `region-${slugifyRegion(regionName)}`;
     html += `
-      <section style="margin-bottom: 1.5rem;">
-      <h3 style="margin-bottom: 0.5rem;">${regionName.replace(/([A-Z])/g, ' $1').charAt(0).toUpperCase() + regionName.replace(/([A-Z])/g, ' $1').slice(1)}</h3>
+      <section id="${sectionId}" style="margin-bottom: 1.5rem;">
+      <h3 style="margin-bottom: 0.5rem;">${formatRegionName(regionName)}</h3>
       <div
       style="
-      display: flex;
-      flex-wrap: wrap; /* let images wrap to next line */
-      gap: 0.5rem;     /* spacing between images */
-      align-items: flex-start;
+      ${useContactSheet
+        ? `display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; align-items: start; background-image: radial-gradient(rgba(255,255,255,0.06) 0.5px, rgba(26,26,26,1) 0.5px); background-size: 8px 8px; padding: 8px; border-radius: 8px;`
+        : `display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: flex-start;`}
       "
       >
     `;
 
-    // Each image has a fixed height of 220px, width is auto,
-    // and object-fit: contain so they're not cropped.
+    // Each image has a fixed height of 220px; in contact-sheet layout we fill grid cells
     regionPhotos.forEach((photo, index) => {
       const globalIndex = PHOTOS.findIndex(p => p.src === photo.src);
             html += `
               <div 
-                style="position: relative; height: 220px; width: auto; background: #1a1a1a; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid transparent;"
+                style="position: relative; height: 220px; ${useContactSheet ? 'width: 100%;' : 'width: auto;'} background: #1a1a1a; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 0; border-radius: 8px; box-shadow: ${useContactSheet ? '0 2px 12px rgba(0,0,0,0.25)' : 'none'};"
                 onclick="openImageViewer(${globalIndex})"
-                onmouseover="this.style.transform='scale(1.05)'; this.style.borderColor='#FF4F00'"
-                onmouseout="this.style.transform='scale(1)'; this.style.borderColor='transparent'"
+                onmouseover="this.style.transform='scale(1.02)'"
+                onmouseout="this.style.transform='scale(1)'"
               >
           <img
             src="${photo.src}"
@@ -1152,7 +1250,7 @@ function showRetroModal(areaTitle: string) {
             onload="this.parentElement.querySelector('.loading')?.remove()"
             style="
               height: 220px;
-              width: auto;
+              width: ${useContactSheet ? '100%' : 'auto'};
               object-fit: contain;
               pointer-events: none;
             "
@@ -1168,6 +1266,19 @@ function showRetroModal(areaTitle: string) {
   modal.innerHTML = html;
   backdrop.appendChild(modal);
   document.body.appendChild(backdrop);
+
+  // Wire chips to sections
+  if (useContactSheet) {
+    const chipButtons = modal.querySelectorAll('.region-chip');
+    chipButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = (btn as HTMLElement).getAttribute('data-target');
+        const section = targetId ? modal.querySelector(`#${targetId}`) : null;
+        section && (section as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  }
 
   const closeBtn = modal.querySelector("#retro-close-btn");
   closeBtn?.addEventListener("click", () => {

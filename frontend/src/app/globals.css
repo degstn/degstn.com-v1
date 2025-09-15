@@ -57,10 +57,10 @@ body {
 .retro-modal-content {
   background: #1a1a1a;
   color: #f9fafb;
-  border: 3px solid #f9fafb;
+  border: 1px solid #f9fafb;
 
   padding: 20px;
-  max-width: 500px;
+  /* allow JS-set width to control; remove fixed CSS max-width */
   text-align: start;
   font-family: var(--tx-02), system-ui, -apple-system, sans-serif; 
 }
