@@ -82,11 +82,11 @@ export default function CV() {
           <div className="font-bold text-gray-600 dark:text-gray-50">
         </div>
         <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
-        Software: Swift, Java, Python, JavaScript, TypeScript, C++, Objective-C, VB.NET, Node.js, React
+        Software: Swift, Java, Python, JavaScript, TypeScript, C++, Objective-C, Node.js, Next.js, React, Tailwind CSS
         </div>
         <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
         Tools & Technologies: Xcode, ARKit, RealityKit, SwiftUI, UIKit, Raspberry Pi, Microcontrollers (Arduino), 
-        Autodesk Fusion 360, AutoCAD, Unreal Engine, Unity, Adobe Creative Suite, Figma, Sketch, Amazon AWS, Vercel, Next.js, Tailwind CSS, TypeScript, JavaScript, React, Node.js, Python, Java, C++, Objective-C
+        Autodesk Fusion, AutoCAD, Unreal Engine, Unity, Adobe Creative Suite, Figma, Sketch, Amazon AWS, Vercel, Keyshot
         </div>
         <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
         Architectures & Methodologies: MVC, MVVM, OOP
