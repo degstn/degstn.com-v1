@@ -77,6 +77,7 @@ export default function PhotographyPage() {
           { id: "peru", lat: -7.962764, lng: -74.618642, pin: true, area: "Peru" },
           { id: "italy", lat: 46.580391, lng: 12.062670, pin: true, area: "Italy" },
           { id: "france", lat: 50.040182, lng: 2.740044, pin: true, area: "France" },
+          { id: "morocco", lat: 31.7917, lng: -7.0926, pin: true, area: "Morocco" },
           { id: "yellowstone", lat: 44.433780, lng: -110.696687, pin: true, area: "Yellowstone" },
           { id: "vancouver", lat: 52.253465, lng: -123.043325, pin: true, area: "Vancouver" },
           { id: "gbnp", lat: 54.800685, lng: -127.647608, pin: true, area: "GBNP" },
@@ -1020,6 +1021,40 @@ const PHOTOS: Photo[] = [
   { area: "Yellowstone", region: "north", src: getS3ImageUrl("/images/yellowstone/north/IMG_3669.jpeg"), alt: "IMG_3669" },
   { area: "Yellowstone", region: "north", src: getS3ImageUrl("/images/yellowstone/north/IMG_3693.jpeg"), alt: "IMG_3693" },
   { area: "Yellowstone", region: "north", src: getS3ImageUrl("/images/yellowstone/north/IMG_3724-Edit.jpeg"), alt: "IMG_3724-Edit" },
+ 
+  // MOROCCO
+  // Fes
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001433FR1752522744.jpg"), alt: "B00001433FR1752522744" },
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001463FR1752660204.jpg"), alt: "B00001463FR1752660204" },
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001483FR1752660236.jpg"), alt: "B00001483FR1752660236" },
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001513FR1752660392.jpg"), alt: "B00001513FR1752660392" },
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001543FR1752660430.jpg"), alt: "B00001543FR1752660430" },
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001583FR1752660472.jpg"), alt: "B00001583FR1752660472" },
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001633FR1752660544.jpg"), alt: "B00001633FR1752660544" },
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001703FR1752660720.jpg"), alt: "B00001703FR1752660720" },
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001743FR1752660778.jpg"), alt: "B00001743FR1752660778" },
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001803FR1752665772.jpg"), alt: "B00001803FR1752665772" },
+  { area: "Morocco", region: "Fes", src: getS3ImageUrl("/images/morocco/fes/B00001843FR1752665832.jpg"), alt: "B00001843FR1752665832" },
+  
+  // Marrakesh
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00001883FR1752830438.jpg"), alt: "B00001883FR1752830438" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00001903FR1752831862.jpg"), alt: "B00001903FR1752831862" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00001923FR1752832024.jpg"), alt: "B00001923FR1752832024" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00001933FR1752832102.jpg"), alt: "B00001933FR1752832102" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00001943FR1752832190.jpg"), alt: "B00001943FR1752832190" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00001973FR1752832682.jpg"), alt: "B00001973FR1752832682" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00001993FR1752833582.jpg"), alt: "B00001993FR1752833582" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002063FR1752836604.jpg"), alt: "B00002063FR1752836604" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002133FR1752877146.jpg"), alt: "B00002133FR1752877146" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002183FR1752877202.jpg"), alt: "B00002183FR1752877202" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002193FR1752877242.jpg"), alt: "B00002193FR1752877242" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002213FR1752877308.jpg"), alt: "B00002213FR1752877308" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002223FR1752877328.jpg"), alt: "B00002223FR1752877328" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002263FR1752877358.jpg"), alt: "B00002263FR1752877358" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002293FR1752877564.jpg"), alt: "B00002293FR1752877564" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002313FR1752953762.jpg"), alt: "B00002313FR1752953762" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002333FR1752954228.jpg"), alt: "B00002333FR1752954228" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002343FR1752954258.jpg"), alt: "B00002343FR1752954258" },
 ];
 
 /** 
