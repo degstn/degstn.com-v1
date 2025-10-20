@@ -1090,6 +1090,10 @@ const PHOTOS: Photo[] = [
   { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002313FR1752953762.jpg"), alt: "B00002313FR1752953762" },
   { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002333FR1752954228.jpg"), alt: "B00002333FR1752954228" },
   { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002343FR1752954258.jpg"), alt: "B00002343FR1752954258" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002013FR1752835014.jpg"), alt: "B00002013FR1752835014" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00002023FR1752835024.jpg"), alt: "B00002023FR1752835024" },
+  { area: "Morocco", region: "Marrakesh", src: getS3ImageUrl("/images/morocco/marrakesh/B00001993FR1752833582-2.jpg"), alt: "B00001993FR1752833582-2" },
+
 
   // Casablanca
   { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/IMG_8335.jpg"), alt: "IMG_8335" },
@@ -1107,6 +1111,7 @@ const PHOTOS: Photo[] = [
   { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/IMG_3884.jpg"), alt: "IMG_3884" },
   { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/IMG_3854.jpg"), alt: "IMG_3854" },
   { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/B00000953FR1752421300.jpg"), alt: "B00000953FR1752421300" },
+  { area: "Morocco", region: "Casablanca", src: getS3ImageUrl("/images/morocco/casablanca/B00000723FR1752419364.jpg"), alt: "B00000723FR1752419364" },
 
   // Rabat
   { area: "Morocco", region: "Rabat", src: getS3ImageUrl("/images/morocco/rabat/B00001143FR1752492576.jpg"), alt: "B00001143FR1752492576" },
