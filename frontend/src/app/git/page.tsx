@@ -47,10 +47,13 @@ export default function GitPage() {
 
   const [deployments, setDeployments] = useState<any[]>([]);
   const [languages, setLanguages] = useState<Record<string, number>>({});
+  const [overview, setOverview] = useState<any | null>(null);
+  const [workflowRuns, setWorkflowRuns] = useState<any[]>([]);
+  const [commitStats, setCommitStats] = useState<Record<string, { additions: number; deletions: number; files: number; preview?: { filename: string; lines: { t: 'add' | 'del' | 'ctx'; c: string }[] } }>>({});
 
   async function loadCommits(newPage: number) {
     try {
-      const url = `https://api.github.com/repos/degstn/degstn.com-v1/commits?per_page=${PER_PAGE}&page=${newPage}`;
+      const url = `/api/github/commits?per_page=${PER_PAGE}&page=${newPage}`;
       const res = await fetch(url);
       if (!res.ok) {
         throw new Error(`GitHub API returned status ${res.status}`);
@@ -69,7 +72,7 @@ export default function GitPage() {
 
   async function loadStatusForCommit(sha: string) {
     // We'll use the "statuses" API endpoint.
-    const url = `https://api.github.com/repos/degstn/degstn.com-v1/commits/${sha}/status`;
+    const url = `/api/github/commit/${sha}/status`;
     try {
       const res = await fetch(url);
       if (!res.ok) {
@@ -81,6 +84,49 @@ export default function GitPage() {
       return data.state as string;
     } catch {
       return "none";
+    }
+  }
+
+  async function loadStatsForCommit(sha: string) {
+    const url = `/api/github/commit/${sha}`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) return null;
+      const data = await res.json();
+      const additions = data?.stats?.additions ?? 0;
+      const deletions = data?.stats?.deletions ?? 0;
+      const filesArr = Array.isArray(data?.files) ? data.files : [];
+
+      // Build a small preview from the first file that has a patch
+      let preview: { filename: string; lines: { t: 'add' | 'del' | 'ctx'; c: string }[] } | undefined;
+      for (const f of filesArr) {
+        if (f?.patch) {
+          const rawLines = String(f.patch).split('\n');
+          const lines: { t: 'add' | 'del' | 'ctx'; c: string }[] = [];
+          for (const line of rawLines) {
+            if (line.startsWith('@@') || line.startsWith('+++') || line.startsWith('---')) continue;
+            let t: 'add' | 'del' | 'ctx' = 'ctx';
+            let content = line;
+            if (line.startsWith('+')) {
+              t = 'add';
+              content = line.slice(1);
+            } else if (line.startsWith('-')) {
+              t = 'del';
+              content = line.slice(1);
+            }
+            // Prefer non-context lines; include a few context lines if needed
+            if (t === 'ctx' && lines.length === 0) continue;
+            lines.push({ t, c: content });
+            if (lines.length >= 6) break;
+          }
+          preview = { filename: f.filename, lines };
+          break;
+        }
+      }
+
+      return { additions, deletions, files: filesArr.length, preview };
+    } catch {
+      return null;
     }
   }
 
@@ -112,15 +158,16 @@ export default function GitPage() {
     // load first page of commits
     loadCommits(page);
 
-    // load deployments + languages in parallel
-    Promise.all([loadDeployments(), loadLanguages()])
-      .then(([depData, langData]) => {
-        setDeployments(depData);
-        setLanguages(langData);
+    // load aggregated GitHub data from our API
+    fetch("/api/github")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.overview) setOverview(data.overview);
+        if (data?.languages) setLanguages(data.languages);
+        if (data?.deployments) setDeployments(data.deployments);
+        if (data?.workflow_runs) setWorkflowRuns(data.workflow_runs);
       })
-      .catch(() => {
-        // do nothing special, maybe there's no deployments or something
-      });
+      .catch(() => {});
   }, []);
 
   // Whenever "page" changes (beyond the initial), fetch more commits
@@ -139,6 +186,13 @@ export default function GitPage() {
     });
   }, [commits]);
 
+  function ensureStats(sha: string) {
+    if (commitStats[sha]) return;
+    loadStatsForCommit(sha).then((stats) => {
+      if (stats) setCommitStats((prev) => ({ ...prev, [sha]: stats }));
+    });
+  }
+
   function handleLoadMore() {
     setPage((prev) => prev + 1);
   }
@@ -147,21 +201,19 @@ export default function GitPage() {
   const langEntries = Object.entries(languages) as [string, number][];
 const totalBytes = langEntries.reduce((sum, [, bytes]) => sum + bytes, 0);
 
-// Sort languages by largest to smallest if you prefer (not required)
-const sorted = langEntries.sort((a, b) => b[1] - a[1]);
+// Sort languages by largest to smallest
+const sorted = [...langEntries].sort((a, b) => b[1] - a[1]);
 
-let sumSoFar = 0;
+// Compute precise percentages and correct cumulative rounding by assigning the remainder to the last segment
+let cumulative = 0;
 const langArray = sorted.map(([name, bytes], idx) => {
   if (idx < sorted.length - 1) {
-    // normal calculation
     const rawPercent = totalBytes > 0 ? (bytes / totalBytes) * 100 : 0;
-    // round to 2 decimals, or keep as is
-    const percent = parseFloat(rawPercent.toFixed(2));
-    sumSoFar += percent;
+    const percent = Math.round(rawPercent * 10) / 10; // 0.1% precision
+    cumulative += percent;
     return { name, bytes, percent };
   } else {
-    // final language => whatever’s left to reach 100%
-    const leftover = 100 - sumSoFar;
+    const leftover = Math.max(0, 100 - cumulative);
     return { name, bytes, percent: leftover };
   }
 });
@@ -174,21 +226,59 @@ const langArray = sorted.map(([name, bytes], idx) => {
               </Link>
           </div>
       <h1 className="text-normal text-gray-600 dark:text-gray-50">git</h1>
-      <Link
-        href="https://github.com/degstn/degstn.com-v1"
-        className="text-xs hover:underline text-international-orange-engineering dark:text-international-orange"
-      >
-        full repo
-      </Link>
 
       {error && (
         <p className="text-red-400 mb-4">Error loading commits: {error}</p>
       )}
 
-      {/* 
-        // add new code here 
-        BELOW is the new block for Deployments & Languages 
-      */}
+      {/* Overview section (from API) */}
+      {overview && (
+        <section className="w-full max-w-2xl mt-4 mb-6">
+          <div className="text-xs text-gray-600 dark:text-gray-50 flex flex-wrap gap-x-4 gap-y-1">
+            <a href={overview.html_url} className="underline hover:opacity-80">{overview.full_name}</a>
+            {overview.homepage && (
+              <a href={overview.homepage} className="underline hover:opacity-80">site</a>
+            )}
+            <span>branch: <span className="text-international-orange-engineering dark:text-international-orange">{overview.default_branch}</span></span>
+            <span>stars: {overview.stars_count}</span>
+            <span>forks: {overview.forks_count}</span>
+            <span>watchers: {overview.watchers_count}</span>
+            <span>open PRs: {overview.open_prs_count}</span>
+            <span>open issues: {overview.open_issues_via_search}</span>
+            {overview.license && <span>license: {overview.license}</span>}
+            {overview.topics?.length > 0 && (
+              <span>topics: {overview.topics.slice(0,6).join(", ")}</span>
+            )}
+          </div>
+          <div className="text-xs text-gray-600 dark:text-gray-50 mt-2">
+            {overview.latest_workflow_run && (
+              <div>
+                ci: <span className="text-international-orange-engineering dark:text-international-orange">{overview.latest_workflow_run.conclusion ?? overview.latest_workflow_run.status}</span>
+                {overview.latest_workflow_run.html_url && (
+                  <a className="ml-2 underline" href={overview.latest_workflow_run.html_url}>details</a>
+                )}
+              </div>
+            )}
+            {overview.latest_release && (
+              <div>
+                release: <span className="text-international-orange-engineering dark:text-international-orange">{overview.latest_release.tag_name}</span>
+                {overview.latest_release.published_at && (
+                  <span className="opacity-60"> ({overview.latest_release.published_at.slice(0,10)})</span>
+                )}
+              </div>
+            )}
+            {overview.last_commit && (
+              <div>
+                last commit: <span className="text-international-orange-engineering dark:text-international-orange">{overview.last_commit.sha.slice(0,7)}</span>
+                <span className="opacity-60"> by {overview.last_commit.author} on {new Date(overview.last_commit.date).toLocaleString()}</span>
+                {overview.last_commit.html_url && (
+                  <a className="ml-2 underline" href={overview.last_commit.html_url}>view</a>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Deployments */}
       <section className="w-full max-w-xs mt-4 mb-8">
@@ -232,21 +322,26 @@ const langArray = sorted.map(([name, bytes], idx) => {
           <>
             {/* Bar container */}
             <div className="relative w-full h-4 bg-disabled dark:bg-disabled-dark rounded overflow-hidden mb-2">
-              {langArray.reduce((acc, lang) => {
-                const leftOffset = acc.reduce((sum, el) => sum + (el.props.widthPercent ?? 0), 0);
-                const width = lang.percent;
-                return [
-                  ...acc,
-                  <div
-                    key={lang.name}
-                    className={`absolute top-0 h-full ${pickLangColor(lang.name)}`}
-                    style={{
-                      left: `${leftOffset}%`,
-                      width: `${width}%`,
-                    }}
-                  />,
-                ];
-              }, [] as any[])}
+              {(() => {
+                let left = 0;
+                return langArray.map((lang, idx) => {
+                  const el = (
+                    <div
+                      key={lang.name}
+                      className={`absolute top-0 h-full ${pickLangColor(lang.name)}`}
+                      style={{ left: `${left}%`, width: `${lang.percent}%` }}
+                    />
+                  );
+                  left += lang.percent;
+                  if (idx === langArray.length - 1 && left < 100) {
+                    // stretch last to 100 to avoid 1px gaps
+                    return (
+                      <div key={`${lang.name}-last`} className={`absolute top-0 h-full ${pickLangColor(lang.name)}`} style={{ left: `${100 - lang.percent}%`, width: `${lang.percent + (100 - left)}%` }} />
+                    );
+                  }
+                  return el;
+                });
+              })()}
             </div>
             {/* Language legend */}
             <p className="text-xs text-gray-600 dark:text-gray-50">
@@ -267,13 +362,17 @@ const langArray = sorted.map(([name, bytes], idx) => {
       {/* END new code section */}
 
       {/* Commits List */}
-      <ul className="space-y-6 mt-5">
+      <div className="mt-5 mb-1 text-[10px] font-mono tracking-tight text-gray-600 dark:text-gray-50 opacity-60">
+        [ commits ]
+      </div>
+      <ul className="w-full border-y border-dashed border-disabled-dark divide-y divide-disabled-dark">
         {commits.map((commit) => {
           const shortSha = commit.sha.substring(0, 7);
           return (
             <li
               key={commit.sha}
-              className="px-2 border-b border-r border-disabled-dark hover:bg-disabled-dark hover:bg-opacity-5 transition-colors"
+              onMouseEnter={() => ensureStats(commit.sha)}
+              className="relative group px-3 py-3 hover:bg-disabled-dark hover:bg-opacity-5 transition-colors border-l border-dashed border-disabled-dark overflow-hidden"
             >
               <p className="mb-2 flex items-center space-x-1">
   {(() => {
@@ -307,9 +406,16 @@ const langArray = sorted.map(([name, bytes], idx) => {
   <span className="text-international-orange-engineering dark:text-international-orange text-xs">
     {shortSha}
   </span>
+  {commitStats[commit.sha] && (
+    <span className="ml-2 font-mono text-[10px] opacity-70">
+      <span className="text-green-500">+{commitStats[commit.sha].additions}</span>{" "}
+      <span className="text-red-500">-{commitStats[commit.sha].deletions}</span>
+      <span className="opacity-40"> · {commitStats[commit.sha].files} files</span>
+    </span>
+  )}
 </p>
 
-              <p className="text-sm text-gray-600 dark:text-gray-50 mb-2">
+              <p className="text-sm text-gray-600 dark:text-gray-50 mb-2 relative z-10">
                 {commit.commit.message}
               </p>
 
@@ -329,6 +435,20 @@ const langArray = sorted.map(([name, bytes], idx) => {
               >
                 View on GitHub
               </a>
+
+              {commitStats[commit.sha]?.preview && (
+                <div className="pointer-events-none hidden group-hover:block absolute right-0 top-6 md:top-8 bottom-0 w-[56%] max-w-[520px] min-w-[240px] transform-gpu rotate-[-6deg] z-0">
+                  <div className="absolute inset-0 p-3 [mask-image:linear-gradient(to_left,rgba(0,0,0,1)_50%,rgba(0,0,0,0)_100%)] backdrop-blur-[2px]">
+                    <div className="text-sm md:text-base font-mono leading-tight whitespace-pre break-words">
+                      {commitStats[commit.sha]?.preview?.lines.map((ln, i) => (
+                        <div key={i} className={ln.t === 'add' ? 'text-green-500' : ln.t === 'del' ? 'text-red-500' : 'opacity-60'}>
+                          {(ln.t === 'add' ? '+' : ln.t === 'del' ? '-' : ' ')} {ln.c}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </li>
           );
         })}
