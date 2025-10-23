@@ -249,7 +249,7 @@ const langArray = sorted.map(([name, bytes], idx) => {
             {overview.topics?.length > 0 && (
               <span>topics: {overview.topics.slice(0,6).join(", ")}</span>
             )}
-            <span>days since critical bug: 0</span>
+            <span title="oops" data-proof="0/0 -> NaN">days since critical bug: {0/0}</span>
           </div>
           <div className="text-xs text-gray-600 dark:text-gray-50 mt-2">
             {overview.latest_workflow_run && (
