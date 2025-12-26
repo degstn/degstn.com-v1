@@ -18,7 +18,7 @@
     "@vercel/speed-insights": "^1.1.0",
     "exif-js": "^2.3.0",
     "globe.gl": "^2.34.5",
-    "next": "^15.3.2",
+    "next": "15.3.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "three": "^0.171.0"
