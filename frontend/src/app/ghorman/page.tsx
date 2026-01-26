@@ -37,7 +37,7 @@ function getEmbedSrc(): string | null {
 
 export default function GhormanLive() {
   const src = getEmbedSrc()
-  const infoImage = process.env.NEXT_PUBLIC_GHORMAN_INFO_IMAGE_URL
+  const infoImage = '/ghorman.png'
 
   const name = 'Ghorman'
   const speciesCommon = 'Colombian giant redleg tarantula'
@@ -107,7 +107,7 @@ export default function GhormanLive() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
             {/* Image or placeholder */}
             <div className="md:col-span-5 p-3">
-              <div className="w-full aspect-[4/3] overflow-hidden border border-disabled dark:border-disabled-dark flex items-center justify-center bg-bgLight dark:bg-bgDark">
+              <div className="w-full aspect-square overflow-hidden border border-disabled dark:border-disabled-dark flex items-center justify-center bg-bgLight dark:bg-bgDark">
                 {infoImage ? (
                   <img
                     src={infoImage}
