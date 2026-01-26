@@ -9,6 +9,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: 'https://degstn.com/ghorman',
+      lastModified: new Date(),
+      changeFrequency: 'hourly',
+      priority: 0.7,
+    },
+    {
       url: 'https://degstn.com/cv',
       lastModified: new Date(),
       changeFrequency: 'monthly',
