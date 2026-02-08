@@ -1,0 +1,493 @@
+.photographyRoot {
+  width: 100%;
+  min-height: 100svh;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  background-color: #111111;
+  color: #f5f5f5;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: var(--tx-02), "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+  --accent: #ff4f00;
+  --panel-border: rgba(255, 79, 0, 0.35);
+  --panel-bg: rgba(10, 10, 10, 0.92);
+  --panel-glow: rgba(255, 79, 0, 0.18);
+  --muted: rgba(255, 255, 255, 0.65);
+}
+
+.hoverPanel {
+  border: 1px solid var(--panel-border);
+  background: rgba(8, 8, 8, 0.75);
+  padding: 8px 10px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 0 0 1px rgba(255, 79, 0, 0.1);
+}
+
+.hoverTitle {
+  font-size: 12px;
+  color: #f5f5f5;
+  margin-bottom: 4px;
+}
+
+.hoverMeta {
+  color: var(--muted);
+}
+
+.globePinContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transform: translate(-50%, -100%);
+}
+
+.globePinLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.globePinDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px var(--panel-border), 0 0 12px var(--panel-glow);
+  position: relative;
+}
+
+.globePinDot::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 79, 0, 0.2);
+  opacity: 0.8;
+}
+
+.globePinInfo {
+  position: absolute;
+  top: -8px;
+  transform: translateY(-100%);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  padding: 8px 10px;
+  min-width: 140px;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease, transform 150ms ease;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
+}
+
+.globePinContainer:hover .globePinInfo {
+  opacity: 1;
+  transform: translateY(-110%);
+}
+
+.globePinInfoTitle {
+  font-size: 12px;
+  color: #f5f5f5;
+  margin-bottom: 4px;
+}
+
+.globePinInfoMeta {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 4, 4, 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.modal {
+  width: min(94vw, 1300px);
+  max-height: min(90vh, 1100px);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 0;
+  box-shadow: 0 0 0 1px rgba(255, 79, 0, 0.08), 0 40px 80px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modalHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: rgba(12, 12, 12, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.modalTitle {
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.modalMeta {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.dataChip {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 3px 8px;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.modalClose {
+  background: transparent;
+  border: 1px solid var(--panel-border);
+  color: var(--accent);
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.modalClose:hover {
+  background: var(--accent);
+  color: #0a0a0a;
+}
+
+.modalControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(10, 10, 10, 0.85);
+}
+
+.controlsRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 70%;
+}
+
+.regionChip {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: #f5f5f5;
+  padding: 4px 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+
+.regionChip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.regionChipCount {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.regionSearch {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 6px 10px;
+  color: #f5f5f5;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  min-width: 180px;
+}
+
+.regionSearch:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.cropToggle {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--muted);
+  width: 34px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+
+.cropToggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.cropIcon {
+  display: block;
+}
+
+.modalBody {
+  padding: 18px 20px 26px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.regionSection {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 12px;
+  background: rgba(12, 12, 12, 0.7);
+}
+
+.regionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.regionCount {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.photoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.photoTile {
+  position: relative;
+  height: 220px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 8, 8, 0.8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 150ms ease, border-color 150ms ease;
+}
+
+.photoTile:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.photoTileCropped {
+  overflow: hidden;
+}
+
+.photoTileLoaded .photoLoading {
+  opacity: 0;
+}
+
+.photoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.95;
+}
+
+.photoImageCropped {
+  object-fit: cover;
+}
+
+.photoLoading {
+  position: absolute;
+  font-size: 11px;
+  color: var(--muted);
+  transition: opacity 150ms ease;
+}
+
+.viewerBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.94);
+  backdrop-filter: blur(10px);
+}
+
+.viewerButton {
+  position: absolute;
+  background: transparent;
+  border: 1px solid var(--panel-border);
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+  z-index: 10001;
+}
+
+.viewerButton:hover {
+  background: var(--accent);
+  color: #0a0a0a;
+}
+
+.viewerClose {
+  top: 20px;
+  right: 20px;
+}
+
+.viewerFullscreen {
+  top: 20px;
+  right: 90px;
+  height: 32px;
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewerFullscreenIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.viewerContent {
+  width: 100vw;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px 80px;
+}
+
+.viewerImage {
+  max-width: min(98vw, 1600px);
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 0;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.viewerNav {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  z-index: 10001;
+}
+
+.viewerNavButton {
+  position: relative;
+  width: 40px;
+  height: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewerNavButton svg {
+  width: 18px;
+  height: 18px;
+}
+
+.viewerInfo {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  right: 14px;
+  max-width: 320px;
+  background: rgba(8, 8, 8, 0.85);
+  border: 1px solid var(--panel-border);
+  color: var(--accent);
+  padding: 12px 14px;
+  font-size: 11px;
+  line-height: 1.5;
+  transition: opacity 200ms ease;
+}
+
+.viewerInfoTitle {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.viewerInfoRow {
+  margin-bottom: 4px;
+}
+
+.viewerInfoMuted {
+  margin-bottom: 4px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.viewerInfoHint {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 8px;
+}
+
+@media (max-width: 720px) {
+  .modalControls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .chipRow {
+    max-width: 100%;
+  }
+
+  .regionSearch {
+    width: 100%;
+  }
+
+  .controlsRight {
+    width: 100%;
+  }
+
+  .viewerNav {
+    bottom: 16px;
+    right: 16px;
+  }
+}

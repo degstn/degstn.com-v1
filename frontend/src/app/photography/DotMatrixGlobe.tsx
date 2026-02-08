@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import EXIF from "exif-js";
 import { polygon, bbox, booleanPointInPolygon } from "@turf/turf";
 import Link from "next/link";
 import * as THREE from "three";
+import GalleryModal from "./GalleryModal";
+import styles from "./photography.module.css";
 
 /**
  * A single-file page that:
@@ -19,7 +21,59 @@ export default function PhotographyPage() {
   // We'll store the lazy-loaded globe.gl module here
   const [globeModule, setGlobeModule] = useState<any>(null);
 
-  const [travelPins, setAllAreas] = useState<any[]>([]);
+  const [, setAllAreas] = useState<any[]>([]);
+  const [hoveredArea, setHoveredArea] = useState<string | null>(null);
+  const [activeArea, setActiveArea] = useState<string | null>(null);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [exifData, setExifData] = useState<Photo['exifData'] | null>(null);
+  const viewerRef = useRef<HTMLDivElement | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [crypticNumbers, setCrypticNumbers] = useState({
+    locations: '00',
+    photos: '000',
+    date: '00/00/0000 00:00:00'
+  });
+  
+  const animationCompleted = useRef({
+    locations: false,
+    photos: false,
+    date: false
+  });
+
+
+  const openGallery = useCallback((area: string) => {
+    setActiveArea(area);
+    setIsGalleryOpen(true);
+  }, []);
+
+  const closeGallery = useCallback(() => {
+    setIsGalleryOpen(false);
+    setActiveArea(null);
+  }, []);
+
+  const activeAreaPhotos = useMemo(() => {
+    if (!activeArea) return [];
+    return PHOTOS.filter((photo) => photo.area.toLowerCase() === activeArea.toLowerCase());
+  }, [activeArea]);
+
+  const openImageBySrc = useCallback((src: string) => {
+    const index = PHOTO_INDEX_BY_SRC.get(src);
+    if (index === undefined) return;
+    setCurrentImageIndex(index);
+    setSelectedImage(PHOTOS[index]);
+  }, []);
+
+  const toggleFullscreen = useCallback(() => {
+    const element = viewerRef.current;
+    if (!element) return;
+    if (!document.fullscreenElement) {
+      element.requestFullscreen?.();
+    } else {
+      document.exitFullscreen?.();
+    }
+  }, []);
 
 
   // 1) Lazy import globe.gl in a client-side effect
@@ -56,7 +110,7 @@ export default function PhotographyPage() {
       .showGlobe(false)
       .showGraticules(true)
       .showAtmosphere(false)
-      .backgroundColor("#1a1a1a");
+      .backgroundColor("#111111");
 
     // Globe is ready
 
@@ -106,22 +160,24 @@ export default function PhotographyPage() {
           .htmlLng("lng")
           .htmlAltitude(0)
           .htmlElement((d: any) => {
-            // create a container
             const el = document.createElement("div");
             el.classList.add("my-globe-html-container");
 
-            // label + pin
-            el.innerHTML = `
-              <div class="my-globe-label">
-                ${d.area}
-              </div>
-              <div class="my-globe-pin"></div>
-            `;
+            const label = document.createElement("div");
+            label.classList.add("my-globe-label");
+            label.textContent = d.area;
 
-            // on click => showRetroModal
+            const pin = document.createElement("div");
+            pin.classList.add("my-globe-pin");
+
+            el.appendChild(label);
+            el.appendChild(pin);
+
+            el.addEventListener("mouseenter", () => setHoveredArea(d.area));
+            el.addEventListener("mouseleave", () => setHoveredArea(null));
             el.addEventListener("click", (evt) => {
               evt.stopPropagation();
-              showRetroModal(d.area);
+              openGallery(d.area);
             });
 
             return el;
@@ -131,7 +187,7 @@ export default function PhotographyPage() {
         console.error("Failed to fetch or parse JSON:", err);
       }
     })();
-  }, [globeModule]);
+  }, [globeModule, openGallery]);
 
   // Constants for stats
   // Dynamic counting based on actual data
@@ -151,45 +207,8 @@ export default function PhotographyPage() {
     hour12: false
   }) + ' EST';
   
-  const hardwareDeatils = "Hardware Details";
-
-  const [hoveredArea, setHoveredArea] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-  const [exifData, setExifData] = useState<Photo['exifData'] | null>(null);
-  const [crypticNumbers, setCrypticNumbers] = useState({
-    locations: '00',
-    photos: '000',
-    date: '00/00/0000 00:00:00'
-  });
-  
-  const animationCompleted = useRef({
-    locations: false,
-    photos: false,
-    date: false
-  });
-
-  const [showMatrixRain, setShowMatrixRain] = useState(false);
-  const [uiHidden, setUiHidden] = useState(false);
-
   // Removed Safari toolbar viewport calculations per request
 
-  // Auto-hide UI on idle to simulate immersive mode
-  useEffect(() => {
-    let hideTimer: number | undefined;
-    const resetTimer = () => {
-      setUiHidden(false);
-      if (hideTimer) window.clearTimeout(hideTimer);
-      hideTimer = window.setTimeout(() => setUiHidden(true), 2500);
-    };
-    resetTimer();
-    const events = ['touchstart', 'touchmove', 'scroll', 'mousemove', 'keydown'];
-    events.forEach(ev => window.addEventListener(ev, resetTimer, { passive: true } as any));
-    return () => {
-      if (hideTimer) window.clearTimeout(hideTimer);
-      events.forEach(ev => window.removeEventListener(ev, resetTimer as any));
-    };
-  }, []);
 
   // (Removed fullscreen button/logic by request)
 
@@ -272,8 +291,6 @@ export default function PhotographyPage() {
     cycleToFinalValue(totalPhotos.toString(), 'photos', 2000);
     cycleToFinalValue(lastUpdatedString, 'date', 2500);
     
-    // Start matrix rain effect after a delay
-    setTimeout(() => setShowMatrixRain(true), 3000);
   }, []); // Empty dependency array - only run once on mount
 
   // Navigation functions for image viewer
@@ -311,20 +328,30 @@ export default function PhotographyPage() {
       }
     };
 
-    const handleOpenImageViewer = (e: CustomEvent) => {
-      const index = e.detail.index;
-      setCurrentImageIndex(index);
-      setSelectedImage(PHOTOS[index]);
-    };
-
     document.addEventListener('keydown', handleKeyPress);
-    window.addEventListener('openImageViewer', handleOpenImageViewer as EventListener);
     
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
-      window.removeEventListener('openImageViewer', handleOpenImageViewer as EventListener);
     };
   }, [selectedImage, goToNextImage, goToPreviousImage, closeImageViewer]);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
+
+  useEffect(() => {
+    if (!selectedImage) return;
+    const nextIndex = (currentImageIndex + 1) % PHOTOS.length;
+    const prevIndex = (currentImageIndex - 1 + PHOTOS.length) % PHOTOS.length;
+    [nextIndex, prevIndex].forEach((index) => {
+      const img = new Image();
+      img.src = PHOTOS[index].src;
+    });
+  }, [selectedImage, currentImageIndex]);
 
 
   return (
@@ -352,7 +379,7 @@ export default function PhotographyPage() {
           51%, 100% { opacity: 0; }
         }
       `}</style>
-      <main style={{ width: "100%", minHeight: "100svh", height: "auto", backgroundColor: '#1a1a1a', margin: 0, padding: 0 }}>
+      <main className={styles.photographyRoot}>
       <div
         className="bg-bgDark"
         ref={globeRef}
@@ -360,23 +387,15 @@ export default function PhotographyPage() {
       />
       
       {/* Matrix Rain Effect */}
-      {showMatrixRain && (
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'linear-gradient(transparent 0%, rgba(0, 255, 0, 0.03) 50%, transparent 100%)',
-            animation: 'matrixRain 20s linear infinite'
-          }}
-        />
-      )}
+      
       {/* ---- TOP UI (auto-hide) ---- */}
+      {!isGalleryOpen && (
       <div
         className="absolute top-0 left-0 text-gray-50 backdrop-blur-[1px] p-4"
         style={{ 
           zIndex: 9999, 
           fontFamily: "var(--tx-02), system-ui, -apple-system, sans-serif",
-          opacity: uiHidden ? 0 : 1,
-          transition: 'opacity 300ms ease'
+          background: '#111111'
         }}
       >
         <div className="text-xs mb-1">
@@ -399,12 +418,15 @@ export default function PhotographyPage() {
 
         {/* Shown only when hovering a pin */}
         {hoveredArea && (
-          <div className="text-xs p-2 border border-gray-500 bg-black/50">
-            <strong>{hoveredArea}</strong>
-            {/* Could show more info about hovered area here */}
+          <div className={styles.hoverPanel}>
+            <div className={styles.hoverTitle}>{hoveredArea}</div>
+            <div className={styles.hoverMeta}>
+              {AREA_STATS[hoveredArea]?.count ?? 0} photos
+            </div>
           </div>
         )}
       </div>
+      )}
       {/* -------------------------------- */}
       {!globeModule && (
         <p className="bg-bgDark text-gray-50">
@@ -412,212 +434,135 @@ export default function PhotographyPage() {
         </p>
       )}
 
+      {isGalleryOpen && activeArea && (
+        <GalleryModal
+          areaTitle={activeArea}
+          photos={activeAreaPhotos}
+          onClose={closeGallery}
+          onOpenImage={openImageBySrc}
+        />
+      )}
+
       {/* Full-screen Image Viewer Modal (bottom info auto-hides) */}
       {selectedImage && (
         <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100dvh',
-            backgroundColor: 'rgba(0, 0, 0, 0.95)',
-            zIndex: 10000,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backdropFilter: 'blur(10px)',
-          }}
+          className={styles.viewerBackdrop}
           onClick={closeImageViewer}
+          ref={viewerRef}
         >
           {/* Close Button */}
           <button
             onClick={closeImageViewer}
-            style={{
-              position: 'absolute',
-              top: '20px',
-              right: '20px',
-              background: 'transparent',
-              border: '2px solid #FF4F00',
-              color: '#FF4F00',
-              fontSize: '18px',
-              fontFamily: 'var(--tx-02), system-ui, -apple-system, sans-serif',
-              padding: '8px 12px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 10001,
-              transition: 'all 0.2s ease',
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = '#FF4F00';
-              e.currentTarget.style.color = '#000';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.color = '#FF4F00';
-            }}
+            className={`${styles.viewerButton} ${styles.viewerClose}`}
           >
             CLOSE
           </button>
 
-          {/* Previous Button */}
+          {/* Fullscreen Button */}
           <button
             onClick={(e) => {
               e.stopPropagation();
-              goToPreviousImage();
+              toggleFullscreen();
             }}
-            style={{
-              position: 'absolute',
-              left: '20px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              background: 'transparent',
-              border: '2px solid #FF4F00',
-              color: '#FF4F00',
-              fontSize: '16px',
-              fontFamily: 'var(--tx-02), system-ui, -apple-system, sans-serif',
-              padding: '8px 12px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 10001,
-              transition: 'all 0.2s ease',
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = '#FF4F00';
-              e.currentTarget.style.color = '#000';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.color = '#FF4F00';
-            }}
+            className={`${styles.viewerButton} ${styles.viewerFullscreen}`}
+            aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
           >
-            ← PREV
-          </button>
-
-          {/* Next Button */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              goToNextImage();
-            }}
-            style={{
-              position: 'absolute',
-              right: '20px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              background: 'transparent',
-              border: '2px solid #FF4F00',
-              color: '#FF4F00',
-              fontSize: '16px',
-              fontFamily: 'var(--tx-02), system-ui, -apple-system, sans-serif',
-              padding: '8px 12px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 10001,
-              transition: 'all 0.2s ease',
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = '#FF4F00';
-              e.currentTarget.style.color = '#000';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.color = '#FF4F00';
-            }}
-          >
-            NEXT →
+            {isFullscreen ? (
+              <svg
+                className={styles.viewerFullscreenIcon}
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M9 4H4v5M4 4l6 6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                <path d="M15 20h5v-5M20 20l-6-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+              </svg>
+            ) : (
+              <svg
+                className={styles.viewerFullscreenIcon}
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M4 9V4h5M4 4l6 6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                <path d="M20 15v5h-5M20 20l-6-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+              </svg>
+            )}
           </button>
 
           {/* Image Container */}
           <div
-            style={{
-              width: '100vw',
-              height: '100svh',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '60px 20px 100px 20px',
-            }}
+            className={styles.viewerContent}
             onClick={(e) => e.stopPropagation()}
           >
             <img
               src={selectedImage.src}
               alt={selectedImage.alt}
-              style={{
-                maxWidth: '100%',
-                maxHeight: '100%',
-                width: 'auto',
-                height: 'auto',
-                objectFit: 'contain',
-                borderRadius: '8px',
-                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
-              }}
+              className={styles.viewerImage}
             />
           </div>
 
-          {/* Image Info - Bottom Left */}
-          <div className="exif-panel"
-            style={{
-              position: 'absolute',
-              bottom: '12px',
-              left: '14px',
-              right: '14px',
-              background: 'rgba(0, 0, 0, 0.8)',
-              color: '#FF4F00',
-              padding: '12px 14px',
-              border: '1px solid #FF4F00',
-              fontSize: '11px',
-              fontFamily: 'var(--tx-02), system-ui, -apple-system, sans-serif',
-              maxWidth: '300px',
-              lineHeight: '1.4',
-              zIndex: 10002,
-              opacity: uiHidden ? 0 : 1,
-              transition: 'opacity 300ms ease',
-            }}
+          <div
+            className={styles.viewerNav}
+            onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ marginBottom: '8px', fontSize: '14px', fontWeight: 'bold' }}>
+            <button
+              onClick={goToPreviousImage}
+              className={`${styles.viewerButton} ${styles.viewerNavButton}`}
+              aria-label="Previous image"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 6l-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="square" strokeLinejoin="miter" />
+              </svg>
+            </button>
+            <button
+              onClick={goToNextImage}
+              className={`${styles.viewerButton} ${styles.viewerNavButton}`}
+              aria-label="Next image"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M10 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="square" strokeLinejoin="miter" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Image Info - Bottom Left */}
+          <div className={styles.viewerInfo}>
+            <div className={styles.viewerInfoTitle}>
               {currentImageIndex + 1} / {PHOTOS.length}
             </div>
-            <div style={{ marginBottom: '4px' }}>
+            <div className={styles.viewerInfoRow}>
               <strong>Location:</strong> {selectedImage.area} • {selectedImage.region}
             </div>
             {(exifData?.camera || selectedImage.camera) && (
-              <div style={{ marginBottom: '4px' }}>
+              <div className={styles.viewerInfoRow}>
                 <strong>Camera:</strong> {exifData?.camera || selectedImage.camera}
               </div>
             )}
             {(exifData?.lens || selectedImage.lens) && (
-              <div style={{ marginBottom: '4px' }}>
+              <div className={styles.viewerInfoRow}>
                 <strong>Lens:</strong> {exifData?.lens || selectedImage.lens}
               </div>
             )}
             {(exifData?.settings || selectedImage.settings) && (
-              <div style={{ marginBottom: '4px' }}>
+              <div className={styles.viewerInfoRow}>
                 <strong>Settings:</strong> {exifData?.settings || selectedImage.settings}
               </div>
             )}
             {(exifData?.date || selectedImage.date) && (
-              <div style={{ marginBottom: '4px' }}>
+              <div className={styles.viewerInfoRow}>
                 <strong>Date:</strong> {exifData?.date || selectedImage.date}
               </div>
             )}
             {exifData?.focalLength && (
-              <div style={{ marginBottom: '4px' }}>
+              <div className={styles.viewerInfoRow}>
                 <strong>Focal Length:</strong> {exifData.focalLength}
               </div>
             )}
             {!exifData && !selectedImage.camera && (
-              <div style={{ marginBottom: '4px', color: '#888', fontSize: '11px' }}>
+              <div className={styles.viewerInfoMuted}>
                 Loading metadata...
               </div>
             )}
-            <div style={{ fontSize: '10px', color: '#888', marginTop: '8px' }}>
+            <div className={styles.viewerInfoHint}>
               Use arrow keys or buttons to navigate
             </div>
           </div>
@@ -627,39 +572,6 @@ export default function PhotographyPage() {
       {/* Removed scroll shim */}
     </>
   );
-}
-
-// Format region names for display (handles camelCase, underscores, hyphens, and special cases)
-function formatRegionName(name: string): string {
-  const special: Record<string, string> = {
-    nyc: "NYC",
-    gb: "GB",
-    machuPicchu: "Machu Picchu",
-    pineCrest: "Pine Crest",
-    fTL: "Ft. Lauderdale",
-    bocaRaton: "Boca Raton",
-    northernLights: "Northern Lights",
-    "all (sorting when more photos added)": "All",
-    "hyéres": "Hyères",
-    "reykjavík": "Reykjavík",
-  };
-  if (special[name]) return special[name];
-  const normalized = name
-    .replace(/[_-]+/g, " ")
-    .replace(/([a-z])([A-Z])/g, "$1 $2");
-  return normalized
-    .split(" ")
-    .filter(Boolean)
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
-}
-
-function slugifyRegion(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-");
 }
 
 /** 
@@ -1124,174 +1036,23 @@ const PHOTOS: Photo[] = [
   // moved to Fes per user update
 ];
 
-/** 
- * showRetroModal:
- *  - filters the photos array by area
- *  - groups them by region
- *  - builds a sticky, scrollable modal
- */
-function showRetroModal(areaTitle: string) {
-  const backdrop = document.createElement("div");
-  backdrop.classList.add("retro-modal-backdrop");
+const AREA_STATS = buildAreaStats(PHOTOS);
+const PHOTO_INDEX_BY_SRC = new Map(PHOTOS.map((photo, index) => [photo.src, index]));
 
-  const modal = document.createElement("div");
-  modal.classList.add("retro-modal-content");
-  modal.setAttribute(
-    "style",
-    "width: min(94vw, 1300px); max-height: min(90vh, 1100px); overflow-y: auto;"
-  );
-
-  // Feature flag for contact sheet layout
-  const useContactSheet = (() => {
-    try {
-      const fromHash = (window.location.hash || "").includes("layout=contact");
-      const fromStorage = window.localStorage?.getItem("galleryLayout") === "contact";
-      return fromHash || fromStorage;
-    } catch {
-      return false;
+function buildAreaStats(photos: Photo[]) {
+  const stats: Record<string, { count: number; regions: Set<string> }> = {};
+  photos.forEach((photo) => {
+    if (!stats[photo.area]) {
+      stats[photo.area] = { count: 0, regions: new Set() };
     }
-  })();
-
-  // Filter photos by area
-  const filteredPhotos = PHOTOS.filter(
-    (p) => p.area.toLowerCase() === areaTitle.toLowerCase()
-  );
-
-  // Group by region
-  const regionMap: Record<string, Photo[]> = {};
-  filteredPhotos.forEach((photo) => {
-    if (!regionMap[photo.region]) {
-      regionMap[photo.region] = [];
-    }
-    regionMap[photo.region].push(photo);
+    stats[photo.area].count += 1;
+    stats[photo.area].regions.add(photo.region);
   });
 
-  let html = `
-    <div
-      style="
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: sticky;
-        top: 0;
-        backdrop-filter: blur(6px);
-        background: rgba(26, 26, 26, 1);
-        padding: 0.5rem;
-        z-index: 10;
-        margin-bottom: 1.5rem;
-      "
-    >
-      <h2 style="margin: 0;">${areaTitle}</h2>
-      <button
-        id="retro-close-btn"
-        style="
-          color: #f9fafb;
-          cursor: pointer;
-          font-family: 'Berkeley Mono', monospace;
-        "
-      >
-        Close
-      </button>
-    </div>
-  `;
-
-  // Region chips (contact-sheet layout only)
-  if (useContactSheet) {
-    const filteredPhotos = PHOTOS.filter(
-      (p) => p.area.toLowerCase() === areaTitle.toLowerCase()
-    );
-    const regionMap: Record<string, Photo[]> = {};
-    filteredPhotos.forEach((photo) => {
-      if (!regionMap[photo.region]) regionMap[photo.region] = [];
-      regionMap[photo.region].push(photo);
-    });
-    const regionNames = Object.keys(regionMap);
-    const chips = regionNames
-      .map((r) => {
-        const label = formatRegionName(r);
-        const id = `region-${slugifyRegion(r)}`;
-        return `<button class="region-chip" data-target="${id}" style="border:1px solid rgba(255,255,255,0.15); color:#f9fafb; background:transparent; padding:4px 8px; margin:0 6px 6px 0; border-radius:6px; font-family: 'Berkeley Mono', monospace; font-size:12px; cursor:pointer;">${label}</button>`;
-      })
-      .join("");
-    html += `
-      <div style="position: sticky; top: 40px; z-index: 9; background: rgba(26,26,26,0.9); backdrop-filter: blur(6px); padding: 8px 0; margin-bottom: 8px;">
-        <div style="display:flex; flex-wrap: wrap; align-items:center;">${chips}</div>
-      </div>
-    `;
-  }
-
-  // Build a section for each region
-  Object.keys(regionMap).forEach((regionName) => {
-    const regionPhotos = regionMap[regionName];
-    const sectionId = `region-${slugifyRegion(regionName)}`;
-    html += `
-      <section id="${sectionId}" style="margin-bottom: 1.5rem;">
-      <h3 style="margin-bottom: 0.5rem;">${formatRegionName(regionName)}</h3>
-      <div
-      style="
-      ${useContactSheet
-        ? `display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; align-items: start; background-image: radial-gradient(rgba(255,255,255,0.06) 0.5px, rgba(26,26,26,1) 0.5px); background-size: 8px 8px; padding: 8px; border-radius: 8px;`
-        : `display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: flex-start;`}
-      "
-      >
-    `;
-
-    // Each image has a fixed height of 220px; in contact-sheet layout we fill grid cells
-    regionPhotos.forEach((photo, index) => {
-      const globalIndex = PHOTOS.findIndex(p => p.src === photo.src);
-            html += `
-              <div 
-                style="position: relative; height: 220px; ${useContactSheet ? 'width: 100%;' : 'width: auto;'} background: #1a1a1a; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 0; border-radius: 8px; box-shadow: ${useContactSheet ? '0 2px 12px rgba(0,0,0,0.25)' : 'none'};"
-                onclick="openImageViewer(${globalIndex})"
-                onmouseover="this.style.transform='scale(1.02)'"
-                onmouseout="this.style.transform='scale(1)'"
-              >
-          <img
-            src="${photo.src}"
-            alt="${photo.alt}"
-            loading="lazy"
-            decoding="async"
-            onload="this.parentElement.querySelector('.loading')?.remove()"
-            style="
-              height: 220px;
-              width: ${useContactSheet ? '100%' : 'auto'};
-              object-fit: contain;
-              pointer-events: none;
-            "
-          />
-          <div class="loading" style="position: absolute; color: #666; font-size: 12px;">Loading...</div>
-        </div>
-      `;
-    });
-
-    html += `</div></section>`;
+  const normalized: Record<string, { count: number; regionsCount: number }> = {};
+  Object.entries(stats).forEach(([area, data]) => {
+    normalized[area] = { count: data.count, regionsCount: data.regions.size };
   });
 
-  modal.innerHTML = html;
-  backdrop.appendChild(modal);
-  document.body.appendChild(backdrop);
-
-  // Wire chips to sections
-  if (useContactSheet) {
-    const chipButtons = modal.querySelectorAll('.region-chip');
-    chipButtons.forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = (btn as HTMLElement).getAttribute('data-target');
-        const section = targetId ? modal.querySelector(`#${targetId}`) : null;
-        section && (section as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-  }
-
-  const closeBtn = modal.querySelector("#retro-close-btn");
-  closeBtn?.addEventListener("click", () => {
-    backdrop.remove();
-  });
-
-  // Add global function for image viewer (do not close modal; keep it behind)
-  (window as any).openImageViewer = (index: number) => {
-    const event = new CustomEvent('openImageViewer', { detail: { index } });
-    window.dispatchEvent(event);
-  };
+  return normalized;
 }
