@@ -741,6 +741,7 @@ interface Photo {
   region: string; 
   src: string;    
   alt: string;
+  thumbSrc?: string;
   camera?: string;
   lens?: string;
   settings?: string;

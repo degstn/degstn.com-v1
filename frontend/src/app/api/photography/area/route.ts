@@ -15,6 +15,7 @@ type PhotoItem = {
   region: string;
   src: string;
   alt: string;
+  thumbSrc?: string;
 };
 
 const CACHE_SECONDS = 120;
@@ -58,8 +59,12 @@ export async function GET(req: NextRequest) {
     const { S3Client, ListObjectsV2Command } = await import("@aws-sdk/client-s3");
     const s3 = new S3Client({ region });
     const prefix = `images/${folder}/`;
-    const all: PhotoItem[] = [];
+    const all: Array<PhotoItem & { key: string }> = [];
     const regionFolders = new Set<string>();
+    const thumbsByKey = new Map<string, string>();
+
+    const isThumbKey = (key: string) => key.includes("/thumbs/");
+    const toFullKey = (key: string) => key.replace("/thumbs/", "/");
 
     try {
       const prefixResult = await s3.send(
@@ -74,7 +79,7 @@ export async function GET(req: NextRequest) {
         const raw = p.Prefix || "";
         const parts = raw.split("/").filter(Boolean);
         const regionFolder = parts.length >= 3 ? parts[2] : "";
-        if (!regionFolder) return;
+        if (!regionFolder || regionFolder.toLowerCase() === "thumbs") return;
         const regionName =
           (regionMap && regionMap[regionFolder.toLowerCase()]) ||
           (regionFolder === "all" ? "All" : titleCase(regionFolder));
@@ -97,6 +102,10 @@ export async function GET(req: NextRequest) {
       for (const obj of contents) {
         const key = obj.Key || "";
         if (!key || key.endsWith("/") || !/\.(?:jpe?g|png|webp|gif)$/i.test(key)) continue;
+        if (isThumbKey(key)) {
+          thumbsByKey.set(toFullKey(key), `https://${cdn}/${key}`);
+          continue;
+        }
         const parts = key.split("/");
         if (parts.length < 3) continue;
         const regionFolder = parts.length >= 4 ? parts[2] : "all";
@@ -106,6 +115,7 @@ export async function GET(req: NextRequest) {
         const filename = parts[parts.length - 1];
         regionFolders.add(regionName);
         all.push({
+          key,
           area: areaLabel,
           region: regionName,
           src: `https://${cdn}/${key}`,
@@ -115,12 +125,17 @@ export async function GET(req: NextRequest) {
       token = out.IsTruncated ? out.NextContinuationToken : undefined;
     } while (token);
 
-    all.sort((a, b) => a.src.localeCompare(b.src));
+    const merged = all.map(({ key, ...photo }) => ({
+      ...photo,
+      thumbSrc: thumbsByKey.get(key),
+    }));
+
+    merged.sort((a, b) => a.src.localeCompare(b.src));
 
     const regions = Array.from(regionFolders).sort((a, b) => a.localeCompare(b));
 
     return NextResponse.json(
-      { area: areaLabel, photos: all, regions },
+      { area: areaLabel, photos: merged, regions },
       {
         headers: {
           "Cache-Control": `s-maxage=${CACHE_SECONDS}, stale-while-revalidate=${CACHE_SECONDS}`,

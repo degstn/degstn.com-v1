@@ -15,6 +15,7 @@ type PhotoItem = {
   region: string;
   src: string;
   alt: string;
+  thumbSrc?: string;
 };
 
 type ResponseBody = {
@@ -49,7 +50,11 @@ export async function GET() {
     const { S3Client, ListObjectsV2Command } = await import("@aws-sdk/client-s3");
     const s3 = new S3Client({ region });
     const prefix = "images/";
-    const all: PhotoItem[] = [];
+    const all: Array<PhotoItem & { key: string }> = [];
+    const thumbsByKey = new Map<string, string>();
+
+    const isThumbKey = (key: string) => key.includes("/thumbs/");
+    const toFullKey = (key: string) => key.replace("/thumbs/", "/");
 
     let token: string | undefined;
     do {
@@ -64,6 +69,10 @@ export async function GET() {
       for (const obj of contents) {
         const key = obj.Key || "";
         if (!key || key.endsWith("/") || !/\.(?:jpe?g|png|webp|gif)$/i.test(key)) continue;
+        if (isThumbKey(key)) {
+          thumbsByKey.set(toFullKey(key), `https://${cdn}/${key}`);
+          continue;
+        }
         const parts = key.split("/");
         if (parts.length < 3) continue; // require images/<area>/<file> or images/<area>/<region>/<file>
         const areaFolder = parts[1];
@@ -83,6 +92,7 @@ export async function GET() {
           (regionFolder === "all" ? "All" : titleCase(regionFolder));
 
         all.push({
+          key,
           area: areaName,
           region,
           src: `https://${cdn}/${key}`,
@@ -92,7 +102,12 @@ export async function GET() {
       token = out.IsTruncated ? out.NextContinuationToken : undefined;
     } while (token);
 
-    all.sort((a, b) => a.src.localeCompare(b.src));
+    const merged = all.map(({ key, ...photo }) => ({
+      ...photo,
+      thumbSrc: thumbsByKey.get(key),
+    }));
+
+    merged.sort((a, b) => a.src.localeCompare(b.src));
 
     const areaSet = new Map<string, { id?: string; name: string; lat?: number; lng?: number }>();
     (areas as AreaConfig[]).forEach((area) => {
@@ -111,7 +126,7 @@ export async function GET() {
 
     const response: ResponseBody = {
       areas: Array.from(areaSet.values()),
-      photos: all,
+      photos: merged,
     };
 
     return NextResponse.json(response, {

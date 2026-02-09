@@ -8,6 +8,7 @@ type GalleryPhoto = {
   region: string;
   src: string;
   alt: string;
+  thumbSrc?: string;
 };
 
 type GalleryModalProps = {
@@ -215,7 +216,8 @@ export default function GalleryModal({
                 </div>
                 <div className={styles.photoGrid}>
                   {regionPhotos.map((photo) => {
-                    const isLoaded = loadedBySrc[photo.src];
+                    const displaySrc = photo.thumbSrc || photo.src;
+                    const isLoaded = loadedBySrc[displaySrc];
                     return (
                       <button
                         key={photo.src}
@@ -224,15 +226,15 @@ export default function GalleryModal({
                         type="button"
                       >
                         <img
-                          src={photo.src}
+                          src={displaySrc}
                           alt={photo.alt}
                           loading="lazy"
                           decoding="async"
                           className={`${styles.photoImage} ${cropMode ? styles.photoImageCropped : ""}`}
                           onLoad={() => {
                             setLoadedBySrc((prev) => {
-                              if (prev[photo.src]) return prev;
-                              return { ...prev, [photo.src]: true };
+                              if (prev[displaySrc]) return prev;
+                              return { ...prev, [displaySrc]: true };
                             });
                           }}
                         />
