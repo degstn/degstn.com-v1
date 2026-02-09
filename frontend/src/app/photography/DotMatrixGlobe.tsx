@@ -38,6 +38,8 @@ export default function PhotographyPage() {
   const [interiorDots, setInteriorDots] = useState<any[]>([]);
   const [globeReady, setGlobeReady] = useState(false);
   const [showAcknowledgements, setShowAcknowledgements] = useState(false);
+  const [allPhotos, setAllPhotos] = useState<Photo[]>([]);
+  const [listAreaCount, setListAreaCount] = useState<number | null>(null);
   const [crypticNumbers, setCrypticNumbers] = useState({
     locations: '00',
     photos: '000',
@@ -143,6 +145,27 @@ export default function PhotographyPage() {
   }, [activeAreaPhotos]);
 
   useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/photography/list");
+        if (!res.ok) throw new Error("Failed to load photo list");
+        const data: { photos?: Photo[]; areas?: Array<{ name: string }> } = await res.json();
+        if (cancelled) return;
+        setAllPhotos(data.photos || []);
+        if (Array.isArray(data.areas) && data.areas.length > 0) {
+          setListAreaCount(data.areas.length);
+        }
+      } catch (error) {
+        console.error("Failed to load global photo stats:", error);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
     const initialAreas = (areaOverrides as AreaPin[]).map((area) => ({
       id: area.id,
       name: area.name,
@@ -240,9 +263,8 @@ export default function PhotographyPage() {
 
   // Constants for stats
   // Dynamic counting based on actual data
-  const allPhotos = useMemo(() => Object.values(photosByArea).flat(), [photosByArea]);
   const totalPhotos = allPhotos.length;
-  const totalLocations = areaPins.length;
+  const totalLocations = listAreaCount ?? areaPins.length;
   const areaStats = useMemo(() => buildAreaStats(allPhotos), [allPhotos]);
   
   // Auto-generate timestamp
