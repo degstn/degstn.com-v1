@@ -101,11 +101,12 @@ body {
 .my-globe-pin::before {
   content: "";
   position: absolute;
-  top: -7.3px;     
-  left: -7.4px;
-  width: 18px;   
-  height: 18px;
-  border: 3.5px solid transparent;  
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;   
+  height: 14px;
+  border: 2px solid transparent;  
   box-sizing: border-box;
   pointer-events: none;     
 }

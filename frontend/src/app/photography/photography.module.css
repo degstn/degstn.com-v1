@@ -1,7 +1,7 @@
 .photographyRoot {
   width: 100%;
   min-height: 100svh;
-  height: auto;
+  height: 100dvh;
   margin: 0;
   padding: 0;
   background-color: #111111;
@@ -16,6 +16,7 @@
   --panel-bg: rgba(10, 10, 10, 0.92);
   --panel-glow: rgba(255, 79, 0, 0.18);
   --muted: rgba(255, 255, 255, 0.65);
+  overflow: hidden;
 }
 
 .hoverPanel {
@@ -36,6 +37,67 @@
 
 .hoverMeta {
   color: var(--muted);
+}
+
+.acknowledgementContainer {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 9999;
+  font-family: var(--tx-02), "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+  color: #f5f5f5;
+}
+
+.acknowledgementButton {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(8, 8, 8, 0.6);
+  color: var(--muted);
+  padding: 6px 10px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+
+.acknowledgementButton:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.acknowledgementDrawer {
+  margin-top: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 8, 8, 0.8);
+  padding: 10px 12px;
+  width: min(280px, 80vw);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.acknowledgementTitle {
+  font-size: 11px;
+  color: #f5f5f5;
+  margin-bottom: 6px;
+}
+
+.acknowledgementList {
+  display: grid;
+  gap: 4px;
+}
+
+.acknowledgementList a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.acknowledgementList a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .globePinContainer {
@@ -269,6 +331,15 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.modalEmpty {
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  padding: 18px;
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .regionSection {

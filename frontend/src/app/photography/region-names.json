@@ -1,0 +1,34 @@
+{
+  "alaska": {},
+  "california": {
+    "sanfrancisco": "San Francisco"
+  },
+  "france": {
+    "hyeres": "Hyères"
+  },
+  "gbnp": {},
+  "iceland": {
+    "reykjavik": "Reykjavík"
+  },
+  "italy": {},
+  "kiawah": {
+    "oceancourse": "Ocean Course"
+  },
+  "morocco": {},
+  "newyork": {
+    "nyc": "NYC"
+  },
+  "peru": {
+    "machupicchu": "Machu Picchu"
+  },
+  "southflorida": {
+    "bocaraton": "Boca Raton",
+    "ftlauderdale": "Ft. Lauderdale",
+    "northernlights": "Northern Lights",
+    "pinecrest": "Pine Crest"
+  },
+  "vancouver": {
+    "northernlights": "Northern Lights"
+  },
+  "yellowstone": {}
+}

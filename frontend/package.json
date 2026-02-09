@@ -10,7 +10,7 @@
     "gen-version": "node scripts/gen-version.js"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.888.0",
+    "@aws-sdk/client-s3": "^3.985.0",
     "@splinetool/react-spline": "^4.0.0",
     "@splinetool/runtime": "^1.9.72",
     "@turf/turf": "^7.1.0",

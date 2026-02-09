@@ -37,7 +37,7 @@ export default function PhotographyLayout({
   children: React.ReactNode
 }) {
   return (
-    <section className="antialiased" style={{ backgroundColor: '#1a1a1a', colorScheme: 'dark', minHeight: '100svh' }}>
+    <section className="antialiased" style={{ backgroundColor: '#111111', colorScheme: 'dark', minHeight: '100svh' }}>
       <DarkBg />
       {children}
     </section>

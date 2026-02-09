@@ -1,0 +1,15 @@
+[
+  { "id": "ny", "folder": "newyork", "name": "New York", "lat": 42.7128, "lng": -74.006 },
+  { "id": "socal", "folder": "california", "name": "SoCal", "lat": 37.0522, "lng": -120.2437 },
+  { "id": "southflorida", "folder": "southflorida", "name": "South Florida", "lat": 29.350519, "lng": -81.089828 },
+  { "id": "iceland", "folder": "iceland", "name": "Iceland", "lat": 66.009835, "lng": -19.198598 },
+  { "id": "peru", "folder": "peru", "name": "Peru", "lat": -7.962764, "lng": -74.618642 },
+  { "id": "italy", "folder": "italy", "name": "Italy", "lat": 46.580391, "lng": 12.06267 },
+  { "id": "france", "folder": "france", "name": "France", "lat": 50.040182, "lng": 2.740044 },
+  { "id": "morocco", "folder": "morocco", "name": "Morocco", "lat": 31.7917, "lng": -7.0926 },
+  { "id": "yellowstone", "folder": "yellowstone", "name": "Yellowstone", "lat": 44.43378, "lng": -110.696687 },
+  { "id": "vancouver", "folder": "vancouver", "name": "Vancouver", "lat": 52.253465, "lng": -123.043325 },
+  { "id": "gbnp", "folder": "gbnp", "name": "GBNP", "lat": 54.800685, "lng": -127.647608 },
+  { "id": "alaska", "folder": "alaska", "name": "Alaska", "lat": 59.355596, "lng": -135.474302 },
+  { "id": "kiawah", "folder": "kiawah", "name": "Kiawah", "lat": 35.608571, "lng": -80.084449 }
+]

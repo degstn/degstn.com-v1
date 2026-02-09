@@ -13,6 +13,8 @@ type GalleryPhoto = {
 type GalleryModalProps = {
   areaTitle: string;
   photos: GalleryPhoto[];
+  isLoading?: boolean;
+  regionNames?: string[];
   onClose: () => void;
   onOpenImage: (src: string) => void;
 };
@@ -52,6 +54,8 @@ function slugifyRegion(name: string): string {
 export default function GalleryModal({
   areaTitle,
   photos,
+  isLoading = false,
+  regionNames = [],
   onClose,
   onOpenImage,
 }: GalleryModalProps) {
@@ -67,8 +71,11 @@ export default function GalleryModal({
       if (!map.has(key)) map.set(key, []);
       map.get(key)?.push(photo);
     });
+    regionNames.forEach((region) => {
+      if (!map.has(region)) map.set(region, []);
+    });
     return map;
-  }, [photos]);
+  }, [photos, regionNames]);
 
   const totalRegions = regionMap.size;
   const totalPhotos = photos.length;
@@ -192,6 +199,12 @@ export default function GalleryModal({
         </div>
 
         <div className={styles.modalBody} ref={bodyRef}>
+          {isLoading && photos.length === 0 && (
+            <div className={styles.modalEmpty}>Loading photos…</div>
+          )}
+          {!isLoading && photos.length === 0 && (
+            <div className={styles.modalEmpty}>No photos yet.</div>
+          )}
           {filteredRegions.map(([regionName, regionPhotos]) => {
             const sectionId = `region-${slugifyRegion(regionName)}`;
             return (
