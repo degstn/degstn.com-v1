@@ -24,6 +24,38 @@ async function safeJson<T>(res: Response, fallback: T): Promise<T> {
   }
 }
 
+function pickVercelState(readyState?: string): "ready" | "error" | "building" | "canceled" | "unknown" {
+  if (!readyState) return "unknown";
+  if (readyState === "READY") return "ready";
+  if (readyState === "ERROR") return "error";
+  if (readyState === "CANCELED") return "canceled";
+  if (readyState === "BUILDING" || readyState === "QUEUED" || readyState === "INITIALIZING") {
+    return "building";
+  }
+  return "unknown";
+}
+
+function asEpochMs(value: unknown): number | null {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string") {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) return parsed;
+    const ts = new Date(value).getTime();
+    if (Number.isFinite(ts)) return ts;
+  }
+  return null;
+}
+
+function median(values: number[]): number | null {
+  if (values.length === 0) return null;
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  if (sorted.length % 2 === 0) {
+    return Math.round((sorted[mid - 1] + sorted[mid]) / 2);
+  }
+  return sorted[mid];
+}
+
 export async function GET() {
   const headers = getGithubHeaders();
   const base = `https://api.github.com/repos/${OWNER}/${REPO}`;
@@ -69,6 +101,108 @@ export async function GET() {
 
     const latestRun = workflowRunsData?.workflow_runs?.[0] ?? null;
     const latestRelease = releases?.[0] ?? null;
+
+    // Pull per-deployment statuses to avoid "always green dot" on UI.
+    const enrichedDeployments = await Promise.all(
+      deployments.slice(0, 10).map(async (dep) => {
+        const statusesUrl = dep?.statuses_url as string | undefined;
+        const statuses = statusesUrl
+          ? await safeJson<any[]>(await fetch(statusesUrl, { headers }), [])
+          : [];
+        const latestStatus = statuses?.[0];
+        return {
+          id: dep?.id,
+          environment: dep?.environment,
+          created_at: dep?.created_at,
+          sha: dep?.sha,
+          ref: dep?.ref,
+          status: latestStatus?.state ?? dep?.status ?? "unknown",
+          target_url: latestStatus?.target_url ?? null,
+        };
+      })
+    );
+
+    // Optional Vercel stats if env vars are present.
+    const vercelToken = process.env.VERCEL_TOKEN;
+    const vercelProjectId = process.env.VERCEL_PROJECT_ID;
+    const vercelTeamId = process.env.VERCEL_TEAM_ID;
+    let vercel: any = null;
+    if (vercelToken && vercelProjectId) {
+      const teamQuery = vercelTeamId ? `&teamId=${encodeURIComponent(vercelTeamId)}` : "";
+      const vercelRes = await fetch(
+        `https://api.vercel.com/v6/deployments?projectId=${encodeURIComponent(vercelProjectId)}&limit=20${teamQuery}`,
+        { headers: { Authorization: `Bearer ${vercelToken}` } }
+      );
+      const vercelData = await safeJson<any>(vercelRes, { deployments: [] });
+      const deps = Array.isArray(vercelData?.deployments) ? vercelData.deployments : [];
+      const now = Date.now();
+      const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
+      const thirtyDaysAgo = now - 30 * 24 * 60 * 60 * 1000;
+
+      const stateCounts = deps.reduce(
+        (acc: Record<string, number>, dep: any) => {
+          const key = pickVercelState(dep?.readyState);
+          acc[key] = (acc[key] ?? 0) + 1;
+          return acc;
+        },
+        { ready: 0, error: 0, building: 0, canceled: 0, unknown: 0 }
+      );
+
+      const withCreatedAt = deps
+        .map((dep: any) => ({ dep, createdAt: asEpochMs(dep?.createdAt) }))
+        .filter((entry: { dep: any; createdAt: number | null }) => typeof entry.createdAt === "number");
+
+      const inWindow = (fromEpoch: number) => withCreatedAt.filter((entry: { createdAt: number | null }) => {
+        const createdAt = entry.createdAt as number;
+        return createdAt >= fromEpoch;
+      });
+      const rateFor = (entries: Array<{ dep: any }>) => {
+        if (entries.length === 0) return null;
+        const ready = entries.filter((entry) => pickVercelState(entry.dep?.readyState) === "ready").length;
+        return Number(((ready / entries.length) * 100).toFixed(1));
+      };
+
+      const lastFailureEntry = withCreatedAt.find(
+        (entry: { dep: any }) => pickVercelState(entry.dep?.readyState) === "error"
+      );
+
+      const durationCandidates = deps
+        .map((dep: any) => {
+          const createdAt = asEpochMs(dep?.createdAt);
+          const readyAt = asEpochMs(dep?.ready);
+          if (typeof createdAt !== "number" || typeof readyAt !== "number") return null;
+          const duration = readyAt - createdAt;
+          return duration > 0 ? duration : null;
+        })
+        .filter((v: number | null): v is number => typeof v === "number");
+
+      const prodDeps = deps.filter((dep: any) => {
+        const target = String(dep?.target ?? "").toLowerCase();
+        return target === "production" || target === "prod";
+      });
+
+      const latest = deps[0];
+      vercel = {
+        count: deps.length,
+        states: stateCounts,
+        successRate7d: rateFor(inWindow(sevenDaysAgo)),
+        successRate30d: rateFor(inWindow(thirtyDaysAgo)),
+        lastFailureAt: lastFailureEntry?.dep?.createdAt ?? null,
+        medianDurationMs: median(durationCandidates),
+        productionSharePct:
+          deps.length > 0 ? Number(((prodDeps.length / deps.length) * 100).toFixed(1)) : null,
+        latest: latest
+          ? {
+              uid: latest.uid,
+              name: latest.name,
+              url: latest.url ? `https://${latest.url}` : null,
+              readyState: latest.readyState,
+              createdAt: latest.createdAt,
+              target: latest.target ?? null,
+            }
+          : null,
+      };
+    }
 
     const overview = {
       name: (repo as any)?.name,
@@ -131,8 +265,9 @@ export async function GET() {
     const result = {
       overview,
       languages,
-      deployments,
+      deployments: enrichedDeployments,
       workflow_runs: workflowRunsData?.workflow_runs ?? [],
+      vercel,
     };
 
     const res = NextResponse.json(result);
