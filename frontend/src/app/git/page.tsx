@@ -5,23 +5,27 @@ import React, { useEffect, useState } from "react";
 
 // We'll fetch 10 commits at a time
 const PER_PAGE = 10;
+const PIXEL_CHAMFER_STYLE: React.CSSProperties = {
+  clipPath:
+    "polygon(2px 0, calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px), 0 2px, 2px 2px)",
+};
 
 // Helper for picking color classes based on language name
 // Replace the old pickLangColor function with this:
 function pickLangColor(langName: string) {
     switch (langName.toLowerCase()) {
       case "typescript":
-        // e.g. TypeScript => international-orange
-        return "bg-international-orange";
+        // Primary orange tone (theme-aware)
+        return "bg-international-orange-engineering dark:bg-international-orange";
       case "css":
-        // e.g. CSS => international-orange-engineering
-        return "bg-international-orange-engineering";
+        // Secondary orange tone
+        return "bg-international-orange-engineering/75 dark:bg-international-orange/80";
       case "javascript":
-        // e.g. JavaScript => green
-        return "bg-green-500";
+        // Tertiary orange tone (solid to keep marker/bar visually identical)
+        return "bg-[#b06b47] dark:bg-[#d48f6a]";
       default:
-        // fallback color for any other language
-        return "bg-gray-600";
+        // Fallback keeps orange palette consistent
+        return "bg-international-orange-engineering/35 dark:bg-international-orange/45";
     }
   }
 
@@ -29,13 +33,26 @@ function pickLangColor(langName: string) {
 function pickLangTextColor(lang: string) {
     switch (lang.toLowerCase()) {
       case "typescript":
-        return "text-international-orange";
+        return "text-international-orange-engineering dark:text-international-orange";
       case "css":
-        return "text-international-orange-engineering";
+        return "text-international-orange-engineering/80 dark:text-international-orange/80";
       case "javascript":
-        return "text-green-500";
+        return "text-[#b06b47] dark:text-[#d48f6a]";
       default:
-        return "text-gray-500";
+        return "text-international-orange-engineering/55 dark:text-international-orange/55";
+    }
+  }
+
+function pickLangMarkerColor(lang: string) {
+    switch (lang.toLowerCase()) {
+      case "typescript":
+        return "text-international-orange-engineering dark:text-international-orange";
+      case "css":
+        return "text-international-orange-engineering/75 dark:text-international-orange/80";
+      case "javascript":
+        return "text-[#b06b47] dark:text-[#d48f6a]";
+      default:
+        return "text-international-orange-engineering/35 dark:text-international-orange/45";
     }
   }
 
@@ -557,7 +574,10 @@ const langArray = sorted.map(([name, bytes], idx) => {
         ) : (
           <>
             {/* Bar container */}
-            <div className="relative w-full h-4 bg-disabled dark:bg-disabled-dark rounded overflow-hidden mb-2">
+            <div
+              className="relative w-full h-4 bg-disabled dark:bg-disabled-dark overflow-hidden mb-2"
+              style={PIXEL_CHAMFER_STYLE}
+            >
               {(() => {
                 let left = 0;
                 return langArray.map((lang, idx) => {
@@ -580,14 +600,26 @@ const langArray = sorted.map(([name, bytes], idx) => {
               })()}
             </div>
             {/* Language legend */}
-            <p className="text-xs text-gray-600 dark:text-gray-50">
+            <p className="text-xs text-gray-600 dark:text-gray-50 flex flex-wrap gap-x-4 gap-y-1">
               {langArray.map((lang) => (
-                <span key={lang.name} className="mr-3">
-                  <span className={` font-medium px-1`}>
-                    {lang.name} 
+                <span key={lang.name} className="inline-flex items-center">
+                  <span className="inline-flex items-center justify-center mr-2 shrink-0">
+                    <svg
+                      viewBox="0 0 16 16"
+                      className={`${pickLangMarkerColor(lang.name)} w-4 h-4`}
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M3 1H13V3H15V13H13V15H3V13H1V3H3V1Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                  <span className="font-medium px-1">
+                    {lang.name}
                   </span>
                   <span className={`${pickLangTextColor(lang.name)} font-medium px-1`}>
-                     {lang.percent.toFixed(1)}%
+                    {lang.percent.toFixed(1)}%
                   </span>
                 </span>
               ))}
