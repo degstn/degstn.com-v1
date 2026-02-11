@@ -233,7 +233,7 @@ export default function Home() {
                 </button>
               </span>
             </div>
-            <div className=" col-end-3 lg:px-20 pb-10 ">
+            <div className=" col-end-3 lg:px-20 ">
               <span className="text-xl text-gray-600 tracking-tight font-[400px] dark:text-gray-50">2023</span>
             </div>
             <div className="col-end-7 col-span-2 lg:px-20 ">
