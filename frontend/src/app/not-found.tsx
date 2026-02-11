@@ -13,7 +13,7 @@ export default function NotFound() {
       <section className="w-full max-w-2xl mt-4 mb-6">
         <div className="text-xs text-gray-600 dark:text-gray-50">
           <p className="mb-2">page not found</p>
-          <p className="opacity-70">the route you requested does not exist on this deployment.</p>
+          <p className="opacity-70">the route you requested does not exist on this deployment</p>
         </div>
       </section>
     </main>
