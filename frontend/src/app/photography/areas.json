@@ -1,7 +1,7 @@
 [
   { "id": "ny", "folder": "newyork", "name": "New York", "lat": 42.7128, "lng": -74.006 },
   { "id": "socal", "folder": "california", "name": "SoCal", "lat": 37.0522, "lng": -120.2437 },
-  { "id": "southflorida", "folder": "southflorida", "name": "South Florida", "lat": 29.350519, "lng": -81.089828 },
+  { "id": "southflorida", "folder": "southflorida", "name": "Florida", "lat": 29.350519, "lng": -81.089828 },
   { "id": "iceland", "folder": "iceland", "name": "Iceland", "lat": 66.009835, "lng": -19.198598 },
   { "id": "peru", "folder": "peru", "name": "Peru", "lat": -7.962764, "lng": -74.618642 },
   { "id": "italy", "folder": "italy", "name": "Italy", "lat": 46.580391, "lng": 12.06267 },
