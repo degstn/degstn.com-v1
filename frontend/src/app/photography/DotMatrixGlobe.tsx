@@ -844,17 +844,29 @@ async function resolveAreaPins(areas: AreaPin[]): Promise<AreaPin[]> {
 
 // Function to map CloudFront filename back to S3 path
 function getS3PathFromCloudFrontUrl(cloudFrontUrl: string): string | null {
-  const filename = cloudFrontUrl.split('/').pop();
-  if (!filename) return null;
-  
-  if (process.env.NODE_ENV === 'development') {
-    console.log('🔍 Mapping CloudFront URL:', cloudFrontUrl);
-    console.log('📁 Filename:', filename);
-    console.log('🗺️ S3 path (with images/ prefix):', `images/${filename}`);
+  try {
+    const url = new URL(cloudFrontUrl);
+    const path = decodeURIComponent(url.pathname).replace(/^\/+/, "");
+    if (!path) return null;
+
+    // Lambda expects original S3 object keys. CloudFront URLs already include that key.
+    const normalized = path.startsWith("images/") ? path : `images/${path}`;
+    const fullKey = normalized.includes("/thumbs/")
+      ? normalized.replace("/thumbs/", "/")
+      : normalized;
+
+    if (process.env.NODE_ENV === "development") {
+      console.log("🔍 Mapping CloudFront URL:", cloudFrontUrl);
+      console.log("🗺️ S3 path:", fullKey);
+    }
+
+    return fullKey;
+  } catch {
+    // Fallback for unexpected non-URL values.
+    const cleaned = cloudFrontUrl.split("?")[0].replace(/^\/+/, "");
+    if (!cleaned) return null;
+    return cleaned.startsWith("images/") ? cleaned : `images/${cleaned}`;
   }
-  
-  // Lambda expects keys like "images/IMG_2911.jpg"
-  return `images/${filename}`;
 }
 
 // Function to extract EXIF data from S3 image using Lambda
