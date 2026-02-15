@@ -29,6 +29,7 @@ export default function PhotographyPage() {
   const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [exifData, setExifData] = useState<Photo['exifData'] | null>(null);
+  const [showExifDetails, setShowExifDetails] = useState(false);
   const viewerRef = useRef<HTMLDivElement | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [photosByArea, setPhotosByArea] = useState<Record<string, Photo[]>>({});
@@ -433,6 +434,56 @@ export default function PhotographyPage() {
     });
   }, [selectedImage, currentImageIndex, activeAreaPhotos]);
 
+  const viewerMeta = useMemo(() => {
+    if (!selectedImage) return null;
+
+    const camera = resolveMetaField(exifData?.camera, selectedImage.camera);
+    const lens = resolveMetaField(exifData?.lens, selectedImage.lens);
+    const settings = resolveMetaField(exifData?.settings, selectedImage.settings);
+    const date = resolveMetaField(exifData?.date, selectedImage.date);
+    const focalLength = resolveMetaField(exifData?.focalLength);
+    const aperture = resolveMetaField(exifData?.aperture);
+    const shutterSpeed = resolveMetaField(exifData?.shutterSpeed);
+    const iso = resolveMetaField(exifData?.iso, undefined, (value) => `ISO ${String(value)}`);
+
+    const hasExifValues = Boolean(
+      exifData &&
+      [camera, lens, settings, date, focalLength, aperture, shutterSpeed, iso].some(
+        (field) => field.source === "exif" && Boolean(field.value)
+      )
+    );
+    const hasFallbackValues = [camera, lens, settings, date].some(
+      (field) => field.source === "fallback" && Boolean(field.value)
+    );
+    const isExifLoading = exifData === null;
+
+    const summary = [camera.value, lens.value, aperture.value || settings.value, shutterSpeed.value, iso.value]
+      .filter(Boolean)
+      .slice(0, 4)
+      .join(" • ");
+
+    return {
+      camera,
+      lens,
+      settings,
+      date,
+      focalLength,
+      aperture,
+      shutterSpeed,
+      iso,
+      summary: summary || null,
+      hasExifValues,
+      hasFallbackValues,
+      isExifLoading,
+      sourceLabel: isExifLoading
+        ? "Reading EXIF"
+        : hasExifValues
+          ? "Embedded EXIF"
+          : hasFallbackValues
+            ? "Catalog fallback"
+            : "No metadata",
+    };
+  }, [selectedImage, exifData]);
 
   return (
     <>
@@ -598,43 +649,47 @@ export default function PhotographyPage() {
           onClick={closeImageViewer}
           ref={viewerRef}
         >
-          {/* Close Button */}
-          <button
-            onClick={closeImageViewer}
-            className={`${styles.viewerButton} ${styles.viewerClose}`}
+          <div
+            className={styles.viewerTopControls}
+            onClick={(e) => e.stopPropagation()}
           >
-            CLOSE
-          </button>
-
-          {/* Fullscreen Button */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleFullscreen();
-            }}
-            className={`${styles.viewerButton} ${styles.viewerFullscreen}`}
-            aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-          >
-            {isFullscreen ? (
-              <svg
-                className={styles.viewerFullscreenIcon}
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path d="M9 4H4v5M4 4l6 6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
-                <path d="M15 20h5v-5M20 20l-6-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              className={`${styles.viewerButton} ${styles.viewerTopControlButton}`}
+              aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+            >
+              {isFullscreen ? (
+                <svg
+                  className={styles.viewerControlIcon}
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M9 4H4v5M4 4l6 6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                  <path d="M15 20h5v-5M20 20l-6-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                </svg>
+              ) : (
+                <svg
+                  className={styles.viewerControlIcon}
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M4 9V4h5M4 4l6 6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                  <path d="M20 15v5h-5M20 20l-6-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                </svg>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={closeImageViewer}
+              className={`${styles.viewerButton} ${styles.viewerTopControlButton}`}
+              aria-label="Close image viewer"
+            >
+              <svg className={styles.viewerControlIcon} viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="square" />
               </svg>
-            ) : (
-              <svg
-                className={styles.viewerFullscreenIcon}
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path d="M4 9V4h5M4 4l6 6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
-                <path d="M20 15v5h-5M20 20l-6-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
-              </svg>
-            )}
-          </button>
+            </button>
+          </div>
 
           {/* Image Container */}
           <div
@@ -672,47 +727,111 @@ export default function PhotographyPage() {
             </button>
           </div>
 
-          {/* Image Info - Bottom Left */}
-          <div className={styles.viewerInfo}>
-            <div className={styles.viewerInfoTitle}>
-              {currentImageIndex + 1} / {activeAreaPhotos.length}
+          {/* Image Info - Top Left */}
+          <div className={styles.viewerInfo} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.viewerInfoHud}>
+              <div className={styles.viewerFrameBadge}>
+                <span className={styles.viewerFrameCurrent}>{currentImageIndex + 1}</span>
+                <span className={styles.viewerFrameTotal}>/ {activeAreaPhotos.length}</span>
+              </div>
+              <button
+                type="button"
+                className={`${styles.viewerInfoExifToggle} ${showExifDetails ? styles.viewerInfoExifToggleActive : ""}`}
+                onClick={() => setShowExifDetails((prev) => !prev)}
+                aria-label={showExifDetails ? "Hide EXIF details" : "Show EXIF details"}
+                title={showExifDetails ? "Hide metadata" : "Show metadata"}
+              >
+                <svg className={styles.viewerInfoExifIcon} viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="5" y="5" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                  <circle cx="12" cy="8.9" r="1.05" fill="currentColor" />
+                  <path d="M12 11.9v3.2" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="square" />
+                </svg>
+              </button>
             </div>
-            <div className={styles.viewerInfoRow}>
-              <strong>Location:</strong> {selectedImage.area} • {selectedImage.region}
-            </div>
-            {(exifData?.camera || selectedImage.camera) && (
-              <div className={styles.viewerInfoRow}>
-                <strong>Camera:</strong> {exifData?.camera || selectedImage.camera}
+            {showExifDetails && (
+              <div className={styles.viewerInfoPanel}>
+                <div className={`${styles.viewerInfoRow} ${styles.viewerInfoLocation}`}>
+                  <strong>Location:</strong> {selectedImage.area} • {selectedImage.region}
+                </div>
+                {viewerMeta?.isExifLoading && (
+                  <div className={styles.viewerInfoSkeleton} aria-hidden="true">
+                    <span />
+                    <span />
+                  </div>
+                )}
+                {!viewerMeta?.isExifLoading && viewerMeta && (
+                  <div className={styles.viewerInfoDetails}>
+                    <div className={styles.viewerInfoSection}>
+                      <div className={styles.viewerInfoSectionTitle}>Gear</div>
+                      {viewerMeta.camera.value && (
+                        <div className={styles.viewerInfoRow}>
+                          <strong>Camera:</strong> {viewerMeta.camera.value}
+                        </div>
+                      )}
+                      {viewerMeta.lens.value && (
+                        <div className={styles.viewerInfoRow}>
+                          <strong>Lens:</strong> {viewerMeta.lens.value}
+                        </div>
+                      )}
+                    </div>
+                    <div className={styles.viewerInfoSection}>
+                      <div className={styles.viewerInfoSectionTitle}>Capture</div>
+                      {viewerMeta.aperture.value && (
+                        <div className={styles.viewerInfoRow}>
+                          <strong>Aperture:</strong> {viewerMeta.aperture.value}
+                        </div>
+                      )}
+                      {viewerMeta.shutterSpeed.value && (
+                        <div className={styles.viewerInfoRow}>
+                          <strong>Shutter:</strong> {viewerMeta.shutterSpeed.value}
+                        </div>
+                      )}
+                      {viewerMeta.iso.value && (
+                        <div className={styles.viewerInfoRow}>
+                          <strong>ISO:</strong> {viewerMeta.iso.value.replace(/^ISO\s*/, "")}
+                        </div>
+                      )}
+                      {viewerMeta.focalLength.value && (
+                        <div className={styles.viewerInfoRow}>
+                          <strong>Focal:</strong> {viewerMeta.focalLength.value}
+                        </div>
+                      )}
+                      {!viewerMeta.aperture.value &&
+                        !viewerMeta.shutterSpeed.value &&
+                        !viewerMeta.iso.value &&
+                        viewerMeta.settings.value && (
+                          <div className={styles.viewerInfoRow}>
+                            <strong>Settings:</strong> {viewerMeta.settings.value}
+                          </div>
+                        )}
+                    </div>
+                    <div className={styles.viewerInfoSection}>
+                      <div className={styles.viewerInfoSectionTitle}>Timeline</div>
+                      {viewerMeta.date.value && (
+                        <div className={styles.viewerInfoRow}>
+                          <strong>Date:</strong> {viewerMeta.date.value}
+                        </div>
+                      )}
+                      {!viewerMeta.camera.value &&
+                        !viewerMeta.lens.value &&
+                        !viewerMeta.settings.value &&
+                        !viewerMeta.date.value &&
+                        !viewerMeta.focalLength.value &&
+                        !viewerMeta.aperture.value &&
+                        !viewerMeta.shutterSpeed.value &&
+                        !viewerMeta.iso.value && (
+                          <div className={styles.viewerInfoMuted}>
+                            No metadata available for this image.
+                          </div>
+                        )}
+                    </div>
+                  </div>
+                )}
+                <div className={styles.viewerInfoHint}>
+                  Use arrow keys or buttons to navigate
+                </div>
               </div>
             )}
-            {(exifData?.lens || selectedImage.lens) && (
-              <div className={styles.viewerInfoRow}>
-                <strong>Lens:</strong> {exifData?.lens || selectedImage.lens}
-              </div>
-            )}
-            {(exifData?.settings || selectedImage.settings) && (
-              <div className={styles.viewerInfoRow}>
-                <strong>Settings:</strong> {exifData?.settings || selectedImage.settings}
-              </div>
-            )}
-            {(exifData?.date || selectedImage.date) && (
-              <div className={styles.viewerInfoRow}>
-                <strong>Date:</strong> {exifData?.date || selectedImage.date}
-              </div>
-            )}
-            {exifData?.focalLength && (
-              <div className={styles.viewerInfoRow}>
-                <strong>Focal Length:</strong> {exifData.focalLength}
-              </div>
-            )}
-            {!exifData && !selectedImage.camera && (
-              <div className={styles.viewerInfoMuted}>
-                Loading metadata...
-              </div>
-            )}
-            <div className={styles.viewerInfoHint}>
-              Use arrow keys or buttons to navigate
-            </div>
           </div>
         </div>
       )}
@@ -787,6 +906,37 @@ interface AreaPin {
   lat?: number;
   lng?: number;
 }
+
+type MetaSource = "exif" | "fallback" | null;
+type MetaField = { value: string | null; source: MetaSource };
+
+function hasMetaValue(value: unknown): boolean {
+  if (typeof value === "number") return Number.isFinite(value);
+  if (typeof value === "string") return value.trim().length > 0;
+  return Boolean(value);
+}
+
+function toMetaString(value: unknown): string | null {
+  if (!hasMetaValue(value)) return null;
+  return String(value).trim();
+}
+
+function resolveMetaField(
+  exifValue: unknown,
+  fallbackValue?: unknown,
+  formatter?: (value: unknown) => string
+): MetaField {
+  if (hasMetaValue(exifValue)) {
+    const value = formatter ? formatter(exifValue) : toMetaString(exifValue);
+    return { value, source: value ? "exif" : null };
+  }
+  if (hasMetaValue(fallbackValue)) {
+    const value = formatter ? formatter(fallbackValue) : toMetaString(fallbackValue);
+    return { value, source: value ? "fallback" : null };
+  }
+  return { value: null, source: null };
+}
+
 
 function getCachedGeocode(name: string): { lat: number; lng: number } | null {
   try {

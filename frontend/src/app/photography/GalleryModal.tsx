@@ -52,6 +52,10 @@ function slugifyRegion(name: string): string {
     .replace(/\s+/g, "-");
 }
 
+function countLabel(count: number, singular: string, plural: string) {
+  return `${count} ${count === 1 ? singular : plural}`;
+}
+
 export default function GalleryModal({
   areaTitle,
   photos,
@@ -104,8 +108,12 @@ export default function GalleryModal({
           <div>
             <div className={styles.modalTitle}>{areaTitle}</div>
             <div className={styles.modalMeta}>
-              <span className={styles.dataChip}>{totalPhotos} photos</span>
-              <span className={styles.dataChip}>{totalRegions} regions</span>
+              <span className={styles.dataChip}>
+                {countLabel(totalPhotos, "photo", "photos")}
+              </span>
+              <span className={styles.dataChip}>
+                {countLabel(totalRegions, "region", "regions")}
+              </span>
             </div>
           </div>
           <button className={styles.modalClose} onClick={onClose}>
