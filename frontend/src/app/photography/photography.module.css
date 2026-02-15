@@ -631,18 +631,6 @@
   line-height: 1.55;
 }
 
-.viewerInfoPanel::before {
-  content: "";
-  position: absolute;
-  bottom: -7px;
-  right: 22px;
-  width: 12px;
-  height: 12px;
-  background: rgba(8, 8, 8, 0.92);
-  border-bottom: 1px solid var(--panel-border);
-  border-right: 1px solid var(--panel-border);
-  transform: rotate(45deg);
-}
 
 .viewerInfoDetails {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
@@ -775,10 +763,6 @@
   .viewerInfoSummary {
     font-size: 11px;
     line-height: 1.35;
-  }
-
-  .viewerInfoPanel::before {
-    right: 18px;
   }
 
   .viewerInfoHint {
