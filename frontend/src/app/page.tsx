@@ -14,8 +14,24 @@ type Project = {
   tags: string[];
 };
 
+// Auto-bust media cache each page load so same-name S3 uploads refresh without manual versioning.
+const ASSET_VERSION = Date.now().toString();
+
+function withCacheBust(url: string, version?: string) {
+  if (!version) return url;
+  try {
+    const parsed = new URL(url);
+    parsed.searchParams.set('v', version);
+    return parsed.toString();
+  } catch {
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}v=${encodeURIComponent(version)}`;
+  }
+}
+
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
   if (!project) return null;
+  const mediaSrc = withCacheBust(project.image, ASSET_VERSION);
 
   function getCTAButtonClass(slug: string) {
     // Vercel-style CTA: pill, border, light bg, dark text, bold, left-aligned
@@ -52,7 +68,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
                     className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
                   />
                   <video
-                    src={project.image}
+                    src={mediaSrc}
                     muted
                     autoPlay
                     loop
@@ -67,7 +83,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
                   />
                 </div>
               ) : (
-                <img src={project.image} alt={project.name} className="object-contain w-full h-full cursor-pointer" />
+                <img src={mediaSrc} alt={project.name} className="object-contain w-full h-full cursor-pointer" />
               )}
             </div>
           </a>
@@ -122,6 +138,33 @@ export default function Home() {
     };
   }, [openProject]);
 
+  useEffect(() => {
+    const preloadedImages: HTMLImageElement[] = [];
+    const preloadLinks: HTMLLinkElement[] = [];
+
+    projects.forEach((project) => {
+      const src = withCacheBust(project.image, ASSET_VERSION);
+
+      if (project.image.toLowerCase().endsWith('.mov')) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'video';
+        link.href = src;
+        document.head.appendChild(link);
+        preloadLinks.push(link);
+        return;
+      }
+
+      const image = new Image();
+      image.src = src;
+      preloadedImages.push(image);
+    });
+
+    return () => {
+      preloadLinks.forEach((link) => link.remove());
+    };
+  }, []);
+
   return (
     <>
       {openProject && <ProjectModal project={openProject} onClose={() => setOpenProject(null)} />}
@@ -145,6 +188,16 @@ export default function Home() {
             </div>
             <div className=" col-end-3 lg:px-20  ">
               <span className="text-xl bg-clip-text text-transparent text-international-orange-engineering dark:text-international-orange tracking-tight font-[400px]">2026</span>
+            </div>
+            <div className="col-end-7 col-span-2 lg:px-20 ">
+              <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
+                <button onClick={() => {
+                  const localeCenterProject = projects.find(p => p.slug === 'locale-center');
+                  localeCenterProject && setOpenProject(localeCenterProject);
+                }}>
+                  <p className="hover:underline underline-offset-4">locale.center</p>
+                </button>
+              </span>
             </div>
             <div className="col-end-7 col-span-2 lg:px-20 ">
               <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">

@@ -1,5 +1,13 @@
 export const projects = [
   {
+    slug: "locale-center",
+    name: "locale.center",
+    url: "https://locale.center/",
+    image: "https://cdn.degstn.com/locale-space.png",
+    description: "locale.center is a community hub focused on helping people connect with each other and discover local resources in one place. Built with an experience inspired by early Snap Map, it combines support agents and live heatmaps to make participation feel immediate, inclusive, and community-driven.",
+    tags: ["Web", "Community", "2026"],
+  },
+  {
     slug: "polyline",
     name: "Polyline",
     url: "https://polyline.ai/",
