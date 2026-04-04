@@ -28,29 +28,37 @@ function getEmbedSrc(): string | null {
   const videoId = process.env.NEXT_PUBLIC_GHORMAN_YT_VIDEO_ID
 
   if (videoId) {
-    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0`
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&controls=0&modestbranding=1&playsinline=1`
   }
   if (channelId) {
-    return `https://www.youtube.com/embed/live_stream?channel=${channelId}&autoplay=1&mute=1&rel=0`
+    return `https://www.youtube.com/embed/live_stream?channel=${channelId}&autoplay=1&mute=1&rel=0&controls=0&modestbranding=1&playsinline=1`
+  }
+  return null
+}
+
+function getWatchUrl(): string | null {
+  const channelId = process.env.NEXT_PUBLIC_GHORMAN_YT_CHANNEL_ID
+  const videoId = process.env.NEXT_PUBLIC_GHORMAN_YT_VIDEO_ID
+
+  if (videoId) {
+    return `https://www.youtube.com/watch?v=${videoId}`
+  }
+  if (channelId) {
+    return `https://www.youtube.com/channel/${channelId}/live`
   }
   return null
 }
 
 export default function GhormanLive() {
   const src = getEmbedSrc()
-  const infoImage = '/ghorman.png'
+  const watchUrl = getWatchUrl()
 
   const name = 'Ghorman'
   const speciesCommon = 'Colombian giant redleg tarantula'
   const scientificName = 'Megaphobema robustum'
   const origin = 'Colombia, Brazil'
-  const birthdayISO =  '2025-06-11'
-  const sex =  'male'
-  const enclosure = 'enclosure 1'
-  const tempRange = '22–26°C (72–79°F)'
-  const humidityRange = '44%'
-  const lastMolt = 'estimated 1/16/2026'
-  const lastFed = '1/25/2026'
+  const birthdayISO = '2025-06-11'
+  const sex = 'male'
 
   function formatAge(iso: string): string {
     if (!iso) return '—'
@@ -62,7 +70,6 @@ export default function GhormanLive() {
     let days = now.getDate() - birth.getDate()
     if (days < 0) {
       months -= 1
-      // approximate day adjustment is fine for display
       days += 30
     }
     if (months < 0) {
@@ -77,8 +84,18 @@ export default function GhormanLive() {
   const age = formatAge(birthdayISO)
   const birthdayDisplay = new Date(birthdayISO).toLocaleDateString("en-US")
 
+  const stats: { label: string; value: string; italic?: boolean }[] = [
+    { label: 'Name', value: name },
+    { label: 'Species', value: speciesCommon },
+    { label: 'Scientific name', value: scientificName, italic: true },
+    { label: 'Origin', value: origin },
+    { label: 'Sex', value: sex },
+    { label: 'Birthday', value: birthdayDisplay || '—' },
+    { label: 'Age', value: age },
+  ]
+
   return (
-    <main className="min-h-screen flex-grid items-center justify-center bg-bgLight dark:bg-bgDark p-6 md:px-56 px-6 pt-24">
+    <main className="min-h-screen bg-bgLight dark:bg-bgDark p-6 md:px-56 px-6 pt-24">
       <div className="text-sm text-gray-600 opacity-50 dark:text-gray-50">
           <Link href="/" className="hover:underline ">
                 back
@@ -88,8 +105,11 @@ export default function GhormanLive() {
 
         <section className="w-full max-w-5xl mt-6">
           <GhormanLiveMeta isLive={Boolean(src)} />
-          {src ? (
-            <div className="relative w-full pb-[56.25%] bg-black border border-disabled dark:border-disabled-dark">
+        </section>
+
+        {src ? (
+          <section className="-mx-6 md:mx-0 mt-2">
+            <div className="relative w-full pb-[56.25%] max-w-5xl md:mx-0 bg-black md:border border-disabled dark:border-disabled-dark">
               <iframe
                 src={src}
                 title="Ghorman livestream"
@@ -98,90 +118,57 @@ export default function GhormanLive() {
                 allowFullScreen
                 referrerPolicy="no-referrer-when-downgrade"
               />
+              <div className="absolute inset-0 z-10 md:hidden" />
             </div>
-          ) : (
+            <div className="flex items-center gap-1.5 mt-2 px-6 md:hidden">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-600 dark:text-gray-50 opacity-30 flex-shrink-0"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" /></svg>
+              <span className="text-[10px] text-gray-600 dark:text-gray-50 opacity-30 tracking-wide">Pinch to zoom</span>
+            </div>
+          </section>
+        ) : (
+          <section className="w-full max-w-5xl mt-2">
             <div className="text-sm text-gray-600 dark:text-gray-50 opacity-70">
               Set <code className="px-1">NEXT_PUBLIC_GHORMAN_YT_CHANNEL_ID</code> or{" "}
               <code className="px-1">NEXT_PUBLIC_GHORMAN_YT_VIDEO_ID</code> to enable the livestream embed.
             </div>
-          )}
-        </section>
+          </section>
+        )}
 
-        {/* Infobox-style stats */}
-        <section className="w-full max-w-5xl mt-8">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-            {/* Image or placeholder */}
-            <div className="md:col-span-5">
-              <div className="w-full aspect-square overflow-hidden border border-disabled dark:border-disabled-dark flex items-center justify-center bg-bgLight dark:bg-bgDark">
-                {infoImage ? (
-                  <img
-                    src={infoImage}
-                    alt="Ghorman"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-xs text-gray-600 dark:text-gray-50 opacity-70">Picture coming soon</span>
-                  </div>
-                )}
+        <div className="w-full max-w-5xl mt-4 md:mt-8 border-t border-disabled/30 dark:border-disabled-dark/30" />
+
+        <section className="w-full max-w-5xl mt-4 md:mt-6">
+          <div className="text-gray-600 dark:text-gray-50 grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2 md:gap-x-6 md:gap-y-4">
+            {stats.map((s) => (
+              <div key={s.label}>
+                <div className="text-[10px] md:text-xs uppercase tracking-wider opacity-50">{s.label}</div>
+                <div className={`text-sm md:text-base ${s.italic ? 'italic' : ''}`}>{s.value}</div>
               </div>
-            </div>
-            {/* Tailored stats */}
-            <div className="md:col-span-7">
-              <div className="text-gray-600 dark:text-gray-50 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-                <div>
-                  <div className="text-xs uppercase opacity-70">Name</div>
-                  <div className="text-lg md:text-xl">{name}</div>
-                </div>
-                <div>
-                  <div className="text-xs uppercase opacity-70">Species</div>
-                  <div className="text-base md:text-lg">{speciesCommon}</div>
-                </div>
-                <div>
-                  <div className="text-xs uppercase opacity-70">Scientific name</div>
-                  <div className="text-base md:text-lg italic">{scientificName}</div>
-                </div>
-                <div>
-                  <div className="text-xs uppercase opacity-70">Origin</div>
-                  <div className="text-base md:text-lg">{origin}</div>
-                </div>
-                <div>
-                  <div className="text-xs uppercase opacity-70">Sex</div>
-                  <div className="text-base md:text-lg">{sex}</div>
-                </div>
-                <div>
-                  <div className="text-xs uppercase opacity-70">Birthday</div>
-                  <div className="text-base md:text-lg">{birthdayDisplay || '—'}</div>
-                </div>
-                <div>
-                  <div className="text-xs uppercase opacity-70">Age</div>
-                  <div className="text-base md:text-lg">{age}</div>
-                </div>
-                <div>
-                  <div className="text-xs uppercase opacity-70">Enclosure</div>
-                  <div className="text-base md:text-lg">{enclosure}</div>
-                </div>
-                <div>
-                  <div className="text-xs uppercase opacity-70">Temperature</div>
-                  <div className="text-base md:text-lg">{tempRange}</div>
-                </div>
-                <div>
-                  <div className="text-xs uppercase opacity-70">Humidity</div>
-                  <div className="text-base md:text-lg">{humidityRange}</div>
-                </div>
-                <div>
-                  <div className="text-xs uppercase opacity-70">Last molt</div>
-                  <div className="text-base md:text-lg">{lastMolt}</div>
-                </div>
-                <div>
-                  <div className="text-xs uppercase opacity-70">Last fed</div>
-                  <div className="text-base md:text-lg">{lastFed}</div>
-                </div>
-              </div>
-            </div>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-4 md:mt-6">
+            {watchUrl && (
+              <a
+                href={watchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm text-international-orange-engineering dark:text-international-orange hover:underline underline-offset-4"
+              >
+                <span>Watch on YouTube</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><path d="M7 17L17 7M17 7H7M17 7v10" /></svg>
+              </a>
+            )}
+            <a
+              href="https://discord.gg/wMjcYGBvjR"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-international-orange-engineering dark:text-international-orange hover:underline underline-offset-4"
+            >
+              <span>Get movement alerts</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><path d="M7 17L17 7M17 7H7M17 7v10" /></svg>
+            </a>
           </div>
         </section>
     </main>
   )
 }
-
