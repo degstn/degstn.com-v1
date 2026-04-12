@@ -206,11 +206,18 @@ export default function Home() {
                 </Link>
               </span>
             </div>
-            <div className="col-end-7 col-span-2 lg:px-20 pb-7 ">
+            <div className="col-end-7 col-span-2 lg:px-20 ">
               <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
                 <Link href="/ghorman">
                   <p className="hover:underline underline-offset-4">ghorman</p>
                 </Link>
+              </span>
+            </div>
+            <div className="col-end-7 col-span-2 lg:px-20 pb-7 ">
+              <span className="text-xl text-gray-600 tracking-tight font-normal dark:text-gray-50">
+                <a href="https://dg.photos" target="_blank" rel="noopener noreferrer">
+                  <p className="hover:underline underline-offset-4">dg.photos</p>
+                </a>
               </span>
             </div>
             <div className=" col-end-3 lg:px-20  ">
