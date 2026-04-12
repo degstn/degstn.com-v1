@@ -210,6 +210,7 @@ export default function GitPage() {
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [hoveredCommitSha, setHoveredCommitSha] = useState<string | null>(null);
+  const [selectedCommitSha, setSelectedCommitSha] = useState<string | null>(null);
 
   const [deployments, setDeployments] = useState<any[]>([]);
   const [vercelSummary, setVercelSummary] = useState<any | null>(null);
@@ -691,33 +692,38 @@ const langArray = sorted.map(([name, bytes], idx) => {
         <ul className="w-full border border-disabled dark:border-disabled-dark divide-y divide-disabled dark:divide-disabled-dark">
           {commits.map((commit) => {
             const shortSha = commit.sha.substring(0, 7);
-            const isActive = hoveredCommitSha === commit.sha;
+            const isHovered = hoveredCommitSha === commit.sha;
+            const isSelected = selectedCommitSha === commit.sha;
+            const isRowActive = isHovered || isSelected;
             return (
               <li
                 key={commit.sha}
+                onClick={() => setSelectedCommitSha(commit.sha)}
                 onMouseEnter={() => {
                   setHoveredCommitSha(commit.sha);
                   ensureStats(commit.sha);
                 }}
-                className={`group relative px-4 py-4 transition-colors ${
-                  isActive
+                className={`group relative px-4 py-4 transition-colors cursor-pointer ${
+                  isRowActive
                     ? "bg-black/[0.03] dark:bg-white/[0.04]"
                     : "hover:bg-black/[0.02] dark:hover:bg-white/[0.03] hover:translate-x-[1px]"
                 }`}
               >
                 <span
-                  className={`absolute left-0 top-0 h-full w-[2px] transition-opacity duration-150 ${
-                    isActive
-                      ? "bg-international-orange-engineering dark:bg-international-orange opacity-100"
-                      : "bg-international-orange-engineering dark:bg-international-orange opacity-0 group-hover:opacity-100"
+                  className={`absolute left-0 top-0 h-full transition-all duration-150 ${
+                    isSelected
+                      ? "w-1 bg-international-orange-engineering dark:bg-international-orange opacity-100"
+                      : isHovered
+                        ? "w-[2px] bg-international-orange-engineering dark:bg-international-orange opacity-100"
+                        : "w-[2px] bg-international-orange-engineering dark:bg-international-orange opacity-0 group-hover:opacity-100"
                   }`}
                 />
                 <div
                   className={`absolute right-3 top-3 text-[10px] uppercase tracking-wide transition-opacity duration-150 pointer-events-none ${
-                    isActive ? "opacity-70" : "opacity-0 group-hover:opacity-70"
+                    isSelected || isHovered ? "opacity-70" : "opacity-0 group-hover:opacity-70"
                   }`}
                 >
-                  {isActive ? "selected" : "hover"}
+                  {isSelected ? "selected" : isHovered ? "hover" : ""}
                 </div>
                 <p className="mb-2 flex items-center space-x-1">
                   {(() => {
