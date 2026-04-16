@@ -27,6 +27,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     },
     {
+      url: 'https://degstn.com/archive',
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
       url: 'https://degstn.com/photography',
       lastModified: new Date(),
       changeFrequency: 'monthly',

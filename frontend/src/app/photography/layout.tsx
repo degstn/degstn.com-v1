@@ -28,7 +28,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: '#1a1a1a',
+  themeColor: '#111111',
 }
 
 export default function PhotographyLayout({

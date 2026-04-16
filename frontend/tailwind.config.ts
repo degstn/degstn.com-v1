@@ -15,7 +15,7 @@ const config: Config = {
         'gray-600': '#4b5563',
         'gray-50': '#f9fafb',
         'bgLight': '#e2deda',
-        'bgDark': '#1a1a1a',
+        'bgDark': '#111111',
         'green-500': '#4e9a06',
         'red-500': '#ef4444',
       },
