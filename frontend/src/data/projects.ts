@@ -79,4 +79,57 @@ export const projects = [
     description: "This is the archived version of my portfolio from 2020 to 2021. It served to showcase my photography of airplanes, and my passion for aviation during COVID-19, representing a time where I could not travel, but I could photograph and capture the beauty of aviation in the meantime.",
     tags: ["Photography"],
   },
+];
+
+// Site pages previewed in the homepage panel. An empty image shows a
+// "screenshot soon" placeholder until real screenshots are uploaded.
+export const pages = [
+  {
+    slug: "cv",
+    name: "cv",
+    url: "/cv",
+    image: "",
+    description: "education, experience, and the rest of the formal rundown.",
+    tags: ["page"],
+  },
+  {
+    slug: "photography",
+    name: "photography",
+    url: "/photography",
+    image: "",
+    description: "this page tells the story of my passion in photography and its global scale. every country on this fully interactive globe shares a different collective memory between my grandpa pops and me.",
+    tags: ["page", "2024-now"],
+  },
+  {
+    slug: "dg-photos",
+    name: "dg.photos",
+    url: "https://dg.photos",
+    image: "",
+    description: "a separate home for my photography — full galleries living on their own domain.",
+    tags: ["site", "external"],
+  },
+  {
+    slug: "ghorman",
+    name: "ghorman",
+    url: "/ghorman",
+    image: "",
+    description: "ghorman is my colombian giant redleg tarantula (megaphobema robustum). this page is his live spider cam, running around the clock.",
+    tags: ["page", "live"],
+  },
+  {
+    slug: "words",
+    name: "words",
+    url: "/words",
+    image: "",
+    description: "long-form writing, starting with the story of how this portfolio came to be.",
+    tags: ["page", "writing"],
+  },
+  {
+    slug: "archive",
+    name: "archive",
+    url: "/archive",
+    image: "https://cdn.degstn.com/archive.png",
+    description: "older work and the 2020–2021 version of this site, preserved as it was.",
+    tags: ["page", "<2023"],
+  },
 ]; 
