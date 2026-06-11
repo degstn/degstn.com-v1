@@ -128,8 +128,8 @@ export const pages = [
     slug: "archive",
     name: "archive",
     url: "/archive",
-    image: "https://cdn.degstn.com/archive.png",
-    description: "older work and the 2020–2021 version of this site, preserved as it was.",
+    image: "",
+    description: "older projects from before 2023 — currently being gathered from old drives and forgotten repos. coming soon.",
     tags: ["page", "<2023"],
   },
 ]; 
