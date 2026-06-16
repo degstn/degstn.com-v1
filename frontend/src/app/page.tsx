@@ -106,7 +106,7 @@ function ProjectMedia({ project, className = '' }: { project: Project; className
 
   return (
     <div
-      className={`aspect-[3/2] w-full overflow-hidden flex items-center justify-center ${className}`}
+      className="aspect-[3/2] w-full overflow-hidden flex items-center justify-center ${className}"
       style={isVideo ? { overflow: 'visible' } : undefined}
     >
       {isVideo ? (
@@ -133,7 +133,7 @@ function ProjectMedia({ project, className = '' }: { project: Project; className
           />
         </div>
       ) : (
-        <img src={mediaSrc} alt={project.name} className="object-contain w-full h-full cursor-pointer" />
+        <img src={mediaSrc} alt={project.name} className="max-w-full max-h-full object-contain cursor-pointer border border-disabled dark:border-disabled-dark" />
       )}
     </div>
   );
