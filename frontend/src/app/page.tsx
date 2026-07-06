@@ -492,7 +492,7 @@ export default function Home() {
                 <ProjectLink
                   key={link.label}
                   href={link.href}
-                  className="group flex w-full items-center justify-between gap-1 text-sm tracking-tight font-normal text-gray-600 dark:text-gray-50 md:text-xs md:font-medium"
+                  className="group flex w-full items-center justify-between gap-1 text-sm tracking-tight font-normal text-gray-600 dark:text-gray-50 md:w-auto md:self-start md:justify-start md:text-xs md:font-medium"
                 >
                   <NavLabel>{link.label}</NavLabel>
                   <HoverHint>{link.hint ?? '[↗]'}</HoverHint>
@@ -501,7 +501,7 @@ export default function Home() {
               <Link
                 href="/git"
                 aria-label="Changelog"
-                className="group mt-2 flex w-full min-w-0 items-center justify-between gap-1 text-international-orange-engineering dark:text-international-orange md:mt-1"
+                className="group mt-2 flex w-full min-w-0 items-center justify-between gap-1 text-international-orange-engineering dark:text-international-orange md:mt-1 md:w-auto md:self-start md:justify-start"
               >
                 <span className="inline-flex min-w-0 items-center gap-1">
                   <svg width={12} height={12} viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
