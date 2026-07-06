@@ -27,10 +27,11 @@ const PIXEL_CHAMFER_STYLE: CSSProperties = {
     'polygon(4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px), 0 4px, 4px 4px)',
 };
 
-// Full-width rows with the label left and the hint pushed to the column's right
-// edge, so every hint sits on one vertical rail instead of trailing its label.
+// Mobile: full-width rows, label left and hint pushed to the column's right
+// edge so hints stack on one vertical rail. Desktop (md+): rows shrink to
+// content and the hint sits right beside the label, revealed on hover.
 const navItemClass =
-  'group flex w-full items-center justify-between gap-1 text-lg text-gray-600 tracking-tight font-normal dark:text-gray-50';
+  'group flex w-full items-center justify-between gap-1 text-lg text-gray-600 tracking-tight font-normal dark:text-gray-50 md:w-auto md:self-start md:justify-start';
 
 // Footer links — add entries here and they flow into the footer row.
 const footerLinks: { label: string; href: string; hint?: string }[] = [
@@ -436,7 +437,7 @@ export default function Home() {
         <div className="flex w-full flex-1 md:min-h-0">
           <div className="no-scrollbar flex w-full flex-col items-start px-4 pt-10 sm:px-5 md:max-w-xs md:shrink-0 md:min-h-0 md:overflow-y-auto md:px-6 md:pt-12 lg:pl-8 lg:pr-6 xl:pl-10 text-gray-600 dark:text-gray-50">
             <header className="mb-10 w-full md:mb-12">
-              <div className="w-full space-y-1 pl-[1ch] text-left tabular-nums text-lg tracking-tight font-normal text-gray-600 dark:text-gray-50">
+              <div className="flex w-full flex-col gap-1 pl-[1ch] text-left tabular-nums text-lg tracking-tight font-normal text-gray-600 dark:text-gray-50">
                 <a href="mailto:d@degstn.com" target="_blank" rel="noopener noreferrer" className={`${navItemClass} whitespace-nowrap`}>
                   <NavLabel>drew goldstein</NavLabel>
                   <HoverHint>[email]</HoverHint>
