@@ -20,10 +20,12 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const per_page = searchParams.get("per_page") || "10";
   const page = searchParams.get("page") || "1";
+  const sha = searchParams.get("sha") || "";
 
-  const url = `https://api.github.com/repos/${OWNER}/${REPO}/commits?per_page=${encodeURIComponent(
+  const base = `https://api.github.com/repos/${OWNER}/${REPO}/commits?per_page=${encodeURIComponent(
     per_page
   )}&page=${encodeURIComponent(page)}`;
+  const url = sha ? `${base}&sha=${encodeURIComponent(sha)}` : base;
   try {
     const key = url;
     const now = Date.now();
@@ -34,7 +36,12 @@ export async function GET(request: Request) {
       return out;
     }
 
-    const res = await fetch(url, { headers: getGithubHeaders() });
+    let res = await fetch(url, { headers: getGithubHeaders() });
+    // Branch may not exist on the remote (e.g. a local-only branch) — fall
+    // back to the default branch rather than erroring the page.
+    if (!res.ok && sha) {
+      res = await fetch(base, { headers: getGithubHeaders() });
+    }
     const data = await res.json();
     if (res.ok) {
       cache.set(key, { expires: now + CACHE_TTL_MS, data });

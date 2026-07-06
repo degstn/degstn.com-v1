@@ -95,20 +95,20 @@ export default function GhormanLive() {
   ]
 
   return (
-    <main className="min-h-screen bg-bgLight dark:bg-bgDark p-6 md:px-56 px-6 pt-24">
+    <main className="min-h-screen bg-bgLight dark:bg-bgDark p-6 px-4 pt-10 sm:px-5 md:px-6 md:pt-12 lg:px-8 xl:pl-10">
       <div className="text-sm text-gray-600 opacity-50 dark:text-gray-50">
           <Link href="/" className="hover:underline ">
                 back
               </Link>
           </div>
-      <h1 className="text-normal text-gray-600 dark:text-gray-50">ghorman</h1>
+      <h1 className="mt-10 text-lg font-bold tracking-tight text-gray-600 dark:text-gray-50">ghorman</h1>
 
         <section className="w-full max-w-5xl mt-6">
           <GhormanLiveMeta isLive={Boolean(src)} />
         </section>
 
         {src ? (
-          <section className="-mx-6 md:mx-0 mt-2">
+          <section className="-mx-4 sm:-mx-5 md:mx-0 mt-2">
             <div className="relative w-full pb-[56.25%] max-w-5xl md:mx-0 bg-black md:border border-disabled dark:border-disabled-dark">
               <iframe
                 src={src}

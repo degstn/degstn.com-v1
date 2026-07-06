@@ -1,4 +1,19 @@
-export const projects = [
+export type ProjectEntry = {
+  slug: string;
+  name: string;
+  url: string;
+  // Primary screenshot (plain, gets a border in the UI). ".mov" renders the video composite.
+  image: string;
+  // Optional extra screenshots stacked below the primary image.
+  // Plain strings render without the 1px frame border (device-bezel shots);
+  // use { src, border: true } to opt back into the border. An empty string
+  // renders a "screenshot soon" placeholder.
+  images?: (string | { src: string; border?: boolean })[];
+  description: string;
+  tags: string[];
+};
+
+export const projects: ProjectEntry[] = [
   {
     slug: "locale-center",
     name: "locale.center",
@@ -28,6 +43,7 @@ export const projects = [
     name: "Limen",
     url: "https://spatialwaypoints.com/",
     image: "https://cdn.degstn.com/limen.png",
+    images: ["", ""],
     description: "We built an app which allows users to forget about the Doorway effect, or the idea of when we move from one room to another, the doorway in the name represents the boundary between one context (such as a living room) and another (a kitchen) where a user might forget what they were thinking in passing between doorways. The app allows the use of new technologies such as Apple's ARKit, RealityKit, TableTopKit, and more and revolutionary devices such as the Apple Vision Pro.",
     tags: ["AR", "iOS", "2023"],
   },
@@ -57,7 +73,7 @@ export const projects = [
   },
   {
     slug: "starwars-cad",
-    name: "CAD",
+    name: "star wars cad projects",
     url: "https://starwars.degstn.com/",
     image: "https://cdn.degstn.com/cad.png",
     description: "A detailed CAD project inspired by Star Wars, featuring intricate 3D models and engineering design. Built using Fusion 360 and rendered for web viewing. This project showcases advanced modeling techniques and a passion for both engineering and the Star Wars universe.",
@@ -83,7 +99,7 @@ export const projects = [
 
 // Site pages previewed in the homepage panel. An empty image shows a
 // "screenshot soon" placeholder until real screenshots are uploaded.
-export const pages = [
+export const pages: ProjectEntry[] = [
   {
     slug: "cv",
     name: "cv",
@@ -105,7 +121,7 @@ export const pages = [
     name: "dg.photos",
     url: "https://dg.photos",
     image: "https://cdn.degstn.com/dgphotos.png",
-    description: "a separate home for my photography — full galleries living on their own domain.",
+    description: "a separate home for my commerical photography.",
     tags: ["site", "external"],
   },
   {
@@ -113,7 +129,7 @@ export const pages = [
     name: "ghorman",
     url: "/ghorman",
     image: "https://cdn.degstn.com/ghorman.png",
-    description: "ghorman is my colombian giant redleg tarantula (megaphobema robustum). this page is his live spider cam, running around the clock.",
+    description: "ghorman is my colombian giant redleg tarantula (megaphobema robustum). this page is a live stream of him alongside some quick facts about him.",
     tags: ["page", "live"],
   },
   {

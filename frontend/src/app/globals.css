@@ -185,6 +185,17 @@ body {
   to { transform: translateX(200%); }
 }
 
+/* Hide the scrollbar on the homepage's left rail (it reads as a divider line)
+   while keeping it scrollable */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Soft edge mask for videos to hide letterbox bars without editing media */
 .edge-mask {
   /* Fade edges to transparent over ~4% of width/height */

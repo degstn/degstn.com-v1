@@ -13,13 +13,13 @@ const BAR_CHAMFER: CSSProperties = {
 
 export default function ArchivePage() {
   return (
-    <main className="min-h-screen flex-grid items-center justify-center bg-bgLight dark:bg-bgDark p-6 md:px-56 px-6 pt-24">
+    <main className="min-h-screen bg-bgLight dark:bg-bgDark p-6 px-4 pt-10 sm:px-5 md:px-6 md:pt-12 lg:px-8 xl:pl-10">
       <div className="text-sm text-gray-600 opacity-50 dark:text-gray-50">
         <Link href="/" className="hover:underline ">
           back
         </Link>
       </div>
-      <h1 className="text-lg font-bold tracking-tight text-gray-600 dark:text-gray-50">archive</h1>
+      <h1 className="mt-10 text-lg font-bold tracking-tight text-gray-600 dark:text-gray-50">archive</h1>
 
       <section className="mt-10 flex w-full max-w-md flex-col items-start gap-5">
         <span

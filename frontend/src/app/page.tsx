@@ -10,9 +10,13 @@ type Project = {
   name: string;
   url: string;
   image: string;
+  images?: (string | { src: string; border?: boolean })[];
   description: string;
   tags: string[];
 };
+
+const findBySlug = (slug: string): Project | null =>
+  projects.find((p) => p.slug === slug) ?? pages.find((p) => p.slug === slug) ?? null;
 
 // Auto-bust media cache each page load so same-name S3 uploads refresh without manual versioning.
 const ASSET_VERSION = Date.now().toString();
@@ -23,16 +27,28 @@ const PIXEL_CHAMFER_STYLE: CSSProperties = {
     'polygon(4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px), 0 4px, 4px 4px)',
 };
 
+// Full-width rows with the label left and the hint pushed to the column's right
+// edge, so every hint sits on one vertical rail instead of trailing its label.
 const navItemClass =
-  'group inline-flex items-center gap-1 text-lg text-gray-600 tracking-tight font-normal dark:text-gray-50';
+  'group flex w-full items-center justify-between gap-1 text-lg text-gray-600 tracking-tight font-normal dark:text-gray-50';
+
+// Footer links — add entries here and they flow into the footer row.
+const footerLinks: { label: string; href: string; hint?: string }[] = [
+  { label: 'github', href: 'https://github.com/degstn/' },
+  { label: 'linkedin', href: 'https://linkedin.com/in/degstn/' },
+  { label: 'x', href: 'https://x.com/aegstn/' },
+];
 
 function NavLabel({ children, className = '' }: { children: ReactNode; className?: string }) {
   return <span className={className}>{children}</span>;
 }
 
+// Always visible on mobile (no hover there); revealed on hover from md up.
+// Space is reserved even while hidden (visibility, not display) so nothing on
+// the page shifts when a hint appears.
 function HoverHint({ children }: { children: string }) {
   return (
-    <span className="hidden shrink-0 whitespace-nowrap text-zinc-500 opacity-50 dark:text-zinc-500 group-hover:inline no-underline">
+    <span className="shrink-0 whitespace-nowrap text-gray-600 opacity-50 dark:text-gray-50 no-underline md:invisible md:group-hover:visible">
       {children}
     </span>
   );
@@ -92,8 +108,56 @@ function withCacheBust(url: string, version?: string) {
   }
 }
 
+// One media source: "" placeholder, ".mov" video composite, or plain screenshot.
+// Bezel shots (bordered=false) render without the 1px border the primary screenshot gets.
+function MediaContent({ src, name, bordered }: { src: string; name: string; bordered: boolean }) {
+  if (!src) {
+    return (
+      <div className="w-full h-full border border-disabled dark:border-disabled-dark flex items-center justify-center">
+        <span className="text-xs tracking-tight text-disabled dark:text-disabled-dark">screenshot soon</span>
+      </div>
+    );
+  }
+
+  const mediaSrc = withCacheBust(src, ASSET_VERSION);
+
+  if (src.toLowerCase().endsWith('.mov')) {
+    return (
+      <div className="relative w-full h-full" style={{ overflow: 'visible' }}>
+        <img
+          src="https://cdn.degstn.com/aremac.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+        />
+        <video
+          src={mediaSrc}
+          muted
+          autoPlay
+          loop
+          playsInline
+          preload="auto"
+          controls={false}
+          controlsList="nodownload noplaybackrate nofullscreen noremoteplayback"
+          disablePictureInPicture
+          onContextMenu={(e) => e.preventDefault()}
+          className="object-cover w-full h-full"
+          style={{ pointerEvents: 'none', backgroundColor: 'transparent', clipPath: 'inset(3.6% 4% 7.4% 4% round 13px)' }}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={mediaSrc}
+      alt={name}
+      className={`max-w-full max-h-full object-contain cursor-pointer${bordered ? ' border border-disabled dark:border-disabled-dark' : ''}`}
+    />
+  );
+}
+
 function ProjectMedia({ project, className = '' }: { project: Project; className?: string }) {
-  const mediaSrc = withCacheBust(project.image, ASSET_VERSION);
   const isVideo = project.image.toLowerCase().endsWith('.mov');
 
   if (!project.image) {
@@ -106,35 +170,68 @@ function ProjectMedia({ project, className = '' }: { project: Project; className
 
   return (
     <div
-      className="aspect-[3/2] w-full overflow-hidden flex items-center justify-center ${className}"
+      className={`aspect-[3/2] w-full overflow-hidden flex items-center justify-center ${className}`}
       style={isVideo ? { overflow: 'visible' } : undefined}
     >
-      {isVideo ? (
-        <div className="relative w-full h-full" style={{ overflow: 'visible' }}>
-          <img
-            src="https://cdn.degstn.com/aremac.png"
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
-          />
-          <video
-            src={mediaSrc}
-            muted
-            autoPlay
-            loop
-            playsInline
-            preload="auto"
-            controls={false}
-            controlsList="nodownload noplaybackrate nofullscreen noremoteplayback"
-            disablePictureInPicture
-            onContextMenu={(e) => e.preventDefault()}
-            className="object-cover w-full h-full"
-            style={{ pointerEvents: 'none', backgroundColor: 'transparent', clipPath: 'inset(3.6% 4% 7.4% 4% round 13px)' }}
-          />
-        </div>
-      ) : (
-        <img src={mediaSrc} alt={project.name} className="max-w-full max-h-full object-contain cursor-pointer border border-disabled dark:border-disabled-dark" />
-      )}
+      <MediaContent src={project.image} name={project.name} bordered />
+    </div>
+  );
+}
+
+// Media area for the panel/modal. All screenshots render stacked vertically at
+// the same size and flow with the panel's own scroll (no arrows, no nested
+// scroller). The primary screenshot keeps the 1px border; extra images render
+// borderless for device-bezel shots unless they opt in via { border: true }.
+function ProjectMediaStack({
+  project,
+  linkHref,
+  className = '',
+  mediaClassName = '',
+}: {
+  project: Project;
+  linkHref?: string;
+  className?: string;
+  mediaClassName?: string;
+}) {
+  const extras = (project.images ?? []).map((entry) =>
+    typeof entry === 'string' ? { src: entry, border: false } : { src: entry.src, border: entry.border ?? false }
+  );
+
+  if (extras.length === 0) {
+    if (linkHref) {
+      return (
+        <ProjectLink href={linkHref} className={`block ${className}`}>
+          <ProjectMedia project={project} className={mediaClassName} />
+        </ProjectLink>
+      );
+    }
+    return (
+      <div className={className}>
+        <ProjectMedia project={project} className={mediaClassName} />
+      </div>
+    );
+  }
+
+  const slides = [{ src: project.image, border: true }, ...extras];
+
+  return (
+    <div className={`flex min-w-0 flex-col gap-4 md:gap-6 ${className}`}>
+      {slides.map(({ src, border }, i) => {
+        const frame = (
+          <div className={`aspect-[3/2] w-full overflow-hidden flex items-center justify-center ${mediaClassName}`}>
+            <MediaContent src={src} name={`${project.name} screenshot ${i + 1}`} bordered={border} />
+          </div>
+        );
+        return linkHref && src ? (
+          <ProjectLink key={i} href={linkHref} className="block w-full">
+            {frame}
+          </ProjectLink>
+        ) : (
+          <div key={i} className="w-full">
+            {frame}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -171,15 +268,11 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               {project.slug !== 'archive' && <OpenCta href={project.url} />}
               <p className="mt-2 text-xs">{project.description}</p>
             </div>
-            {project.slug !== 'archive' ? (
-              <ProjectLink href={project.url} className="mt-8 block w-full">
-                <ProjectMedia project={project} />
-              </ProjectLink>
-            ) : (
-              <div className="mt-8 w-full">
-                <ProjectMedia project={project} />
-              </div>
-            )}
+            <ProjectMediaStack
+              project={project}
+              linkHref={project.slug !== 'archive' ? project.url : undefined}
+              className="mt-8 w-full"
+            />
           </>
         )}
       </div>
@@ -202,7 +295,8 @@ function ProjectPanel({ project }: { project: Project }) {
         </div>
       ) : (
         <div className="flex w-full flex-col gap-8 xl:flex-row xl:items-start xl:gap-10">
-          <div className="flex w-full max-w-sm shrink-0 flex-col items-start gap-3 text-gray-600 dark:text-gray-50 xl:w-64">
+          {/* Sticky so details stay put while the screenshots scroll by. */}
+          <div className="flex w-full max-w-sm shrink-0 flex-col items-start gap-3 text-gray-600 dark:text-gray-50 xl:w-64 xl:sticky xl:top-0">
             <h2 className="text-lg md:text-xl font-bold tracking-tight">{project.name}</h2>
             <div className="flex flex-wrap gap-2">
               {project.tags.map((tag: string, idx: number) => (
@@ -214,15 +308,12 @@ function ProjectPanel({ project }: { project: Project }) {
             {project.slug !== 'archive' && <OpenCta href={project.url} />}
             <p className="mt-2 text-xs md:text-sm">{project.description}</p>
           </div>
-          {project.slug !== 'archive' ? (
-            <ProjectLink href={project.url} className="block w-full min-w-0 xl:flex-1">
-              <ProjectMedia project={project} className="max-h-[70vh]" />
-            </ProjectLink>
-          ) : (
-            <div className="w-full min-w-0 xl:flex-1">
-              <ProjectMedia project={project} className="max-h-[70vh]" />
-            </div>
-          )}
+          <ProjectMediaStack
+            project={project}
+            linkHref={project.slug !== 'archive' ? project.url : undefined}
+            className="w-full min-w-0 xl:flex-1"
+            mediaClassName="max-h-[70vh]"
+          />
         </div>
       )}
     </aside>
@@ -231,6 +322,23 @@ function ProjectPanel({ project }: { project: Project }) {
 
 export default function Home() {
   const [openProject, setOpenProject] = useState<Project | null>(null);
+
+  // Open/close the panel and mirror it into the URL hash so panels are
+  // deep-linkable (degstn.com/#limen) and the back button closes them.
+  const openPanel = (project: Project | null) => {
+    setOpenProject(project);
+    window.history.pushState(null, '', project ? `#${project.slug}` : window.location.pathname);
+  };
+
+  useEffect(() => {
+    const syncFromHash = () => {
+      const slug = decodeURIComponent(window.location.hash.slice(1));
+      setOpenProject(slug ? findBySlug(slug) : null);
+    };
+    syncFromHash();
+    window.addEventListener('popstate', syncFromHash);
+    return () => window.removeEventListener('popstate', syncFromHash);
+  }, []);
 
   useEffect(() => {
     // Scroll lock only applies to the mobile modal; the desktop panel is in-page.
@@ -251,22 +359,25 @@ export default function Home() {
     const preloadLinks: HTMLLinkElement[] = [];
 
     [...projects, ...pages].forEach((project) => {
-      if (!project.image) return;
-      const src = withCacheBust(project.image, ASSET_VERSION);
+      const extraSources = (project.images ?? []).map((m) => (typeof m === 'string' ? m : m.src));
+      [project.image, ...extraSources].forEach((source) => {
+        if (!source) return;
+        const src = withCacheBust(source, ASSET_VERSION);
 
-      if (project.image.toLowerCase().endsWith('.mov')) {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'video';
-        link.href = src;
-        document.head.appendChild(link);
-        preloadLinks.push(link);
-        return;
-      }
+        if (source.toLowerCase().endsWith('.mov')) {
+          const link = document.createElement('link');
+          link.rel = 'preload';
+          link.as = 'video';
+          link.href = src;
+          document.head.appendChild(link);
+          preloadLinks.push(link);
+          return;
+        }
 
-      const image = new Image();
-      image.src = src;
-      preloadedImages.push(image);
+        const image = new Image();
+        image.src = src;
+        preloadedImages.push(image);
+      });
     });
 
     return () => {
@@ -282,11 +393,11 @@ export default function Home() {
         aria-expanded={isOpen}
         onClick={() => {
           if (isOpen) {
-            setOpenProject(null);
+            openPanel(null);
             return;
           }
           const project = projects.find((p) => p.slug === slug);
-          if (project) setOpenProject(project);
+          if (project) openPanel(project);
         }}
         className={`${navItemClass} text-left${extraClass ? ` ${extraClass}` : ''}`}
       >
@@ -308,7 +419,7 @@ export default function Home() {
         onClick={(e) => {
           if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
           e.preventDefault();
-          setOpenProject(isOpen ? null : page);
+          openPanel(isOpen ? null : page);
         }}
         className={navItemClass}
       >
@@ -320,14 +431,14 @@ export default function Home() {
 
   return (
     <>
-      {openProject && <ProjectModal project={openProject} onClose={() => setOpenProject(null)} />}
+      {openProject && <ProjectModal project={openProject} onClose={() => openPanel(null)} />}
       <main className={`flex min-h-screen flex-col bg-bgLight dark:bg-[#111111]${openProject ? ' md:h-screen md:overflow-hidden' : ''}`}>
         <div className="flex w-full flex-1 md:min-h-0">
-          <div className="flex w-full flex-col items-start px-4 pt-10 sm:px-5 md:max-w-xs md:shrink-0 md:px-6 md:pt-12 lg:pl-8 lg:pr-6 xl:pl-10 text-gray-600 dark:text-gray-50">
-            <header className="mb-10 md:mb-12">
-              <div className="box-border inline-block w-[5ch] shrink-0 space-y-1 pl-[1ch] text-left tabular-nums text-lg tracking-tight font-normal text-gray-600 dark:text-gray-50">
-                <a href="mailto:d@degstn.com" target="_blank" rel="noopener noreferrer" className={navItemClass}>
-                  <NavLabel>drew</NavLabel>
+          <div className="no-scrollbar flex w-full flex-col items-start px-4 pt-10 sm:px-5 md:max-w-xs md:shrink-0 md:min-h-0 md:overflow-y-auto md:px-6 md:pt-12 lg:pl-8 lg:pr-6 xl:pl-10 text-gray-600 dark:text-gray-50">
+            <header className="mb-10 w-full md:mb-12">
+              <div className="w-full space-y-1 pl-[1ch] text-left tabular-nums text-lg tracking-tight font-normal text-gray-600 dark:text-gray-50">
+                <a href="mailto:d@degstn.com" target="_blank" rel="noopener noreferrer" className={`${navItemClass} whitespace-nowrap`}>
+                  <NavLabel>drew goldstein</NavLabel>
                   <HoverHint>[email]</HoverHint>
                 </a>
                 {pageItem('cv', 'cv')}
@@ -337,7 +448,7 @@ export default function Home() {
             <div className="flex w-full flex-col gap-6 md:gap-7">
               <section className="flex gap-6 md:gap-8">
                 <span className="inline-block w-[5ch] shrink-0 text-right tabular-nums text-lg tracking-tight font-normal text-international-orange-engineering dark:text-international-orange">2026</span>
-                <div className="flex min-w-0 flex-col gap-1">
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
                   {projectItem('locale-center', 'locale.center')}
                   {pageItem('photography', 'photography')}
                   {pageItem('ghorman', 'ghorman')}
@@ -347,8 +458,8 @@ export default function Home() {
 
               <section className="flex gap-6 md:gap-8">
                 <span className="inline-block w-[5ch] shrink-0 text-right tabular-nums text-lg tracking-tight font-normal text-gray-600 dark:text-gray-50">2025</span>
-                <div className="flex min-w-0 flex-col gap-1">
-                  {projectItem('starwars-cad', 'CAD')}
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
+                  {projectItem('starwars-cad', 'star wars cad')}
                   {projectItem('polyline', 'polyline')}
                   {projectItem('s7em', 's7em')}
                   {pageItem('words', 'words')}
@@ -357,7 +468,7 @@ export default function Home() {
 
               <section className="flex gap-6 md:gap-8">
                 <span className="inline-block w-[5ch] shrink-0 text-right tabular-nums text-lg tracking-tight font-normal text-gray-600 dark:text-gray-50">2024</span>
-                <div className="flex min-w-0 flex-col gap-1">
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
                   {projectItem('aremac', 'aremac')}
                   {projectItem('limen', 'limen')}
                   {projectItem('stelio', 'stelio')}
@@ -369,38 +480,43 @@ export default function Home() {
                   <span className="inline-flex w-[1ch] shrink-0 justify-end">{'<'}</span>
                   <span className="inline-block w-[4ch] text-right tabular-nums">2023</span>
                 </span>
-                <div className="flex min-w-0 flex-col gap-1">
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
                   {projectItem('service-seeker', 'service seeker', 'whitespace-nowrap')}
                   {pageItem('archive', 'archive', 'italic')}
                 </div>
               </section>
             </div>
 
-            <footer className="mt-auto flex w-full flex-col gap-4 pb-12 pt-12 md:flex-row md:items-center md:gap-8 md:pt-5 md:pb-16 text-gray-600 dark:text-gray-50">
+            <footer className="mt-auto flex w-full flex-col gap-1 pb-12 pt-12 md:pt-5 md:pb-16 text-gray-600 dark:text-gray-50">
+              {footerLinks.map((link) => (
+                <ProjectLink
+                  key={link.label}
+                  href={link.href}
+                  className="group flex w-full items-center justify-between gap-1 text-sm tracking-tight font-normal text-gray-600 dark:text-gray-50 md:text-xs md:font-medium"
+                >
+                  <NavLabel>{link.label}</NavLabel>
+                  <HoverHint>{link.hint ?? '[↗]'}</HoverHint>
+                </ProjectLink>
+              ))}
               <Link
                 href="/git"
                 aria-label="Changelog"
-                className="inline-flex min-w-0 flex-row flex-nowrap items-center gap-1 text-international-orange-engineering dark:text-international-orange"
+                className="group mt-2 flex w-full min-w-0 items-center justify-between gap-1 text-international-orange-engineering dark:text-international-orange md:mt-1"
               >
-                <svg width={12} height={12} viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-                  <path
-                    fill="currentColor"
-                    fillRule="evenodd"
-                    d="M9.5 3.25a2.25 2.25 0 1 1 3 2.122V6A2.5 2.5 0 0 1 10 8.5H6a1 1 0 0 0-1 1v1.128a2.251 2.251 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.5 0v1.836A2.493 2.493 0 0 1 6 7h4a1 1 0 0 0 1-1v-.628A2.25 2.25 0 0 1 9.5 3.25Zm-6 0a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Zm8.25-.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM4.25 12a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Z"
-                  />
-                </svg>
+                <span className="inline-flex min-w-0 items-center gap-1">
+                  <svg width={12} height={12} viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                    <path
+                      fill="currentColor"
+                      fillRule="evenodd"
+                      d="M9.5 3.25a2.25 2.25 0 1 1 3 2.122V6A2.5 2.5 0 0 1 10 8.5H6a1 1 0 0 0-1 1v1.128a2.251 2.251 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.5 0v1.836A2.493 2.493 0 0 1 6 7h4a1 1 0 0 0 1-1v-.628A2.25 2.25 0 0 1 9.5 3.25Zm-6 0a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Zm8.25-.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM4.25 12a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Z"
+                    />
+                  </svg>
                 <span className="whitespace-nowrap text-xs text-international-orange-engineering tracking-tight font-medium dark:text-international-orange">
-                  prod <span className="text-gray-600 dark:text-gray-50">v{process.env.NEXT_PUBLIC_VERSION}</span>
+                  {process.env.NEXT_PUBLIC_GIT_BRANCH || 'local'} <span className="text-gray-600 dark:text-gray-50">v{process.env.NEXT_PUBLIC_VERSION}</span>
                 </span>
+                </span>
+                <HoverHint>[changelog]</HoverHint>
               </Link>
-              <div className="flex flex-row flex-wrap items-center gap-x-5 gap-y-1 text-lg tracking-tight font-normal text-gray-600 dark:text-gray-50 md:text-xs md:font-medium">
-                <Link href="https://github.com/degstn/" className="hover:underline underline-offset-4">
-                  github
-                </Link>
-                <Link href="https://linkedin.com/in/degstn/" className="hover:underline underline-offset-4">
-                  linkedin
-                </Link>
-              </div>
             </footer>
           </div>
 
