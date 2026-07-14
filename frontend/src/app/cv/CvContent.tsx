@@ -113,7 +113,7 @@ export default function CvContent() {
           An Apple Vision Pro app built around the Doorway effect — the phenomenon where moving between rooms makes you forget what you were thinking — helping people with ADHD/ADD and memory discontinuity anchor their thoughts spatially. Built with Apple&apos;s ARKit, RealityKit, and TableTopKit.
         </div>
         <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
-          Links: <Link className="text-international-orange-engineering dark:text-international-orange" href="https://drive.google.com/file/d/1W-CmW81LHxmseBvmfbhjOWlnwxIy8RoB/view?usp=drivesdk&usp=embed_facebook">limen nationals presentation</Link> <Link className="text-international-orange-engineering dark:text-international-orange" href="https://docs.google.com/presentation/d/1sflnhTELdE5wfKYzo15BtAaelRwBBJwfmpk6ybdebI4/edit?usp=embed_facebook"> | limen states presentation </Link> <Link className="text-international-orange-engineering dark:text-international-orange" href="https://spatialwaypoints.com/">| spatialwaypoints.com</Link>
+          Links: <Link className="text-international-orange-engineering dark:text-international-orange" href="https://drive.google.com/file/d/1W-CmW81LHxmseBvmfbhjOWlnwxIy8RoB/view?usp=drivesdk&usp=embed_facebook">limen nationals presentation</Link> <Link className="text-international-orange-engineering dark:text-international-orange" href="https://docs.google.com/presentation/d/1Ee5tBbNG-wY4HJ25rySANWgnmjJMq4RinzvnOQ833ZY/edit?usp=sharing"> | limen states presentation </Link> <Link className="text-international-orange-engineering dark:text-international-orange" href="https://spatialwaypoints.com/">| spatialwaypoints.com</Link>
         </div>
       </div>
 

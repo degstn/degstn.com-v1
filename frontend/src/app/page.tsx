@@ -460,7 +460,7 @@ export default function Home() {
               <section className="flex gap-6 md:gap-8">
                 <span className="inline-block w-[5ch] shrink-0 text-right tabular-nums text-lg tracking-tight font-normal text-gray-600 dark:text-gray-50">2025</span>
                 <div className="flex min-w-0 flex-1 flex-col gap-1">
-                  {projectItem('starwars-cad', 'star wars cad')}
+                  {projectItem('cad', 'cad')}
                   {projectItem('polyline', 'polyline')}
                   {projectItem('s7em', 's7em')}
                   {pageItem('words', 'words')}
