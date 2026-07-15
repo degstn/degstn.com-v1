@@ -2,7 +2,7 @@ export type ProjectEntry = {
   slug: string;
   name: string;
   url: string;
-  // Primary screenshot (plain, gets a border in the UI). ".mov" renders the video composite.
+  // Primary screenshot (plain, gets a border in the UI). ".mp4" renders the video composite.
   image: string;
   // Optional extra screenshots stacked below the primary image.
   // Plain strings render without the 1px frame border (device-bezel shots);
@@ -52,7 +52,7 @@ export const projects: ProjectEntry[] = [
     slug: "aremac",
     name: "Aremac",
     url: "https://aremac.tech/",
-    image: "https://cdn.degstn.com/aremac.mov",
+    image: "https://cdn.degstn.com/aremacv4.mp4",
     description: "Aremac is my research‑driven design and rapid‑prototyping studio. I build 3D models, websites, apps, and AI systems for founders—ranging from an AI doctoral assistant to an allergic‑reaction detector—and consult as an engineer from ideation to MVP. I’ve supported multiple seed‑stage teams (incl. UD’s Diamond Challenge finalists) and rebuilt a fashion brand’s web framework to test a streamlined, modern experience.",
     tags: ["hardware", "software"],
   },
@@ -60,7 +60,7 @@ export const projects: ProjectEntry[] = [
     slug: "service-seeker",
     name: "Service Seeker",
     url: "https://docs.google.com/presentation/d/1HR3efx1HpUI6DvxthVhOzCj9JLPVE0YNZ744-EnUHAc/edit?usp=sharing",
-    image: "https://cdn.degstn.com/limengd.png",
+    image: "https://cdn.degstn.com/serviceseekerv2.png",
     description: "Service Seeker is a platform that connects individuals with personalized local volunteer opportunities and community service initiatives. It offers a secure, private, and intuitive experience for both users and organizations, leveraging Apple Passkeys for privacy and on-device memory for efficiency. The app makes it easy to find, track, and manage service opportunities, fostering meaningful community engagement.",
     tags: ["presentation", "community service"],
   },

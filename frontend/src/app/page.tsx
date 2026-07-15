@@ -109,8 +109,10 @@ function withCacheBust(url: string, version?: string) {
   }
 }
 
-// One media source: "" placeholder, ".mov" video composite, or plain screenshot.
+// One media source: "" placeholder, video composite (.mp4/.mov), or plain screenshot.
 // Bezel shots (bordered=false) render without the 1px border the primary screenshot gets.
+const isVideoSource = (src: string) => /\.(mp4|mov)$/i.test(src);
+
 function MediaContent({ src, name, bordered }: { src: string; name: string; bordered: boolean }) {
   if (!src) {
     return (
@@ -122,11 +124,11 @@ function MediaContent({ src, name, bordered }: { src: string; name: string; bord
 
   const mediaSrc = withCacheBust(src, ASSET_VERSION);
 
-  if (src.toLowerCase().endsWith('.mov')) {
+  if (isVideoSource(src)) {
     return (
       <div className="relative w-full h-full" style={{ overflow: 'visible' }}>
         <img
-          src="https://cdn.degstn.com/aremac.png"
+          src="https://cdn.degstn.com/aremacv2.png"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
@@ -159,7 +161,7 @@ function MediaContent({ src, name, bordered }: { src: string; name: string; bord
 }
 
 function ProjectMedia({ project, className = '' }: { project: Project; className?: string }) {
-  const isVideo = project.image.toLowerCase().endsWith('.mov');
+  const isVideo = isVideoSource(project.image);
 
   if (!project.image) {
     return (
@@ -365,7 +367,7 @@ export default function Home() {
         if (!source) return;
         const src = withCacheBust(source, ASSET_VERSION);
 
-        if (source.toLowerCase().endsWith('.mov')) {
+        if (isVideoSource(source)) {
           const link = document.createElement('link');
           link.rel = 'preload';
           link.as = 'video';
