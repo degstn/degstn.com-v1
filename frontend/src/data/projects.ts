@@ -5,9 +5,9 @@ export type ProjectEntry = {
   // Primary screenshot (plain, gets a border in the UI). ".mp4" renders the video composite.
   image: string;
   // Optional extra screenshots stacked below the primary image.
-  // Plain strings render without the 1px frame border (device-bezel shots);
-  // use { src, border: true } to opt back into the border. An empty string
-  // renders a "screenshot soon" placeholder.
+  // Every image gets the 1px frame border by default; use
+  // { src, border: false } to drop it (e.g. device-bezel shots). An empty
+  // string renders a "screenshot soon" placeholder.
   images?: (string | { src: string; border?: boolean })[];
   description: string;
   tags: string[];

@@ -110,7 +110,7 @@ function withCacheBust(url: string, version?: string) {
 }
 
 // One media source: "" placeholder, video composite (.mp4/.mov), or plain screenshot.
-// Bezel shots (bordered=false) render without the 1px border the primary screenshot gets.
+// Everything gets the 1px border by default; { border: false } in the data opts out.
 const isVideoSource = (src: string) => /\.(mp4|mov)$/i.test(src);
 
 function MediaContent({ src, name, bordered }: { src: string; name: string; bordered: boolean }) {
@@ -126,7 +126,10 @@ function MediaContent({ src, name, bordered }: { src: string; name: string; bord
 
   if (isVideoSource(src)) {
     return (
-      <div className="relative w-full h-full" style={{ overflow: 'visible' }}>
+      <div
+        className={`relative w-full h-full${bordered ? ' border border-disabled dark:border-disabled-dark' : ''}`}
+        style={{ overflow: 'visible' }}
+      >
         <img
           src="https://cdn.degstn.com/aremacv2.png"
           alt=""
@@ -183,8 +186,8 @@ function ProjectMedia({ project, className = '' }: { project: Project; className
 
 // Media area for the panel/modal. All screenshots render stacked vertically at
 // the same size and flow with the panel's own scroll (no arrows, no nested
-// scroller). The primary screenshot keeps the 1px border; extra images render
-// borderless for device-bezel shots unless they opt in via { border: true }.
+// scroller). Every slide gets the 1px border unless it opts out with
+// { border: false } (for device-bezel shots).
 function ProjectMediaStack({
   project,
   linkHref,
@@ -197,7 +200,7 @@ function ProjectMediaStack({
   mediaClassName?: string;
 }) {
   const extras = (project.images ?? []).map((entry) =>
-    typeof entry === 'string' ? { src: entry, border: false } : { src: entry.src, border: entry.border ?? false }
+    typeof entry === 'string' ? { src: entry, border: true } : { src: entry.src, border: entry.border ?? true }
   );
 
   if (extras.length === 0) {
