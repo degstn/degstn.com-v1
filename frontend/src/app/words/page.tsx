@@ -6,19 +6,19 @@ export default function Words() {
   
 
   return (
-    <main className="min-h-screen flex-grid items-center justify-center bg-bgLight dark:bg-bgDark p-6 md:px-56 px-6 pt-24 ">
+    <main className="min-h-screen bg-bgLight dark:bg-bgDark p-6 px-4 pt-10 sm:px-5 md:px-6 md:pt-12 lg:px-8 xl:pl-10">
       <div className="text-sm text-gray-600 opacity-50 dark:text-gray-50">
           <Link href="/" className="hover:underline ">
                 back
               </Link>
           </div>
-          <div className=" text-gray-600 dark:text-gray-50 pb-10">
+          <div className="mt-10 pb-10 text-lg font-bold tracking-tight text-gray-600 dark:text-gray-50">
             words
           </div>
           <div className="font-bold text-gray-600 dark:text-gray-50">
             <h1>new website</h1>
           </div>
-          <div>
+          <div className="w-full max-w-2xl">
             <div className="text-xs text-gray-600 dark:text-gray-50 pb-2">
             december 27, 2024 
             </div>

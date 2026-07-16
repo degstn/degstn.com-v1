@@ -5,9 +5,16 @@ import React, { useEffect, useState } from "react";
 
 // We'll fetch 10 commits at a time
 const PER_PAGE = 10;
+// Deployment environment for the commits tag ("production" | "preview" | "development").
+const DEPLOY_ENV = process.env.NEXT_PUBLIC_VERCEL_ENV || "development";
 const PIXEL_CHAMFER_STYLE: React.CSSProperties = {
   clipPath:
     "polygon(2px 0, calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px), 0 2px, 2px 2px)",
+};
+// Chunkier 4px chamfer matching the homepage "open" button.
+const PIXEL_CHAMFER_BUTTON_STYLE: React.CSSProperties = {
+  clipPath:
+    "polygon(4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px), 0 4px, 4px 4px)",
 };
 
 // Helper for picking color classes based on language name
@@ -209,6 +216,7 @@ export default function GitPage() {
   const [error, setError] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loadingCommits, setLoadingCommits] = useState<boolean>(false);
   const [hoveredCommitSha, setHoveredCommitSha] = useState<string | null>(null);
   const [selectedCommitSha, setSelectedCommitSha] = useState<string | null>(null);
 
@@ -220,8 +228,10 @@ export default function GitPage() {
   const [commitStats, setCommitStats] = useState<Record<string, { additions: number; deletions: number; files: number; preview?: { filename: string; lines: { t: 'add' | 'del' | 'ctx'; c: string }[] } }>>({});
 
   async function loadCommits(newPage: number) {
+    setLoadingCommits(true);
     try {
-      const url = `/api/github/commits?per_page=${PER_PAGE}&page=${newPage}`;
+      const branch = process.env.NEXT_PUBLIC_GIT_BRANCH || "";
+      const url = `/api/github/commits?per_page=${PER_PAGE}&page=${newPage}${branch ? `&sha=${encodeURIComponent(branch)}` : ""}`;
       const res = await fetch(url);
       if (!res.ok) {
         throw new Error(`GitHub API returned status ${res.status}`);
@@ -235,6 +245,8 @@ export default function GitPage() {
       }
     } catch (err: any) {
       setError(err.message);
+    } finally {
+      setLoadingCommits(false);
     }
   }
 
@@ -370,6 +382,7 @@ export default function GitPage() {
   }
 
   function handleLoadMore() {
+    if (loadingCommits) return;
     setPage((prev) => prev + 1);
   }
 
@@ -395,13 +408,13 @@ const langArray = sorted.map(([name, bytes], idx) => {
 });
 
   return (
-    <main className="min-h-screen flex-grid items-center justify-center bg-bgLight dark:bg-bgDark p-6 md:px-56 px-6 pt-24">
+    <main className="min-h-screen bg-bgLight dark:bg-bgDark p-6 px-4 pt-10 sm:px-5 md:px-6 md:pt-12 lg:px-8 xl:pl-10">
       <div className="text-sm text-gray-600 opacity-50 dark:text-gray-50">
           <Link href="/" className="hover:underline ">
                 back
               </Link>
           </div>
-      <h1 className="text-normal text-gray-600 dark:text-gray-50">git</h1>
+      <h1 className="mt-10 text-lg font-bold tracking-tight text-gray-600 dark:text-gray-50">git</h1>
 
       {error && (
         <p className="text-red-400 mb-4">Error loading commits: {error}</p>
@@ -415,7 +428,7 @@ const langArray = sorted.map(([name, bytes], idx) => {
             {overview.homepage && (
               <a href={overview.homepage} className="underline hover:opacity-80">site</a>
             )}
-            <span>branch: <span className="text-international-orange-engineering dark:text-international-orange">{overview.default_branch}</span></span>
+            <span>branch: <span className="text-international-orange-engineering dark:text-international-orange">{process.env.NEXT_PUBLIC_GIT_BRANCH || overview.default_branch}</span></span>
             <span>stars: {overview.stars_count}</span>
             <span>forks: {overview.forks_count}</span>
             <span>watchers: {overview.watchers_count}</span>
@@ -685,8 +698,20 @@ const langArray = sorted.map(([name, bytes], idx) => {
       {/* END new code section */}
 
       {/* Commits List */}
-      <div className="mt-5 mb-1 text-[10px] font-mono tracking-tight text-gray-600 dark:text-gray-50 opacity-60">
-        [ commits ]
+      <div className="mt-5 mb-1 flex items-center gap-2">
+        <span className="text-[10px] font-mono tracking-tight text-gray-600 dark:text-gray-50 opacity-60">
+          [commits]
+        </span>
+        <span
+          style={PIXEL_CHAMFER_STYLE}
+          className={`px-1.5 py-0.5 text-[10px] font-semibold tracking-tight ${
+            DEPLOY_ENV === "production"
+              ? "bg-international-orange-engineering/80 text-gray-50 dark:bg-international-orange/80 dark:text-bgDark"
+              : "bg-disabled/50 text-gray-600 dark:bg-disabled-dark/60 dark:text-gray-50"
+          }`}
+        >
+          {DEPLOY_ENV}
+        </span>
       </div>
       <div className="w-full md:grid md:grid-cols-[minmax(0,1fr)_360px] md:gap-5 items-start">
         <ul className="w-full border border-disabled dark:border-disabled-dark divide-y divide-disabled dark:divide-disabled-dark">
@@ -856,9 +881,11 @@ const langArray = sorted.map(([name, bytes], idx) => {
         <div className="mt-5 flex justify-center">
           <button
             onClick={handleLoadMore}
-            className="px-4 py-2 border border-disabled-dark text-sm text-gray-600 dark:text-gray-50 hover:bg-disabled-dark hover:bg-opacity-5 transition-colors"
+            disabled={loadingCommits}
+            style={PIXEL_CHAMFER_BUTTON_STYLE}
+            className="inline-flex items-center bg-international-orange-engineering/80 px-4 py-1.5 text-sm font-semibold tracking-tight text-gray-50 transition-colors duration-200 hover:bg-international-orange-engineering disabled:cursor-default disabled:bg-international-orange-engineering/40 disabled:hover:bg-international-orange-engineering/40 dark:bg-international-orange/80 dark:text-bgDark dark:hover:bg-international-orange dark:disabled:bg-international-orange/40 dark:disabled:hover:bg-international-orange/40"
           >
-            Load More
+            {loadingCommits ? "loading..." : "load more"}
           </button>
         </div>
       )}
