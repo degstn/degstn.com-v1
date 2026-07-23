@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect, useCallback, useMemo } from "react"
 import EXIF from "exif-js";
 import { polygon, bbox, booleanPointInPolygon } from "@turf/turf";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import * as THREE from "three";
 import GalleryModal from "./GalleryModal";
 import styles from "./photography.module.css";
@@ -14,7 +15,38 @@ import areaOverrides from "./areas.json";
  * 1) Lazy-loads globe.gl only in the browser (no SSR).
  * 2) Creates a minimal dot-matrix globe from your GeoJSON.
  * 3) Adds pins for each area, opening a retro-styled modal with images.
+ *
+ * The URL is the source of truth for what is open:
+ *   /photography                     -> globe only
+ *   /photography/{areaId}            -> area gallery modal
+ *   /photography/{areaId}/{photo}    -> full-screen photo viewer
+ * URL updates use shallow history push/replace so the globe never remounts,
+ * and browser back/forward + deep links stay in sync via usePathname().
  */
+
+const AREA_LIST = areaOverrides as AreaPin[];
+
+function safeDecodeSegment(segment: string): string {
+  try {
+    return decodeURIComponent(segment);
+  } catch {
+    return segment;
+  }
+}
+
+/** Stable photo identifier: the src filename without its extension. */
+function photoSlugFromSrc(src: string): string {
+  const base = src.split("/").pop() || "";
+  return base.replace(/\.[a-z0-9]+$/i, "").toLowerCase();
+}
+
+function areaUrl(areaId: string): string {
+  return `/photography/${encodeURIComponent(areaId)}`;
+}
+
+function photoUrl(areaId: string, photoSrc: string): string {
+  return `${areaUrl(areaId)}/${encodeURIComponent(photoSlugFromSrc(photoSrc))}`;
+}
 
 export default function PhotographyPage() {
   const globeRef = useRef<HTMLDivElement | null>(null);
@@ -24,8 +56,6 @@ export default function PhotographyPage() {
   const [globeModule, setGlobeModule] = useState<any>(null);
 
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
-  const [activeArea, setActiveArea] = useState<string | null>(null);
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [exifData, setExifData] = useState<Photo['exifData'] | null>(null);
@@ -53,6 +83,25 @@ export default function PhotographyPage() {
     date: false
   });
 
+  // Parse /photography/{areaId}/{photoSlug?} from the current URL.
+  const pathname = usePathname();
+  const { urlAreaId, urlPhotoSlug } = useMemo(() => {
+    const segments = (pathname || "").split("/").filter(Boolean);
+    if (segments[0] !== "photography") {
+      return { urlAreaId: null, urlPhotoSlug: null };
+    }
+    return {
+      urlAreaId: segments[1] ? safeDecodeSegment(segments[1]).toLowerCase() : null,
+      urlPhotoSlug: segments[2] ? safeDecodeSegment(segments[2]).toLowerCase() : null,
+    };
+  }, [pathname]);
+
+  const activeAreaEntry = useMemo(() => {
+    if (!urlAreaId) return null;
+    return AREA_LIST.find((area) => (area.id || "").toLowerCase() === urlAreaId) ?? null;
+  }, [urlAreaId]);
+  const activeArea = activeAreaEntry?.name ?? null;
+  const isGalleryOpen = Boolean(activeAreaEntry);
 
   const fetchAreaPhotos = useCallback(async (area: string) => {
     const key = area.toLowerCase();
@@ -74,10 +123,12 @@ export default function PhotographyPage() {
   }, [photosByArea, loadingAreas]);
 
   const openGallery = useCallback((area: string) => {
-    setActiveArea(area);
-    setIsGalleryOpen(true);
-    fetchAreaPhotos(area);
-  }, [fetchAreaPhotos]);
+    const entry = AREA_LIST.find(
+      (candidate) => candidate.name.toLowerCase() === area.toLowerCase()
+    );
+    const areaId = entry?.id || area.toLowerCase().replace(/[^a-z0-9]+/g, "");
+    window.history.pushState(null, "", areaUrl(areaId));
+  }, []);
 
   useEffect(() => {
     if (activeArea) {
@@ -86,8 +137,7 @@ export default function PhotographyPage() {
   }, [activeArea, fetchAreaPhotos]);
 
   const closeGallery = useCallback(() => {
-    setIsGalleryOpen(false);
-    setActiveArea(null);
+    window.history.pushState(null, "", "/photography");
   }, []);
 
   const activeAreaPhotos = useMemo(() => {
@@ -109,7 +159,25 @@ export default function PhotographyPage() {
     if (index === undefined) return;
     setCurrentImageIndex(index);
     setSelectedImage(activeAreaPhotos[index]);
-  }, [photoIndexBySrc, activeAreaPhotos]);
+    if (activeAreaEntry?.id) {
+      window.history.pushState(null, "", photoUrl(activeAreaEntry.id, src));
+    }
+  }, [photoIndexBySrc, activeAreaPhotos, activeAreaEntry]);
+
+  // Keep the photo viewer in sync with the URL (deep links + back/forward).
+  useEffect(() => {
+    if (!urlPhotoSlug) {
+      setSelectedImage(null);
+      return;
+    }
+    if (activeAreaPhotos.length === 0) return;
+    const index = activeAreaPhotos.findIndex(
+      (photo) => photoSlugFromSrc(photo.src) === urlPhotoSlug
+    );
+    if (index === -1) return;
+    setCurrentImageIndex(index);
+    setSelectedImage(activeAreaPhotos[index]);
+  }, [urlPhotoSlug, activeAreaPhotos]);
 
   const toggleFullscreen = useCallback(() => {
     const element = viewerRef.current;
@@ -167,7 +235,7 @@ export default function PhotographyPage() {
   }, []);
 
   useEffect(() => {
-    const initialAreas = (areaOverrides as AreaPin[]).map((area) => ({
+    const initialAreas = AREA_LIST.map((area) => ({
       id: area.id,
       name: area.name,
       lat: area.lat,
@@ -372,27 +440,35 @@ export default function PhotographyPage() {
   }, [totalLocations, totalPhotos, lastUpdatedString]);
 
   // Navigation functions for image viewer
+  const showImageAtIndex = useCallback((index: number) => {
+    const photo = activeAreaPhotos[index];
+    if (!photo) return;
+    setCurrentImageIndex(index);
+    setSelectedImage(photo);
+    if (activeAreaEntry?.id) {
+      // replaceState: arrowing through photos shouldn't flood browser history
+      window.history.replaceState(null, "", photoUrl(activeAreaEntry.id, photo.src));
+    }
+  }, [activeAreaPhotos, activeAreaEntry]);
+
   const goToNextImage = useCallback(() => {
-    setCurrentImageIndex(prevIndex => {
-      if (activeAreaPhotos.length === 0) return prevIndex;
-      const nextIndex = (prevIndex + 1) % activeAreaPhotos.length;
-      setSelectedImage(activeAreaPhotos[nextIndex]);
-      return nextIndex;
-    });
-  }, [activeAreaPhotos]);
+    if (activeAreaPhotos.length === 0) return;
+    showImageAtIndex((currentImageIndex + 1) % activeAreaPhotos.length);
+  }, [activeAreaPhotos, currentImageIndex, showImageAtIndex]);
 
   const goToPreviousImage = useCallback(() => {
-    setCurrentImageIndex(prevIndex => {
-      if (activeAreaPhotos.length === 0) return prevIndex;
-      const newIndex = prevIndex === 0 ? activeAreaPhotos.length - 1 : prevIndex - 1;
-      setSelectedImage(activeAreaPhotos[newIndex]);
-      return newIndex;
-    });
-  }, [activeAreaPhotos]);
+    if (activeAreaPhotos.length === 0) return;
+    showImageAtIndex(
+      currentImageIndex === 0 ? activeAreaPhotos.length - 1 : currentImageIndex - 1
+    );
+  }, [activeAreaPhotos, currentImageIndex, showImageAtIndex]);
 
   const closeImageViewer = useCallback(() => {
     setSelectedImage(null);
-  }, []);
+    if (activeAreaEntry?.id) {
+      window.history.pushState(null, "", areaUrl(activeAreaEntry.id));
+    }
+  }, [activeAreaEntry]);
 
   // Keyboard navigation
   useEffect(() => {
