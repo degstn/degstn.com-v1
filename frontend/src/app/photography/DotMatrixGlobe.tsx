@@ -283,7 +283,10 @@ export default function PhotographyPage() {
       .pointsData([...interiorDots])
       .pointLat("lat")
       .pointLng("lng")
-      .pointColor((d: any) => (d.pin ? "#FF4F00" : "#FF4F00"))
+      // Same hue as the site's #FF4F00 accent, ~24% darker: calms the
+      // glare and lifts white-label contrast to ~5.3:1 while the dots
+      // stay clearly visible against the near-black background.
+      .pointColor(() => "#C23C00")
       .pointAltitude(() => 0.005);
   }, [interiorDots]);
 

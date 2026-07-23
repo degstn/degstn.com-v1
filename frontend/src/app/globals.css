@@ -72,11 +72,26 @@
 }
 
 .my-globe-label {
+  position: relative;
   color: #f9fafb;
   padding: 5px 8px;
-  border-radius: 4px;
   font-size: 14px;
   margin-bottom: 0px;
+}
+
+/* Very subtle blur behind the label text, fading to none at the edges.
+   Small radius keeps the dot structure visible — it should soften the
+   dots under the glyphs without reading as a visible haze. */
+.my-globe-label::before {
+  content: "";
+  position: absolute;
+  inset: -6px -12px;
+  z-index: -1;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(1.5px);
+  backdrop-filter: blur(1.5px);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
 }
 
 .my-globe-pin {

@@ -113,7 +113,7 @@ export const pages: ProjectEntry[] = [
     slug: "photography",
     name: "photography",
     url: "/photography",
-    image: "https://cdn.degstn.com/photography.png",
+    image: "https://cdn.degstn.com/photographyv2.png",
     description: "This page tells the story of my passion in photography and its global scale. every country on this fully interactive globe shares a different collective memory between my grandpa pops and me.",
     tags: ["page"],
   },
