@@ -11,5 +11,6 @@
   { "id": "vancouver", "folder": "vancouver", "name": "Vancouver", "lat": 52.253465, "lng": -123.043325 },
   { "id": "gbnp", "folder": "gbnp", "name": "GBNP", "lat": 54.800685, "lng": -127.647608 },
   { "id": "alaska", "folder": "alaska", "name": "Alaska", "lat": 59.355596, "lng": -135.474302 },
-  { "id": "kiawah", "folder": "kiawah", "name": "Kiawah", "lat": 35.608571, "lng": -80.084449 }
+  { "id": "kiawah", "folder": "kiawah", "name": "Kiawah", "lat": 35.608571, "lng": -80.084449 },
+  { "id": "southafrica", "folder": "southafrica", "name": "South Africa", "lat": -29.0584, "lng": 24.6726 }
 ]
