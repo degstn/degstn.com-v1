@@ -54,19 +54,6 @@ export default function CvContent() {
       </div>
       <div>
         <div className="text-md text-gray-600 dark:text-gray-50">
-          Technology Student Association <span className="text-gray-600 opacity-50 dark:text-gray-50">(aug 2022 – jun 2026)</span>
-        </div>
-        <div className="text-xs text-gray-600 dark:text-gray-50 pb-2">
-          Chapter President • Pine Crest School
-        </div>
-        <div className="text-sm text-gray-600 dark:text-gray-50 pb-5 space-y-1">
-          <Bullet>Led and mentored a chapter of 135 students with consecutive placements at the state and national level.</Bullet>
-          <Bullet>Presided over 80 middle and high school state and national competitions against 350k+ students across a wide range of STEM concepts.</Bullet>
-          <Bullet>TSA is the largest academic STEM competition, spanning 49 states and five countries.</Bullet>
-        </div>
-      </div>
-      <div>
-        <div className="text-md text-gray-600 dark:text-gray-50">
           PointeOS <span className="text-gray-600 opacity-50 dark:text-gray-50">(jul 2024 – aug 2025)</span>
         </div>
         <div className="text-xs text-gray-600 dark:text-gray-50 pb-2">
@@ -83,14 +70,57 @@ export default function CvContent() {
       </div>
 
       <div className="font-bold text-gray-600 dark:text-gray-50">
+        <h1>Leadership</h1>
+      </div>
+      <div>
+        <div className="text-md text-gray-600 dark:text-gray-50">
+          Technology Student Association <span className="text-gray-600 opacity-50 dark:text-gray-50">(aug 2022 – jun 2026)</span>
+        </div>
+        <div className="text-xs text-gray-600 dark:text-gray-50 pb-2">
+          Chapter President • Pine Crest School
+        </div>
+        <div className="text-sm text-gray-600 dark:text-gray-50 pb-5 space-y-1">
+          <Bullet>Led 150+ middle and high school students as mentor and leader of the chapter; helped multiple teams place top 5 and the website design team win first place at the 2025 TSA State Conference.</Bullet>
+          <Bullet>Placed 2nd in the nation for Limen, an AR-driven note-taking accessibility app for the Apple Vision Pro.</Bullet>
+          <Bullet>Inducted into the TSA Technology Honor Society as one of three recipients.</Bullet>
+          <Bullet>Competed against 350,000+ high school students from 49 states and 5 countries across multiple technology events.</Bullet>
+        </div>
+      </div>
+      <div>
+        <div className="text-md text-gray-600 dark:text-gray-50">
+          Computer Science Club <span className="text-gray-600 opacity-50 dark:text-gray-50">(aug 2022 – may 2026)</span>
+        </div>
+        <div className="text-xs text-gray-600 dark:text-gray-50 pb-2">
+          Vice President • Pine Crest School
+        </div>
+        <div className="text-sm text-gray-600 dark:text-gray-50 pb-5 space-y-1">
+          <Bullet>Organized coding workshops and hackathons for members to foster collaborative learning and skill development.</Bullet>
+          <Bullet>Mentored underclassmen in software engineering fundamentals, algorithms, and project execution.</Bullet>
+          <Bullet>Managed weekly club meetings and coordinated guest speakers from the technology industry.</Bullet>
+        </div>
+      </div>
+
+      <div className="font-bold text-gray-600 dark:text-gray-50">
         <h1>Education</h1>
       </div>
       <div>
         <div className="text-md text-gray-600 dark:text-gray-50">
-          Lehigh University <span className="text-gray-600 opacity-50 dark:text-gray-50">(2026 – 2031)</span>
+          Lehigh University <span className="text-gray-600 opacity-50 dark:text-gray-50">(2026 – 2030)</span>
         </div>
         <div className="text-xs text-gray-600 dark:text-gray-50 pb-5">
-          IBE (Integrated Business &amp; Engineering) • Materials Science &amp; Engineering; Physics
+          B.S. Materials Science &amp; Engineering • Integrated Business &amp; Engineering (IBE) Honors • Bethlehem, PA
+        </div>
+      </div>
+      <div>
+        <div className="text-md text-gray-600 dark:text-gray-50">
+          University of Chicago <span className="text-gray-600 opacity-50 dark:text-gray-50">(jun 2025)</span>
+        </div>
+        <div className="text-xs text-gray-600 dark:text-gray-50 pb-2">
+          Summer Precollege Program • Innovation &amp; Technology
+        </div>
+        <div className="text-sm text-gray-600 dark:text-gray-50 pb-5 space-y-1">
+          <Bullet>Led a 4-member team in developing and pitching a data-driven sodium-ion battery storage solution to optimize renewable energy output, tackling key regulatory, economic, and supply chain barriers.</Bullet>
+          <Bullet>Engaged in daily lectures and feedback-driven engineering design workshops with UChicago faculty and graduate researchers across Molecular Engineering, AI/ML, Quantum Mechanics, and Nanotechnology.</Bullet>
         </div>
       </div>
       <div>
@@ -133,6 +163,9 @@ export default function CvContent() {
       <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
       Additional: iOS Development, Computer-Aided Design (CAD), Back-End Web Development, Machine Learning,
       Project Management, Team Leadership
+      </div>
+      <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
+      Activities: Hockey, Photography, Padel, Lehigh Baja SAE, Lehigh Quantum Computing Club
       </div>
       <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
         Languages: English, Spanish

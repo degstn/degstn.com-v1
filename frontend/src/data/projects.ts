@@ -126,14 +126,6 @@ export const pages: ProjectEntry[] = [
     tags: ["site", "external"],
   },
   {
-    slug: "ghorman",
-    name: "ghorman",
-    url: "/ghorman",
-    image: "https://cdn.degstn.com/ghormanv2.png",
-    description: "Ghorman is my colombian giant redleg tarantula (megaphobema robustum). this page is a live stream of him alongside some quick facts about him.",
-    tags: ["page", "live"],
-  },
-  {
     slug: "words",
     name: "words",
     url: "/words",
