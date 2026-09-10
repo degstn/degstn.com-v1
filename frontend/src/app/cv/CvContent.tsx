@@ -174,8 +174,11 @@ export default function CvContent() {
       <div className="font-bold text-gray-600 dark:text-gray-50">
         <h1>Contact</h1>
       </div>
-      <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
+      <div className="text-sm text-gray-600 dark:text-gray-50">
         <Link className="hover:underline" href="mailto:cv@degstn.com">cv@degstn.com</Link>
+      </div>
+      <div className="text-sm text-gray-600 dark:text-gray-50">
+        <Link className="hover:underline" href="mailto:drg230@lehigh.edu">drg230@lehigh.edu</Link>
       </div>
     </div>
   )
