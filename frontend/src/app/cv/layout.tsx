@@ -1,14 +1,13 @@
 import { ReactNode } from "react";
 import type { Metadata } from 'next'
+import { PERSON_NAME, SITE_NAME } from '@/data/site'
 
 export const metadata: Metadata = {
-    title: "cv - degstn.com",
-    description: "curriculum vitae",
+    title: "cv",
+    description: `Curriculum vitae of ${PERSON_NAME}: experience, leadership, education, notable projects, and skills.`,
     openGraph: {
-      title: "cv - degstn.com",
-      description: "curriculum vitae",
-      url: "https://degstn.com/cv",
-      siteName: "degstn.com",
+      url: "/cv",
+      siteName: SITE_NAME,
       images: [
         {
           url: "/cv-og.jpg", 

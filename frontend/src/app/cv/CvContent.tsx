@@ -12,15 +12,26 @@ function Bullet({ children }: { children: React.ReactNode }) {
 export default function CvContent() {
   return (
     <div>
-      <div className="text-gray-600 dark:text-gray-50">
+      <h1 className="text-gray-600 dark:text-gray-50">
         Drew Goldstein
-      </div>
+      </h1>
       <div className="text-sm text-gray-600 opacity-50 dark:text-gray-50 pb-10">
         IBE + MSE @ Lehigh
       </div>
 
       <div className="font-bold text-gray-600 dark:text-gray-50">
-        <h1>Experience</h1>
+        <h2>Experience</h2>
+      </div>
+      <div>
+        <div className="text-md text-gray-600 dark:text-gray-50">
+          Lehigh University <span className="text-gray-600 opacity-50 dark:text-gray-50">(nov 2026 – present)</span>
+        </div>
+        <div className="text-xs text-gray-600 dark:text-gray-50 pb-2">
+          Undergraduate Researcher • Bethlehem, PA
+        </div>
+        <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
+          Working in the Arcidiacono Lab in the Department of Chemistry.
+        </div>
       </div>
       <div>
         <div className="text-md text-gray-600 dark:text-gray-50">
@@ -70,7 +81,15 @@ export default function CvContent() {
       </div>
 
       <div className="font-bold text-gray-600 dark:text-gray-50">
-        <h1>Leadership</h1>
+        <h2>Leadership</h2>
+      </div>
+      <div>
+        <div className="text-md text-gray-600 dark:text-gray-50">
+          Quantum @ Lehigh <span className="text-gray-600 opacity-50 dark:text-gray-50">(sep 2026 – present)</span>
+        </div>
+        <div className="text-xs text-gray-600 dark:text-gray-50 pb-5">
+          President • Lehigh University
+        </div>
       </div>
       <div>
         <div className="text-md text-gray-600 dark:text-gray-50">
@@ -101,14 +120,14 @@ export default function CvContent() {
       </div>
 
       <div className="font-bold text-gray-600 dark:text-gray-50">
-        <h1>Education</h1>
+        <h2>Education</h2>
       </div>
       <div>
         <div className="text-md text-gray-600 dark:text-gray-50">
           Lehigh University <span className="text-gray-600 opacity-50 dark:text-gray-50">(2026 – 2030)</span>
         </div>
         <div className="text-xs text-gray-600 dark:text-gray-50 pb-5">
-          B.S. Materials Science &amp; Engineering • Integrated Business &amp; Engineering (IBE) Honors • Bethlehem, PA
+          B.S. Materials Science &amp; Engineering, Minor in Physics • Integrated Business &amp; Engineering (IBE) Honors • Bethlehem, PA
         </div>
       </div>
       <div>
@@ -130,7 +149,7 @@ export default function CvContent() {
       </div>
 
       <div className="font-bold text-gray-600 dark:text-gray-50">
-        <h1>Notable Projects</h1>
+        <h2>Notable Projects</h2>
       </div>
       <div>
         <div className="text-sm text-gray-600 dark:text-gray-50">
@@ -148,7 +167,7 @@ export default function CvContent() {
       </div>
 
       <div className="font-bold text-gray-600 dark:text-gray-50">
-        <h1>Skills</h1>
+        <h2>Skills</h2>
       </div>
       <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
       Software: Swift, TypeScript, JavaScript, Python, Java, C++, Objective-C, Node.js, Next.js, React, Tailwind CSS
@@ -165,14 +184,14 @@ export default function CvContent() {
       Project Management, Team Leadership
       </div>
       <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
-      Activities: Hockey, Photography, Padel, Lehigh Baja SAE, Lehigh Quantum Computing Club
+      Activities: Hockey, Photography, Padel, Lehigh Baja SAE
       </div>
       <div className="text-sm text-gray-600 dark:text-gray-50 pb-5">
         Languages: English, Spanish
       </div>
 
       <div className="font-bold text-gray-600 dark:text-gray-50">
-        <h1>Contact</h1>
+        <h2>Contact</h2>
       </div>
       <div className="text-sm text-gray-600 dark:text-gray-50">
         <Link className="hover:underline" href="mailto:cv@degstn.com">cv@degstn.com</Link>

@@ -1,5 +1,11 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import type { CSSProperties } from 'react'
+
+export const metadata: Metadata = {
+  title: "archive",
+  description: "Older projects from before 2023, currently being gathered from old drives and forgotten repos.",
+}
 
 const CHIP_CHAMFER: CSSProperties = {
   clipPath:

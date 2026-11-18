@@ -1,15 +1,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import GhormanLiveMeta from './GhormanLiveMeta'
+import { SITE_NAME } from '@/data/site'
 
 export const metadata: Metadata = {
-  title: 'Ghorman Livestream — degstn.com',
+  title: 'Ghorman Livestream',
   description: 'Live stream for Ghorman (spider cam)',
   openGraph: {
-    title: 'Ghorman Livestream — degstn.com',
-    description: 'Live stream for Ghorman (spider cam)',
-    url: 'https://degstn.com/ghorman',
-    siteName: 'degstn.com',
+    url: '/ghorman',
+    siteName: SITE_NAME,
     images: [
       {
         url: '/main-og.jpg',

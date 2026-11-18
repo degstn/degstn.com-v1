@@ -2,15 +2,15 @@ import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import CameraBagStage from "./CameraBagStage";
+import { SITE_DOMAIN, SITE_NAME } from "@/data/site";
 
 export const metadata: Metadata = {
-    title: "Hardware Details - Photography - degstn.com",
+    title: "Camera Bag - Hardware Details - Photography",
     description: "Hardware Details for Photography",
     openGraph: {
-        title: "Camera Bag - Hardware Details - Photography - degstn.com",
-        description: "Shots from around the globe on degstn.com",
-        url: "https://degstn.com/photography/hardware",
-        siteName: "degstn.com",
+        description: `Shots from around the globe on ${SITE_DOMAIN}`,
+        url: "/photography/hardware/camerabag",
+        siteName: SITE_NAME,
         images: [
             {
                 url: "/photography-og.jpg", 

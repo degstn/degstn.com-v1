@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import DotMatrixGlobe from "../DotMatrixGlobe";
 import areas from "../areas.json";
+import { SITE_DOMAIN, SITE_NAME } from "@/data/site";
 
 type AreaConfig = {
   id?: string;
@@ -34,16 +35,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const area = slug?.length ? findAreaById(slug[0]) : undefined;
   if (!area) return {};
-  const title = `${area.name} - Photography - degstn.com`;
-  const description = `Shots from ${area.name} on degstn.com`;
+  const title = `${area.name} - Photography`;
+  const description = `Shots from ${area.name} on ${SITE_DOMAIN}`;
+  const areaPath = `/photography/${area.id}`;
   return {
     title,
     description,
+    // Photo deep links (/photography/{area}/{photo}) are views of the area
+    // page, so they all point at it rather than each claiming to be canonical.
+    alternates: { canonical: areaPath },
     openGraph: {
-      title,
       description,
-      url: `https://degstn.com/photography/${area.id}`,
-      siteName: "degstn.com",
+      url: areaPath,
+      siteName: SITE_NAME,
       images: [
         {
           url: "/photography-og.jpg",
