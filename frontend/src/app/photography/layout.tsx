@@ -1,15 +1,19 @@
 import { Metadata, Viewport } from 'next'
 import '../globals.css'
 import DarkBg from './DarkBg'
+import { SITE_DOMAIN, SITE_NAME } from '@/data/site'
 
 export const metadata: Metadata = {
-  title: "Photography - degstn.com",
-  description: "Shots from around the globe on degstn.com",
+  title: {
+    default: "Photography",
+    // A layout that sets a title drops the inherited template for the routes
+    // below it, so restate it for /photography/* pages.
+    template: `%s - ${SITE_NAME}`,
+  },
+  description: `Shots from around the globe on ${SITE_DOMAIN}`,
   openGraph: {
-    title: "Photography - degstn.com",
-    description: "Shots from around the globe on degstn.com",
-    url: "https://degstn.com/photography",
-    siteName: "degstn.com",
+    url: "/photography",
+    siteName: SITE_NAME,
     images: [
       {
         url: "/photography-og.jpg", 

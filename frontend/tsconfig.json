@@ -5,6 +5,9 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    // TypeScript 6, which the editor bundles, checks side-effect imports by
+    // default and has no types for plain .css files. 5.x, which builds this, doesn't.
+    "noUncheckedSideEffectImports": false,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",

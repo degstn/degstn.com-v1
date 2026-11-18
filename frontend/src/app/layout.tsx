@@ -2,17 +2,28 @@ import type { Metadata, Viewport } from 'next'
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { tx02, berkeleymono } from './fonts'
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, structuredData } from '@/data/site'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Drew Goldstein',
-  description: 'my portfolio',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_NAME,
+    // Pages set only their own name ("cv"); the site name is appended here so
+    // no two pages share a title.
+    template: `%s - ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
   keywords: ["portfolio", "personal website", "minimal", "tech", "software"],
+  // "./" resolves against each route's own path, so every page declares itself
+  // canonical on SITE_URL regardless of which domain served the request.
+  alternates: {
+    canonical: './',
+  },
+  // No title/description here: Next fills them from each page's own metadata.
   openGraph: {
-    title: "Drew Goldstein",
-    description: "my portfolio",
-    url: "https://degstn.com",
-    siteName: "degstn.com",
+    url: './',
+    siteName: SITE_NAME,
     images: [
       {
         url: "/main-og.jpg", 
@@ -47,7 +58,16 @@ export default function RootLayout({
       <head>
         <meta name="color-scheme" content="light dark" />
       </head>
-      <body className={`${tx02.className} antialiased`}>{children}<Analytics/><SpeedInsights/></body>
+      <body className={`${tx02.className} antialiased`}>
+        <script
+          type="application/ld+json"
+          // Escape "<" so the JSON can never close the script tag.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }}
+        />
+        {children}
+        <Analytics/>
+        <SpeedInsights/>
+      </body>
     </html>
   )
 }
